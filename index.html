@@ -4,23 +4,63 @@
   <meta charset="UTF-8">
   <title>Análisis ZGuerras</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; }
-    table { border-collapse: collapse; margin-top: 1em; }
-    th, td { border: 1px solid #ccc; padding: 6px 10px; }
-    th { background: #f0f0f0; }
+    body { font-family: sans-serif; padding: 20px; max-width: 1000px; margin: 0 auto; }
+    
+    /* Estilos para el panel de control */
+    .controls {
+      background: #f9f9f9;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    .control-group { margin-bottom: 10px; }
+    .control-group label { margin-right: 15px; font-weight: bold; }
+    input[type="text"] { padding: 5px; width: 300px; }
+    select { padding: 5px; }
+    
+    /* Estilos de la tabla */
+    table { border-collapse: collapse; width: 100%; margin-top: 1em; }
+    th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: center; }
+    th { background: #f0f0f0; cursor: pointer; }
+    td:first-child { text-align: left; font-weight: bold; }
+    tr:nth-child(even) { background-color: #fafafa; }
   </style>
 </head>
 <body>
 
 <h1>Análisis ZGuerras (local)</h1>
 
-<p id="info">Cargando datos…</p>
+<div class="controls">
+  <div class="control-group">
+    <label for="inputExcluir">Excluir palabras (separar por coma):</label>
+    <input type="text" id="inputExcluir" placeholder="Ej: amor, alma, adan...">
+  </div>
+
+  <div class="control-group">
+    <label for="selectOrden">Orden (Total citas):</label>
+    <select id="selectOrden">
+      <option value="desc">Mayor a Menor (Descendente)</option>
+      <option value="asc">Menor a Mayor (Ascendente)</option>
+    </select>
+  </div>
+
+  <div class="control-group">
+    <span><strong>Filtrar (Debe contener):</strong></span>
+    <label><input type="checkbox" id="checkHist"> Históricos</label>
+    <label><input type="checkbox" id="checkProf"> Proféticos</label>
+    <label><input type="checkbox" id="checkNT"> Nuevo Testamento</label>
+    <label><input type="checkbox" id="checkEv"> Evangelio</label>
+  </div>
+  
+  <div id="info" style="color: #666; margin-top: 5px;">Cargando datos...</div>
+</div>
 
 <table id="tabla">
   <thead>
     <tr>
       <th>Palabra</th>
-      <th>Total citas</th>
+      <th>Total Citas</th>
       <th>Hist.</th>
       <th>Prof.</th>
       <th>NT</th>
@@ -30,6 +70,6 @@
   <tbody></tbody>
 </table>
 
-<script src="js/app.js"></script>
+<script src="/js/app.js"></script>
 </body>
 </html>
