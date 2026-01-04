@@ -2,74 +2,211 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Análisis ZGuerras</title>
+  <title>Análisis Bíblico ZGuerras</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; max-width: 1000px; margin: 0 auto; }
-    
-    /* Estilos para el panel de control */
-    .controls {
-      background: #f9f9f9;
-      padding: 15px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      margin-bottom: 20px;
+    /* Estilos Generales */
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      padding: 20px; 
+      max-width: 1200px; 
+      margin: 0 auto; 
+      background-color: #f4f6f8; 
+      color: #333;
     }
-    .control-group { margin-bottom: 10px; }
-    .control-group label { margin-right: 15px; font-weight: bold; }
-    input[type="text"] { padding: 5px; width: 300px; }
-    select { padding: 5px; }
     
-    /* Estilos de la tabla */
-    table { border-collapse: collapse; width: 100%; margin-top: 1em; }
-    th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: center; }
-    th { background: #f0f0f0; cursor: pointer; }
-    td:first-child { text-align: left; font-weight: bold; }
-    tr:nth-child(even) { background-color: #fafafa; }
+    h1 { color: #2c3e50; text-align: center; }
+
+    /* Panel de Control */
+    .controls {
+      background: #fff; 
+      padding: 20px; 
+      border-radius: 8px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: flex-end;
+    }
+    
+    .control-group { display: flex; flex-direction: column; gap: 5px; }
+    .control-group label { font-weight: 600; font-size: 0.9rem; color: #555; }
+    
+    input[type="text"], select { 
+      padding: 8px 10px; 
+      border: 1px solid #ccd0d5; 
+      border-radius: 4px; 
+      font-size: 1rem;
+      min-width: 200px;
+    }
+
+    /* Checkbox de filtro estricto con estilo */
+    .checkbox-container {
+      display: flex; 
+      align-items: center; 
+      background: #e3f2fd; 
+      padding: 8px 15px; 
+      border: 1px solid #90caf9; 
+      border-radius: 20px; 
+      cursor: pointer;
+      color: #1565c0;
+    }
+    .checkbox-container input { margin-right: 8px; transform: scale(1.2); cursor: pointer; }
+
+    /* TABLA */
+    table { 
+      width: 100%; 
+      border-collapse: collapse; 
+      background: #fff; 
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    th { 
+      background: #34495e; 
+      color: white; 
+      padding: 15px 10px; 
+      text-align: center; 
+      font-weight: 600;
+    }
+    
+    td { 
+      padding: 12px 10px; 
+      border-bottom: 1px solid #eee; 
+      text-align: center; 
+    }
+    
+    /* La primera columna (Palabra) alineada a la izquierda */
+    td:first-child { text-align: left; font-weight: 600; color: #2c3e50; }
+
+    /* Filas interactivas */
+    .fila-principal { cursor: pointer; transition: background 0.15s; }
+    .fila-principal:hover { background-color: #f1f8ff; }
+    .fila-principal.activa { background-color: #e3f2fd; border-left: 4px solid #2196f3; }
+
+    /* ACORDEÓN (Detalle) */
+    .fila-detalle { display: none; background-color: #fafafa; }
+    .celda-detalle { padding: 0 !important; border-bottom: 2px solid #ddd; }
+
+    /* Grid para alinear las citas con las columnas de la tabla 
+       Los porcentajes deben coincidir aprox con los anchos visuales de la tabla
+    */
+    .grid-detalle {
+      display: grid;
+      /* Col 1 (Palabra): 25%
+         Col 2 (Total): 10%
+         Col 3 (Hist): 16.25%
+         Col 4 (Prof): 16.25%
+         Col 5 (NT): 16.25%
+         Col 6 (Ev): 16.25%
+      */
+      grid-template-columns: 25% 10% 16.25% 16.25% 16.25% 16.25%;
+      padding: 15px 0;
+    }
+
+    .grupo-citas {
+      display: flex; 
+      flex-direction: column; 
+      gap: 6px; 
+      padding: 0 10px;
+    }
+    
+    /* Posicionamiento en el Grid */
+    .pos-hist { grid-column: 3; border-left: 1px dashed #ccc; }
+    .pos-prof { grid-column: 4; border-left: 1px dashed #ccc; }
+    .pos-nt   { grid-column: 5; border-left: 1px dashed #ccc; }
+    .pos-ev   { grid-column: 6; border-left: 1px dashed #ccc; }
+
+    /* Botones de citas */
+    .btn-cita {
+      background: white; border: 1px solid #dcdcdc; 
+      padding: 4px 8px; border-radius: 4px; 
+      font-size: 0.85rem; cursor: pointer; text-align: left;
+      transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .btn-cita:hover {
+      background: #2196f3; color: white; border-color: #1e88e5;
+      transform: translateX(2px);
+    }
+
+    /* MODAL */
+    .modal {
+      display: none; position: fixed; z-index: 9999; left: 0; top: 0;
+      width: 100%; height: 100%; overflow: auto;
+      background-color: rgba(0,0,0,0.6); backdrop-filter: blur(3px);
+    }
+    .modal-content {
+      background-color: #fefefe; margin: 5% auto; padding: 30px;
+      border: 1px solid #888; width: 90%; max-width: 800px;
+      border-radius: 10px; position: relative;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+    .close {
+      position: absolute; right: 20px; top: 20px;
+      color: #aaa; font-size: 30px; font-weight: bold; cursor: pointer;
+      line-height: 1;
+    }
+    .close:hover { color: #000; }
+    
+    #modalTextoCuerpo { 
+      margin-top: 20px; line-height: 1.8; font-size: 1.1rem; color: #444; 
+      max-height: 60vh; overflow-y: auto; padding-right: 10px;
+    }
+    #modalTextoCuerpo strong { color: #d35400; } /* Resaltar número versículo */
+
+    #info { margin-left: auto; color: #7f8c8d; font-size: 0.9rem; align-self: center;}
   </style>
 </head>
 <body>
 
-<h1>Análisis ZGuerras (local)</h1>
+<h1>Análisis de Concordancias</h1>
 
 <div class="controls">
   <div class="control-group">
-    <label for="inputExcluir">Excluir palabras (separar por coma):</label>
-    <input type="text" id="inputExcluir" placeholder="Ej: amor, alma, adan...">
+    <label>Excluir palabras (sep. por coma):</label>
+    <input type="text" id="inputExcluir" placeholder="Ej: amor, alma, tierra...">
   </div>
 
   <div class="control-group">
-    <label for="selectOrden">Orden (Total citas):</label>
+    <label>Orden:</label>
     <select id="selectOrden">
-      <option value="desc">Mayor a Menor (Descendente)</option>
-      <option value="asc">Menor a Mayor (Ascendente)</option>
+      <option value="desc">Mayor Total Primero</option>
+      <option value="asc">Menor Total Primero</option>
     </select>
   </div>
 
-  <div class="control-group">
-    <span><strong>Filtrar (Debe contener):</strong></span>
-    <label><input type="checkbox" id="checkHist"> Históricos</label>
-    <label><input type="checkbox" id="checkProf"> Proféticos</label>
-    <label><input type="checkbox" id="checkNT"> Nuevo Testamento</label>
-    <label><input type="checkbox" id="checkEv"> Evangelio</label>
-  </div>
+  <label class="checkbox-container" title="Muestra solo palabras que aparecen en TODOS los libros">
+    <input type="checkbox" id="checkEstricto">
+    <span><strong>Filtro Estricto</strong> (Debe estar en los 4 grupos)</span>
+  </label>
   
-  <div id="info" style="color: #666; margin-top: 5px;">Cargando datos...</div>
+  <div id="info">Cargando...</div>
 </div>
 
 <table id="tabla">
   <thead>
     <tr>
-      <th>Palabra</th>
-      <th>Total Citas</th>
-      <th>Hist.</th>
-      <th>Prof.</th>
-      <th>NT</th>
-      <th>Ev.</th>
+      <th style="width: 25%">Palabra</th>
+      <th style="width: 10%">Total</th>
+      <th style="width: 16.25%">Históricos</th>
+      <th style="width: 16.25%">Proféticos</th>
+      <th style="width: 16.25%">N. Test.</th>
+      <th style="width: 16.25%">Evangelio</th>
     </tr>
   </thead>
   <tbody></tbody>
 </table>
 
-<script src="/js/app.js"></script>
+<div id="modalLectura" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2 id="modalTitulo" style="margin: 0; color: #2c3e50;"></h2>
+    <div id="modalTextoCuerpo"></div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+
 </body>
 </html>
