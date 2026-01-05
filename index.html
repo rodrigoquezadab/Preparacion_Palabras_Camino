@@ -4,189 +4,226 @@
   <meta charset="UTF-8">
   <title>Análisis Bíblico ZGuerras</title>
   <style>
-    /* --- LAYOUT DE PANTALLA COMPLETA --- */
+    /* --- LAYOUT GLOBAL --- */
     html, body {
-      height: 100%;
-      margin: 0;
-      overflow: hidden; 
+      height: 100%; margin: 0; overflow: hidden; 
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f6f8;
-      color: #333;
-      display: flex;
-      flex-direction: column;
+      background-color: #f4f6f8; color: #333;
+      display: flex; flex-direction: column;
     }
+    
+    /* HEADER & BOTONES */
+    .header-bar {
+      flex-shrink: 0; background: #fff; padding: 10px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid #ddd; z-index: 12;
+    }
+    h1 { margin: 0; color: #2c3e50; font-size: 1.2rem; }
+    
+    .btn-toggle-panel {
+      background: none; border: 1px solid #ccc; border-radius: 4px; 
+      cursor: pointer; font-size: 0.9rem; padding: 4px 10px; color: #555;
+    }
+    .btn-toggle-panel:hover { background: #eee; }
 
-    h1 { margin: 10px 0; color: #2c3e50; text-align: center; font-size: 1.5rem; flex-shrink: 0; }
-
-    /* --- PANEL DE CONTROL (ESTÁTICO) --- */
+    /* --- CONTROLES --- */
     .controls {
-      flex-shrink: 0;
-      background: #fff; 
-      padding: 15px 20px; 
-      border-bottom: 1px solid #ddd;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      z-index: 10;
-      display: flex; 
-      flex-direction: column; 
-      gap: 12px;
+      flex-shrink: 0; background: #fff; 
+      border-bottom: 1px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      z-index: 10; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease;
+      padding: 15px 20px; max-height: 300px;
     }
+    .controls.collapsed { max-height: 0; padding: 0 20px; border-bottom: none; }
 
-    .fila-controles { display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end; }
+    .fila-controles { display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end; margin-bottom: 10px; }
     .control-group { display: flex; flex-direction: column; gap: 4px; }
-    .control-group label { font-weight: 600; font-size: 0.85rem; color: #555; }
+    .control-group label { font-weight: 600; font-size: 0.8rem; color: #555; }
 
     input[type="text"], input[type="search"], select { 
-      padding: 6px 10px; border: 1px solid #ccd0d5; 
-      border-radius: 4px; font-size: 0.95rem;
+      padding: 6px 10px; border: 1px solid #ccd0d5; border-radius: 4px; font-size: 0.9rem;
     }
+    #inputBusqueda { width: 200px; border-color: #3498db; }
     
-    #inputBusqueda { width: 250px; border-color: #3498db; }
-
     .btn-add {
       padding: 6px 12px; background: #28a745; color: white; border: none;
-      border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.9rem;
+      border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.85rem;
     }
-    .btn-add:hover { background: #218838; }
 
-    .checkbox-container {
-      display: flex; align-items: center; background: #e3f2fd; 
-      padding: 6px 12px; border: 1px solid #90caf9; 
-      border-radius: 20px; cursor: pointer; color: #1565c0; font-size: 0.9rem;
-    }
-    .checkbox-container input { margin-right: 8px; transform: scale(1.1); cursor: pointer; }
-
-    /* Tags */
+    /* TAGS */
     #contenedorTags {
-      display: flex; flex-wrap: wrap; gap: 6px; 
-      padding: 5px; background: #fafafa; border: 1px dashed #ccc; border-radius: 4px;
-      min-height: 32px; align-items: center;
+      display: flex; flex-wrap: wrap; gap: 6px; padding: 5px; background: #fafafa; 
+      border: 1px dashed #ccc; border-radius: 4px; min-height: 30px; align-items: center;
     }
     .tag-excluido {
-      background: #e74c3c; color: white; padding: 2px 8px; 
-      border-radius: 12px; font-size: 0.8rem; display: flex; align-items: center; gap: 5px;
+      background: #e74c3c; color: white; padding: 2px 8px; border-radius: 12px; 
+      font-size: 0.75rem; display: flex; align-items: center; gap: 5px;
     }
-    .tag-excluido span { cursor: pointer; font-weight: bold; width: 16px; height: 16px; 
+    .tag-excluido span { cursor: pointer; font-weight: bold; width: 14px; height: 14px; 
       background: rgba(0,0,0,0.2); border-radius: 50%; display: flex; 
       justify-content: center; align-items: center; line-height: 1; }
-    .tag-excluido span:hover { background: rgba(0,0,0,0.4); }
-    .sin-exclusiones { color: #999; font-style: italic; font-size: 0.8rem; }
 
-    /* --- CONTENEDOR DE TABLA CON SCROLL --- */
+    /* --- SISTEMA DE ALINEACIÓN (GRID/TABLA UNIFICADO) --- */
+    /* Definimos anchos exactos que suman 100% */
+    .w-id      { width: 5%; }
+    .w-palabra { width: 25%; } /* Más ancho para los botones */
+    .w-total   { width: 10%; }
+    .w-cat     { width: 15%; } /* 4 columnas de 15% = 60% */
+    
+    /* --- TABLA PRINCIPAL --- */
     .table-container {
-      flex-grow: 1; 
-      overflow-y: auto; 
-      position: relative;
-      background: #fff;
-      padding: 0 20px 20px 20px;
+      flex-grow: 1; overflow-y: auto; position: relative;
+      background: #fff; padding: 0 20px 20px 20px;
     }
-
-    table { 
-      width: 100%; border-collapse: collapse; 
-      table-layout: fixed; 
-    }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
     
     thead th { 
-      position: sticky; top: 0; z-index: 5;
-      background: #34495e; 
-      color: #ffffff !important; 
-      padding: 12px 5px; text-align: center; font-size: 0.9rem;
-      box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+      position: sticky; top: 0; z-index: 5; background: #34495e; color: #ffffff !important; 
+      padding: 12px 5px; text-align: center; font-size: 0.85rem; box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+      /* Centrado vertical y horizontal */
+      vertical-align: middle;
     }
-
-    td { padding: 8px 5px; border-bottom: 1px solid #eee; text-align: center; overflow: hidden; text-overflow: ellipsis; }
     
-    /* Columnas */
-    .col-id { width: 50px; color: #bdc3c7; font-weight: bold; font-size: 0.8rem; } 
-    .col-palabra { width: 20%; text-align: left; font-weight: 600; color: #2c3e50; }
-    .col-total { width: 10%; }
-    .col-grupo { width: 16%; }
-
-    .fila-principal { cursor: pointer; transition: background 0.1s; }
-    .fila-principal:hover { background-color: #f1f8ff; }
-    .fila-principal.activa { background-color: #e3f2fd; border-left: 4px solid #2196f3; }
-
-    /* Acordeón */
-    .fila-detalle { display: none; background-color: #fafafa; }
-    .celda-detalle { padding: 0 !important; border-bottom: 2px solid #ddd; }
-    .grid-detalle {
-      display: grid;
-      grid-template-columns: 50px 20% 10% 16% 16% 16% 16%;
-      padding: 10px 0;
+    td { 
+      padding: 8px 5px; border-bottom: 1px solid #eee; 
+      overflow: hidden; text-overflow: ellipsis; vertical-align: middle;
     }
-    .grupo-citas { display: flex; flex-direction: column; gap: 4px; padding: 0 5px; }
-    .pos-hist { grid-column: 4; border-left: 1px dashed #ccc; }
-    .pos-prof { grid-column: 5; border-left: 1px dashed #ccc; }
-    .pos-nt   { grid-column: 6; border-left: 1px dashed #ccc; }
-    .pos-ev   { grid-column: 7; border-left: 1px dashed #ccc; }
+
+    /* Centrado de contenido en celdas normales */
+    .td-center { text-align: center; }
+    .td-left { text-align: left; padding-left: 10px; }
+    .td-number { font-weight: bold; color: #333; }
+
+    .fila-principal { cursor: pointer; transition: background 0.1s; border-left: 4px solid transparent;}
+    .fila-principal:hover { background-color: #f1f8ff; }
+    .fila-principal.activa { background-color: #e3f2fd; border-left-color: #2196f3; }
+
+    /* --- DETALLES (ACORDEÓN) --- */
+    .fila-detalle { display: none; background-color: #fff; }
+    .celda-detalle { padding: 0 !important; border-bottom: 2px solid #ddd; }
+    
+    /* CLASE COMÚN PARA GRID ALINEADO CON TABLA */
+    .grid-aligned {
+      display: grid;
+      /* DEFINICIÓN EXACTA DE COLUMNAS IGUAL A LA TABLA */
+      grid-template-columns: 5% 25% 10% 15% 15% 15% 15%;
+      align-items: start; /* Alineación superior */
+    }
+
+    /* --- FILA DE ESTADÍSTICAS --- */
+    .stats-row {
+      background-color: #fff9c4;
+      border-bottom: 1px solid #ffe0b2;
+      padding: 10px 0;
+      /* Centrado vertical de los items dentro del grid */
+      align-items: center; 
+    }
+    
+    /* Columna 2: Contenedor de Botones */
+    .stats-controls {
+      grid-column: 2;
+      width: 100%; padding-left: 10px; /* Mismo padding que el texto de arriba */
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+
+    /* Botones */
+    .btn-mini {
+      padding: 5px 10px; font-size: 0.75rem; border-radius: 4px; cursor: pointer; 
+      display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; 
+      border: 1px solid transparent; transition: all 0.2s; white-space: nowrap;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    
+    .btn-ordenar { border-color: #90caf9; background: #fff; color: #1565c0; }
+    .btn-ordenar:hover { background: #e3f2fd; }
+    .btn-ordenar.active { background: #1565c0; color: white; border-color: #0d47a1; }
+    
+    .btn-limpiar { border-color: #ce93d8; background: #fff; color: #6a1b9a; }
+    .btn-limpiar:hover { background: #f3e5f5; }
+    .btn-limpiar.active { background: #7b1fa2; color: white; border-color: #4a148c; }
+
+    /* Celdas de números (Contadores) */
+    .stat-cell { 
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 100%; height: 100%;
+    }
+    .stat-val { font-weight: bold; font-size: 1.1rem; color: #333; line-height: 1; }
+    .stat-diff { font-size: 0.8rem; color: #d32f2f; font-weight: bold; margin-top: 3px; background: #ffcdd2; padding: 1px 4px; border-radius: 4px;}
+
+    /* --- GRID DE CITAS --- */
+    .grid-citas-container {
+      padding: 15px 0;
+      /* align-items: start por defecto */
+    }
+    
+    /* Columnas de botones */
+    .grupo-citas { 
+      display: flex; flex-direction: column; gap: 4px; 
+      width: 100%; 
+      align-items: center; /* CENTRADO PERFECTO EN LA COLUMNA */
+      padding: 0 5px;
+      box-sizing: border-box;
+    }
+    
+    /* Líneas divisorias tenues */
+    .border-left { border-left: 1px dashed #eee; height: 100%; }
 
     .btn-cita {
-      background: white; border: 1px solid #dcdcdc; padding: 3px 6px; 
-      border-radius: 3px; font-size: 0.8rem; cursor: pointer; text-align: left;
-      transition: all 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      background: white; border: 1px solid #e0e0e0; padding: 4px 8px; 
+      border-radius: 12px; font-size: 0.75rem; cursor: pointer; text-align: center;
+      width: 90%; /* Ancho consistente */
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .btn-cita:hover { background: #2196f3; color: white; border-color: #1e88e5; }
-
-    /* Modal */
-    .modal {
-      display: none; position: fixed; z-index: 9999; left: 0; top: 0;
-      width: 100%; height: 100%; overflow: auto;
-      background-color: rgba(0,0,0,0.6); backdrop-filter: blur(2px);
-    }
-    .modal-content {
-      background-color: #fefefe; margin: 5vh auto; padding: 25px;
-      border: 1px solid #888; width: 90%; max-width: 800px;
-      border-radius: 8px; position: relative; max-height: 85vh; display: flex; flex-direction: column;
-    }
+    .btn-cita:hover { background: #2196f3; color: white; border-color: #1e88e5; transform: scale(1.02); }
+    
+    /* MODAL */
+    .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(2px); }
+    .modal-content { background-color: #fefefe; margin: 5vh auto; padding: 25px; border: 1px solid #888; width: 90%; max-width: 800px; border-radius: 8px; max-height: 85vh; display: flex; flex-direction: column; }
     .close { position: absolute; right: 15px; top: 10px; color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; }
-    .close:hover { color: #000; }
     #modalTextoCuerpo { margin-top: 15px; line-height: 1.6; font-size: 1.05rem; color: #444; overflow-y: auto; flex-grow: 1;}
-    #modalTextoCuerpo strong { color: #d35400; }
   </style>
 </head>
 <body>
 
-<h1>Análisis de Concordancias</h1>
+<div class="header-bar">
+  <h1>Análisis de Concordancias</h1>
+  <button id="btnTogglePanel" class="btn-toggle-panel">🔼 Ocultar Filtros</button>
+</div>
 
-<div class="controls">
-  
+<div id="panelControles" class="controls">
   <div class="fila-controles">
     <div class="control-group" style="flex-grow: 1;">
-      <label>Excluir palabras (Enter para agregar):</label>
+      <label>Excluir palabras:</label>
       <div style="display: flex; gap: 5px;">
-        <input type="text" id="inputExcluir" placeholder="Ej: amor, tierra..." style="flex-grow: 1;">
+        <input type="text" id="inputExcluir" placeholder="Ej: amor..." style="flex-grow: 1;">
         <button id="btnAgregar" class="btn-add">Excluir</button>
       </div>
     </div>
-    
-    <div id="contenedorTags" style="flex-grow: 2;">
-      <span class="sin-exclusiones">Sin exclusiones.</span>
-    </div>
+    <div id="contenedorTags" style="flex-grow: 2;"></div>
   </div>
 
-  <hr style="border: 0; border-top: 1px solid #eee; margin: 0; width: 100%;">
+  <hr style="border: 0; border-top: 1px solid #eee; margin: 10px 0;">
 
-  <div class="fila-controles">
-    
+  <div class="fila-controles" style="align-items: center;">
     <div class="control-group">
-      <label>Buscar palabra:</label>
-      <input type="search" id="inputBusqueda" placeholder="Escribe para filtrar...">
+      <label>Buscar:</label>
+      <input type="search" id="inputBusqueda" placeholder="Filtrar tabla...">
     </div>
-
     <div class="control-group">
       <label>Orden:</label>
       <select id="selectOrden">
-        <option value="alpha">Alfabético (A-Z)</option>
-        <option value="asc">Menor Total Primero</option>
-        <option value="desc">Mayor Total Primero</option>
+        <option value="alpha">Alfabético</option>
+        <option value="asc">Menor Total</option>
+        <option value="desc">Mayor Total</option>
       </select>
     </div>
-
-    <label class="checkbox-container" style="align-self: flex-end; margin-bottom: 2px;">
-      <input type="checkbox" id="checkEstricto" checked>
-      <span><strong>Filtro Estricto</strong> (En los 4 grupos)</span>
-    </label>
-    
-    <div id="info" style="margin-left: auto; color: #7f8c8d; font-size: 0.85rem; align-self: center;">Cargando...</div>
+  </div>
+  
+  <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+      <label style="font-size: 0.8rem; display: flex; align-items: center; gap: 5px; cursor: pointer;">
+        <input type="checkbox" id="checkEstricto" checked> 
+        Filtro Estricto (4 grupos)
+      </label>
+      <div id="info" style="color: #999; font-size: 0.8rem;">Cargando...</div>
   </div>
 </div>
 
@@ -194,13 +231,13 @@
   <table id="tabla">
     <thead>
       <tr>
-        <th class="col-id">#</th> 
-        <th class="col-palabra">Palabra</th>
-        <th class="col-total">Total</th>
-        <th class="col-grupo">Hist.</th>
-        <th class="col-grupo">Prof.</th>
-        <th class="col-grupo">NT</th>
-        <th class="col-grupo">Ev.</th>
+        <th class="w-id">#</th> 
+        <th class="w-palabra">Palabra</th>
+        <th class="w-total">Total</th>
+        <th class="w-cat">Hist.</th>
+        <th class="w-cat">Prof.</th>
+        <th class="w-cat">NT</th>
+        <th class="w-cat">Ev.</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -216,6 +253,5 @@
 </div>
 
 <script src="js/app.js"></script>
-
 </body>
 </html>
