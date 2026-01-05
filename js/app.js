@@ -1,154 +1,216 @@
 // --- VARIABLES GLOBALES ---
 let listaGlobal = [];
-let dbTextos = {}; // Aquí almacenaremos los textos bíblicos del JSON
+let dbTextos = {}; 
+let setExcluidos = new Set(JSON.parse(localStorage.getItem('palabrasExcluidas')) || []);
+let setPalabrasExistentes = new Set();
 
 // --- REFERENCIAS AL DOM ---
 const tbody = document.querySelector("#tabla tbody");
 const info = document.getElementById("info");
 const inputExcluir = document.getElementById("inputExcluir");
+const btnAgregar = document.getElementById("btnAgregar");
+const contenedorTags = document.getElementById("contenedorTags");
 const selectOrden = document.getElementById("selectOrden");
 const checkEstricto = document.getElementById("checkEstricto");
 
-// Referencias del Modal
+// Referencias Buscador
+const inputBusqueda = document.getElementById("inputBusqueda");
+
+// Referencias Modal
 const modal = document.getElementById("modalLectura");
 const modalTitulo = document.getElementById("modalTitulo");
 const modalCuerpo = document.getElementById("modalTextoCuerpo");
 const btnCerrar = document.querySelector(".close");
 
 // --- UTILIDADES ---
-// Normaliza texto para comparaciones (quita tildes y pasa a minúsculas)
 const normalizar = (str) => {
     if (!str) return "";
     return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 };
 
-// --- INICIO: CARGA DE DATOS ---
+// --- CARGA DE DATOS ---
 fetch("zguerras_completo.json")
     .then(r => {
         if (!r.ok) throw new Error("No se pudo cargar el archivo JSON");
         return r.json();
     })
     .then(data => {
-        // 1. Guardar textos bíblicos para el modal
         dbTextos = data.textos || {};
+        let rawList = Object.values(data.palabras);
 
-        // 2. Procesar lista de palabras
-        listaGlobal = Object.values(data.palabras).map(p => {
+        // 1. Ordenamos alfabéticamente para asignar ID correlativo
+        rawList.sort((a, b) => a.palabra.localeCompare(b.palabra, 'es', { sensitivity: 'base' }));
+
+        // 2. Procesar datos
+        listaGlobal = rawList.map((p, index) => {
+            const pNorm = normalizar(p.palabra);
             const l = p.lecturas;
             
-            // Conteo seguro (evita errores si falta alguna clave en el JSON)
+            // Guardamos para validar existencia al excluir
+            setPalabrasExistentes.add(pNorm);
+
             const cHist = l.Historicos ? l.Historicos.length : 0;
             const cProf = l.Profeticos ? l.Profeticos.length : 0;
             const cNT = l["Nuevo Testamento"] ? l["Nuevo Testamento"].length : 0;
             const cEv = l.Evangelio ? l.Evangelio.length : 0;
             
             return {
+                idOriginal: index + 1,
                 palabra: p.palabra,
-                palabraNorm: normalizar(p.palabra),
-                lecturas: l, // Guardamos el objeto completo para el acordeón
+                palabraNorm: pNorm,
+                lecturas: l,
                 total: cHist + cProf + cNT + cEv,
-                hist: cHist,
-                prof: cProf,
-                nt: cNT,
-                ev: cEv
+                hist: cHist, prof: cProf, nt: cNT, ev: cEv
             };
         });
 
-        // 3. Renderizar inicial
-        actualizarTabla();
+        // Limpieza de localStorage antiguo
+        setExcluidos.forEach(excl => {
+            if (!setPalabrasExistentes.has(excl)) setExcluidos.delete(excl);
+        });
+        guardarLocalStorage();
+
+        renderizarTags(); 
+        actualizarTabla(); // Se ejecutará con orden alfabético por defecto ('alpha')
     })
     .catch(err => {
         info.textContent = "Error: " + err.message;
-        info.style.color = "red";
         console.error(err);
     });
 
-// --- LÓGICA DE FILTRADO Y ORDEN ---
-function actualizarTabla() {
-    // 1. Obtener lista de exclusión del input
-    const textoExcluir = inputExcluir.value;
-    const arrayExcluidos = textoExcluir.split(',')
-        .map(t => normalizar(t))
-        .filter(t => t.length > 0);
+// --- GESTIÓN EXCLUSIONES ---
+function agregarExclusiones() {
+    const texto = inputExcluir.value;
+    if (!texto) return;
 
-    // 2. Estado del checkbox estricto
-    const modoEstricto = checkEstricto.checked;
+    const nuevasPalabras = texto.split(',').map(t => normalizar(t)).filter(t => t.length > 0);
+    let palabrasInvalidas = [];
+    let cambios = false;
 
-    // 3. Filtrar
-    let listaFiltrada = listaGlobal.filter(item => {
-        // A. Excluir palabras prohibidas
-        if (arrayExcluidos.includes(item.palabraNorm)) return false;
-
-        // B. Filtro Estricto: Debe tener > 0 en los 4 grupos
-        if (modoEstricto) {
-            if (item.hist === 0 || item.prof === 0 || item.nt === 0 || item.ev === 0) {
-                return false; 
+    nuevasPalabras.forEach(palabra => {
+        if (setPalabrasExistentes.has(palabra)) {
+            if (!setExcluidos.has(palabra)) {
+                setExcluidos.add(palabra);
+                cambios = true;
             }
+        } else {
+            palabrasInvalidas.push(palabra);
         }
+    });
+    
+    if (palabrasInvalidas.length > 0) {
+        alert(`Palabra(s) no encontrada(s):\n- ${palabrasInvalidas.join("\n- ")}`);
+    }
+
+    inputExcluir.value = "";
+    if (cambios) guardarYActualizar();
+}
+
+function eliminarExclusion(palabraNorm) {
+    setExcluidos.delete(palabraNorm);
+    guardarYActualizar();
+}
+
+function guardarLocalStorage() {
+    localStorage.setItem('palabrasExcluidas', JSON.stringify([...setExcluidos]));
+}
+
+function guardarYActualizar() {
+    guardarLocalStorage();
+    renderizarTags();
+    actualizarTabla();
+}
+
+function renderizarTags() {
+    contenedorTags.innerHTML = "";
+    if (setExcluidos.size === 0) {
+        contenedorTags.innerHTML = '<span class="sin-exclusiones">Sin exclusiones.</span>';
+        return;
+    }
+    setExcluidos.forEach(palabra => {
+        const tag = document.createElement("div");
+        tag.className = "tag-excluido";
+        tag.innerHTML = `${palabra} <span>&times;</span>`;
+        tag.querySelector("span").onclick = () => eliminarExclusion(palabra);
+        contenedorTags.appendChild(tag);
+    });
+}
+
+btnAgregar.addEventListener("click", agregarExclusiones);
+inputExcluir.addEventListener("keydown", (e) => { if (e.key === "Enter") agregarExclusiones(); });
+
+// --- LÓGICA DE TABLA Y FILTROS ---
+function actualizarTabla() {
+    const modoEstricto = checkEstricto.checked;
+    const orden = selectOrden.value;
+    const textoBusqueda = normalizar(inputBusqueda.value); // Obtener texto buscador
+
+    let listaFiltrada = listaGlobal.filter(item => {
+        // 1. Exclusiones (Tags)
+        if (setExcluidos.has(item.palabraNorm)) return false;
+        
+        // 2. Filtro Estricto (4 Grupos)
+        if (modoEstricto) {
+            if (item.hist === 0 || item.prof === 0 || item.nt === 0 || item.ev === 0) return false; 
+        }
+
+        // 3. Filtro Búsqueda (Texto)
+        if (textoBusqueda.length > 0) {
+            if (!item.palabraNorm.includes(textoBusqueda)) return false;
+        }
+
         return true;
     });
 
-    // 4. Ordenar
-    const orden = selectOrden.value;
+    // Ordenar
     listaFiltrada.sort((a, b) => {
-        return orden === 'asc' ? a.total - b.total : b.total - a.total;
+        if (orden === 'alpha') return a.idOriginal - b.idOriginal; // Orden Alfabético (por ID)
+        if (orden === 'asc') return a.total - b.total;
+        if (orden === 'desc') return b.total - a.total;
+        return 0;
     });
 
-    // 5. Actualizar UI
-    info.textContent = `Mostrando ${listaFiltrada.length} de ${listaGlobal.length} palabras.`;
+    info.textContent = `Viendo ${listaFiltrada.length} de ${listaGlobal.length}`;
     dibujarTabla(listaFiltrada);
 }
 
-// --- RENDERIZADO DE TABLA (PRINCIPAL + ACORDEÓN) ---
 function dibujarTabla(lista) {
-    tbody.innerHTML = ""; // Limpiar tabla
+    tbody.innerHTML = "";
 
     lista.forEach(item => {
-        // CREAR FILA PRINCIPAL
+        // FILA PRINCIPAL
         const trMain = document.createElement("tr");
         trMain.className = "fila-principal";
         trMain.innerHTML = `
-            <td>${item.palabra} <small style="color:#aaa">▼</small></td>
-            <td><strong>${item.total}</strong></td>
-            <td>${item.hist > 0 ? item.hist : '<span style="color:#ddd">-</span>'}</td>
-            <td>${item.prof > 0 ? item.prof : '<span style="color:#ddd">-</span>'}</td>
-            <td>${item.nt > 0 ? item.nt : '<span style="color:#ddd">-</span>'}</td>
-            <td>${item.ev > 0 ? item.ev : '<span style="color:#ddd">-</span>'}</td>
+            <td class="col-id">${item.idOriginal}</td>
+            <td class="col-palabra">${item.palabra} <small style="color:#aaa">▼</small></td>
+            <td class="col-total"><strong>${item.total}</strong></td>
+            <td class="col-grupo">${item.hist > 0 ? item.hist : '<span style="color:#ddd">-</span>'}</td>
+            <td class="col-grupo">${item.prof > 0 ? item.prof : '<span style="color:#ddd">-</span>'}</td>
+            <td class="col-grupo">${item.nt > 0 ? item.nt : '<span style="color:#ddd">-</span>'}</td>
+            <td class="col-grupo">${item.ev > 0 ? item.ev : '<span style="color:#ddd">-</span>'}</td>
         `;
 
-        // CREAR FILA DETALLE (ACORDEÓN)
+        // FILA DETALLE
         const trDetail = document.createElement("tr");
         trDetail.className = "fila-detalle";
-        
         const tdDetail = document.createElement("td");
-        tdDetail.colSpan = 6;
+        tdDetail.colSpan = 7; 
         tdDetail.className = "celda-detalle";
 
-        // Contenedor Grid para alinear columnas
         const divGrid = document.createElement("div");
         divGrid.className = "grid-detalle";
 
-        // Generar columnas de citas
-        // Históricos
         divGrid.appendChild(crearColumnaCitas(item.lecturas.Historicos, "pos-hist"));
-        // Proféticos
         divGrid.appendChild(crearColumnaCitas(item.lecturas.Profeticos, "pos-prof"));
-        // Nuevo Testamento
         divGrid.appendChild(crearColumnaCitas(item.lecturas["Nuevo Testamento"], "pos-nt"));
-        // Evangelio
         divGrid.appendChild(crearColumnaCitas(item.lecturas.Evangelio, "pos-ev"));
 
         tdDetail.appendChild(divGrid);
         trDetail.appendChild(tdDetail);
 
-        // EVENTO CLICK EN LA FILA (ABRIR/CERRAR)
         trMain.addEventListener("click", () => {
             const estaAbierto = trDetail.style.display === "table-row";
-            
-            // Cerrar todos los detalles abiertos previamente (opcional, para efecto acordeón único)
-            /* document.querySelectorAll('.fila-detalle').forEach(row => row.style.display = 'none');
-               document.querySelectorAll('.fila-principal').forEach(row => row.classList.remove('activa')); */
-
             if (estaAbierto) {
                 trDetail.style.display = "none";
                 trMain.classList.remove("activa");
@@ -163,7 +225,6 @@ function dibujarTabla(lista) {
     });
 }
 
-// Función auxiliar para crear el bloque de botones de citas
 function crearColumnaCitas(arrayCitas, clasePosicion) {
     const divCol = document.createElement("div");
     divCol.className = `grupo-citas ${clasePosicion}`;
@@ -172,44 +233,32 @@ function crearColumnaCitas(arrayCitas, clasePosicion) {
         arrayCitas.forEach(cita => {
             const btn = document.createElement("button");
             btn.className = "btn-cita";
-            // Texto del botón: usa citaOriginal o construye "Libro Cap,Ver"
             btn.textContent = cita.citaOriginal || `${cita.libro} ${cita.capitulo},${cita.versiculoInicio}`;
+            btn.title = btn.textContent;
             
-            // Click en la cita -> Abrir Modal
             btn.addEventListener("click", (e) => {
-                e.stopPropagation(); // Evitar que se cierre el acordeón al hacer clic en el botón
+                e.stopPropagation();
                 abrirModal(cita);
             });
-
             divCol.appendChild(btn);
         });
     }
     return divCol;
 }
 
-// --- LÓGICA DEL MODAL ---
+// --- MODAL ---
 function abrirModal(citaObj) {
-    const ref = citaObj.textoRef; // Clave para buscar en JSON (ej: "SAL-23")
-    const textoHTML = dbTextos[ref]; // Texto bíblico
-
+    const ref = citaObj.textoRef;
+    const textoHTML = dbTextos[ref];
     modalTitulo.textContent = `Lectura: ${citaObj.citaOriginal || ref}`;
-    
-    if (textoHTML) {
-        modalCuerpo.innerHTML = textoHTML;
-    } else {
-        modalCuerpo.innerHTML = `<p style="color:red">No se encontró el texto para la referencia: <strong>${ref}</strong></p>`;
-    }
-
+    modalCuerpo.innerHTML = textoHTML ? textoHTML : `<p style="color:red">Texto no encontrado: <strong>${ref}</strong></p>`;
     modal.style.display = "block";
 }
 
-// Cerrar Modal
 btnCerrar.onclick = () => modal.style.display = "none";
-window.onclick = (e) => {
-    if (e.target == modal) modal.style.display = "none";
-};
+window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; };
 
-// --- LISTENERS (Eventos de Inputs) ---
-inputExcluir.addEventListener("input", actualizarTabla);
+// Eventos
 selectOrden.addEventListener("change", actualizarTabla);
 checkEstricto.addEventListener("change", actualizarTabla);
+inputBusqueda.addEventListener("input", actualizarTabla); // Mantenemos el filtro al escribir

@@ -4,158 +4,143 @@
   <meta charset="UTF-8">
   <title>Análisis Bíblico ZGuerras</title>
   <style>
-    /* Estilos Generales */
-    body { 
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-      padding: 20px; 
-      max-width: 1200px; 
-      margin: 0 auto; 
-      background-color: #f4f6f8; 
+    /* --- LAYOUT DE PANTALLA COMPLETA --- */
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f8;
       color: #333;
-    }
-    
-    h1 { color: #2c3e50; text-align: center; }
-
-    /* Panel de Control */
-    .controls {
-      background: #fff; 
-      padding: 20px; 
-      border-radius: 8px; 
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
-      margin-bottom: 20px;
       display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      align-items: flex-end;
-    }
-    
-    .control-group { display: flex; flex-direction: column; gap: 5px; }
-    .control-group label { font-weight: 600; font-size: 0.9rem; color: #555; }
-    
-    input[type="text"], select { 
-      padding: 8px 10px; 
-      border: 1px solid #ccd0d5; 
-      border-radius: 4px; 
-      font-size: 1rem;
-      min-width: 200px;
+      flex-direction: column;
     }
 
-    /* Checkbox de filtro estricto con estilo */
-    .checkbox-container {
-      display: flex; 
-      align-items: center; 
-      background: #e3f2fd; 
-      padding: 8px 15px; 
-      border: 1px solid #90caf9; 
-      border-radius: 20px; 
-      cursor: pointer;
-      color: #1565c0;
-    }
-    .checkbox-container input { margin-right: 8px; transform: scale(1.2); cursor: pointer; }
+    h1 { margin: 10px 0; color: #2c3e50; text-align: center; font-size: 1.5rem; flex-shrink: 0; }
 
-    /* TABLA */
-    table { 
-      width: 100%; 
-      border-collapse: collapse; 
+    /* --- PANEL DE CONTROL (ESTÁTICO) --- */
+    .controls {
+      flex-shrink: 0;
       background: #fff; 
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
-      border-radius: 8px;
-      overflow: hidden;
+      padding: 15px 20px; 
+      border-bottom: 1px solid #ddd;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      z-index: 10;
+      display: flex; 
+      flex-direction: column; 
+      gap: 12px;
     }
-    
-    th { 
-      background: #34495e; 
-      color: white; 
-      padding: 15px 10px; 
-      text-align: center; 
-      font-weight: 600;
-    }
-    
-    td { 
-      padding: 12px 10px; 
-      border-bottom: 1px solid #eee; 
-      text-align: center; 
-    }
-    
-    /* La primera columna (Palabra) alineada a la izquierda */
-    td:first-child { text-align: left; font-weight: 600; color: #2c3e50; }
 
-    /* Filas interactivas */
-    .fila-principal { cursor: pointer; transition: background 0.15s; }
+    .fila-controles { display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end; }
+    .control-group { display: flex; flex-direction: column; gap: 4px; }
+    .control-group label { font-weight: 600; font-size: 0.85rem; color: #555; }
+
+    input[type="text"], input[type="search"], select { 
+      padding: 6px 10px; border: 1px solid #ccd0d5; 
+      border-radius: 4px; font-size: 0.95rem;
+    }
+    
+    #inputBusqueda { width: 250px; border-color: #3498db; }
+
+    .btn-add {
+      padding: 6px 12px; background: #28a745; color: white; border: none;
+      border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.9rem;
+    }
+    .btn-add:hover { background: #218838; }
+
+    .checkbox-container {
+      display: flex; align-items: center; background: #e3f2fd; 
+      padding: 6px 12px; border: 1px solid #90caf9; 
+      border-radius: 20px; cursor: pointer; color: #1565c0; font-size: 0.9rem;
+    }
+    .checkbox-container input { margin-right: 8px; transform: scale(1.1); cursor: pointer; }
+
+    /* Tags */
+    #contenedorTags {
+      display: flex; flex-wrap: wrap; gap: 6px; 
+      padding: 5px; background: #fafafa; border: 1px dashed #ccc; border-radius: 4px;
+      min-height: 32px; align-items: center;
+    }
+    .tag-excluido {
+      background: #e74c3c; color: white; padding: 2px 8px; 
+      border-radius: 12px; font-size: 0.8rem; display: flex; align-items: center; gap: 5px;
+    }
+    .tag-excluido span { cursor: pointer; font-weight: bold; width: 16px; height: 16px; 
+      background: rgba(0,0,0,0.2); border-radius: 50%; display: flex; 
+      justify-content: center; align-items: center; line-height: 1; }
+    .tag-excluido span:hover { background: rgba(0,0,0,0.4); }
+    .sin-exclusiones { color: #999; font-style: italic; font-size: 0.8rem; }
+
+    /* --- CONTENEDOR DE TABLA CON SCROLL --- */
+    .table-container {
+      flex-grow: 1; 
+      overflow-y: auto; 
+      position: relative;
+      background: #fff;
+      padding: 0 20px 20px 20px;
+    }
+
+    table { 
+      width: 100%; border-collapse: collapse; 
+      table-layout: fixed; 
+    }
+    
+    thead th { 
+      position: sticky; top: 0; z-index: 5;
+      background: #34495e; 
+      color: #ffffff !important; 
+      padding: 12px 5px; text-align: center; font-size: 0.9rem;
+      box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+    }
+
+    td { padding: 8px 5px; border-bottom: 1px solid #eee; text-align: center; overflow: hidden; text-overflow: ellipsis; }
+    
+    /* Columnas */
+    .col-id { width: 50px; color: #bdc3c7; font-weight: bold; font-size: 0.8rem; } 
+    .col-palabra { width: 20%; text-align: left; font-weight: 600; color: #2c3e50; }
+    .col-total { width: 10%; }
+    .col-grupo { width: 16%; }
+
+    .fila-principal { cursor: pointer; transition: background 0.1s; }
     .fila-principal:hover { background-color: #f1f8ff; }
     .fila-principal.activa { background-color: #e3f2fd; border-left: 4px solid #2196f3; }
 
-    /* ACORDEÓN (Detalle) */
+    /* Acordeón */
     .fila-detalle { display: none; background-color: #fafafa; }
     .celda-detalle { padding: 0 !important; border-bottom: 2px solid #ddd; }
-
-    /* Grid para alinear las citas con las columnas de la tabla 
-       Los porcentajes deben coincidir aprox con los anchos visuales de la tabla
-    */
     .grid-detalle {
       display: grid;
-      /* Col 1 (Palabra): 25%
-         Col 2 (Total): 10%
-         Col 3 (Hist): 16.25%
-         Col 4 (Prof): 16.25%
-         Col 5 (NT): 16.25%
-         Col 6 (Ev): 16.25%
-      */
-      grid-template-columns: 25% 10% 16.25% 16.25% 16.25% 16.25%;
-      padding: 15px 0;
+      grid-template-columns: 50px 20% 10% 16% 16% 16% 16%;
+      padding: 10px 0;
     }
+    .grupo-citas { display: flex; flex-direction: column; gap: 4px; padding: 0 5px; }
+    .pos-hist { grid-column: 4; border-left: 1px dashed #ccc; }
+    .pos-prof { grid-column: 5; border-left: 1px dashed #ccc; }
+    .pos-nt   { grid-column: 6; border-left: 1px dashed #ccc; }
+    .pos-ev   { grid-column: 7; border-left: 1px dashed #ccc; }
 
-    .grupo-citas {
-      display: flex; 
-      flex-direction: column; 
-      gap: 6px; 
-      padding: 0 10px;
-    }
-    
-    /* Posicionamiento en el Grid */
-    .pos-hist { grid-column: 3; border-left: 1px dashed #ccc; }
-    .pos-prof { grid-column: 4; border-left: 1px dashed #ccc; }
-    .pos-nt   { grid-column: 5; border-left: 1px dashed #ccc; }
-    .pos-ev   { grid-column: 6; border-left: 1px dashed #ccc; }
-
-    /* Botones de citas */
     .btn-cita {
-      background: white; border: 1px solid #dcdcdc; 
-      padding: 4px 8px; border-radius: 4px; 
-      font-size: 0.85rem; cursor: pointer; text-align: left;
-      transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      background: white; border: 1px solid #dcdcdc; padding: 3px 6px; 
+      border-radius: 3px; font-size: 0.8rem; cursor: pointer; text-align: left;
+      transition: all 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .btn-cita:hover {
-      background: #2196f3; color: white; border-color: #1e88e5;
-      transform: translateX(2px);
-    }
+    .btn-cita:hover { background: #2196f3; color: white; border-color: #1e88e5; }
 
-    /* MODAL */
+    /* Modal */
     .modal {
       display: none; position: fixed; z-index: 9999; left: 0; top: 0;
       width: 100%; height: 100%; overflow: auto;
-      background-color: rgba(0,0,0,0.6); backdrop-filter: blur(3px);
+      background-color: rgba(0,0,0,0.6); backdrop-filter: blur(2px);
     }
     .modal-content {
-      background-color: #fefefe; margin: 5% auto; padding: 30px;
+      background-color: #fefefe; margin: 5vh auto; padding: 25px;
       border: 1px solid #888; width: 90%; max-width: 800px;
-      border-radius: 10px; position: relative;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      border-radius: 8px; position: relative; max-height: 85vh; display: flex; flex-direction: column;
     }
-    .close {
-      position: absolute; right: 20px; top: 20px;
-      color: #aaa; font-size: 30px; font-weight: bold; cursor: pointer;
-      line-height: 1;
-    }
+    .close { position: absolute; right: 15px; top: 10px; color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; }
     .close:hover { color: #000; }
-    
-    #modalTextoCuerpo { 
-      margin-top: 20px; line-height: 1.8; font-size: 1.1rem; color: #444; 
-      max-height: 60vh; overflow-y: auto; padding-right: 10px;
-    }
-    #modalTextoCuerpo strong { color: #d35400; } /* Resaltar número versículo */
-
-    #info { margin-left: auto; color: #7f8c8d; font-size: 0.9rem; align-self: center;}
+    #modalTextoCuerpo { margin-top: 15px; line-height: 1.6; font-size: 1.05rem; color: #444; overflow-y: auto; flex-grow: 1;}
+    #modalTextoCuerpo strong { color: #d35400; }
   </style>
 </head>
 <body>
@@ -163,45 +148,69 @@
 <h1>Análisis de Concordancias</h1>
 
 <div class="controls">
-  <div class="control-group">
-    <label>Excluir palabras (sep. por coma):</label>
-    <input type="text" id="inputExcluir" placeholder="Ej: amor, alma, tierra...">
-  </div>
-
-  <div class="control-group">
-    <label>Orden:</label>
-    <select id="selectOrden">
-      <option value="desc">Mayor Total Primero</option>
-      <option value="asc">Menor Total Primero</option>
-    </select>
-  </div>
-
-  <label class="checkbox-container" title="Muestra solo palabras que aparecen en TODOS los libros">
-    <input type="checkbox" id="checkEstricto">
-    <span><strong>Filtro Estricto</strong> (Debe estar en los 4 grupos)</span>
-  </label>
   
-  <div id="info">Cargando...</div>
+  <div class="fila-controles">
+    <div class="control-group" style="flex-grow: 1;">
+      <label>Excluir palabras (Enter para agregar):</label>
+      <div style="display: flex; gap: 5px;">
+        <input type="text" id="inputExcluir" placeholder="Ej: amor, tierra..." style="flex-grow: 1;">
+        <button id="btnAgregar" class="btn-add">Excluir</button>
+      </div>
+    </div>
+    
+    <div id="contenedorTags" style="flex-grow: 2;">
+      <span class="sin-exclusiones">Sin exclusiones.</span>
+    </div>
+  </div>
+
+  <hr style="border: 0; border-top: 1px solid #eee; margin: 0; width: 100%;">
+
+  <div class="fila-controles">
+    
+    <div class="control-group">
+      <label>Buscar palabra:</label>
+      <input type="search" id="inputBusqueda" placeholder="Escribe para filtrar...">
+    </div>
+
+    <div class="control-group">
+      <label>Orden:</label>
+      <select id="selectOrden">
+        <option value="alpha">Alfabético (A-Z)</option>
+        <option value="asc">Menor Total Primero</option>
+        <option value="desc">Mayor Total Primero</option>
+      </select>
+    </div>
+
+    <label class="checkbox-container" style="align-self: flex-end; margin-bottom: 2px;">
+      <input type="checkbox" id="checkEstricto" checked>
+      <span><strong>Filtro Estricto</strong> (En los 4 grupos)</span>
+    </label>
+    
+    <div id="info" style="margin-left: auto; color: #7f8c8d; font-size: 0.85rem; align-self: center;">Cargando...</div>
+  </div>
 </div>
 
-<table id="tabla">
-  <thead>
-    <tr>
-      <th style="width: 25%">Palabra</th>
-      <th style="width: 10%">Total</th>
-      <th style="width: 16.25%">Históricos</th>
-      <th style="width: 16.25%">Proféticos</th>
-      <th style="width: 16.25%">N. Test.</th>
-      <th style="width: 16.25%">Evangelio</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+<div class="table-container">
+  <table id="tabla">
+    <thead>
+      <tr>
+        <th class="col-id">#</th> 
+        <th class="col-palabra">Palabra</th>
+        <th class="col-total">Total</th>
+        <th class="col-grupo">Hist.</th>
+        <th class="col-grupo">Prof.</th>
+        <th class="col-grupo">NT</th>
+        <th class="col-grupo">Ev.</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
 
 <div id="modalLectura" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
-    <h2 id="modalTitulo" style="margin: 0; color: #2c3e50;"></h2>
+    <h2 id="modalTitulo" style="margin: 0; color: #2c3e50; font-size: 1.4rem;"></h2>
     <div id="modalTextoCuerpo"></div>
   </div>
 </div>
