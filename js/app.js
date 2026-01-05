@@ -87,7 +87,7 @@ function filtrarRedundancias(citas) {
 }
 
 // --- FETCH ---
-fetch("zguerras_completo.json")
+fetch("palabras.json")
     .then(r => r.json())
     .then(data => {
         dbTextos = data.textos || {};
