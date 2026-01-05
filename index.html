@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Análisis Bíblico</title>
   <style>
     /* --- LAYOUT GLOBAL --- */
@@ -12,201 +13,187 @@
       display: flex; flex-direction: column;
     }
     
-    /* HEADER & BOTONES */
+    /* HEADER */
     .header-bar {
-      flex-shrink: 0; background: #fff; padding: 10px 20px;
+      flex-shrink: 0; background: #fff; padding: 10px 15px;
       display: flex; justify-content: space-between; align-items: center;
       border-bottom: 1px solid #ddd; z-index: 12;
     }
-    h1 { margin: 0; color: #2c3e50; font-size: 1.2rem; }
+    h1 { margin: 0; color: #2c3e50; font-size: 1.1rem; }
     
     .btn-toggle-panel {
       background: none; border: 1px solid #ccc; border-radius: 4px; 
-      cursor: pointer; font-size: 0.9rem; padding: 4px 10px; color: #555;
+      cursor: pointer; font-size: 0.85rem; padding: 4px 8px; color: #555;
     }
-    .btn-toggle-panel:hover { background: #eee; }
 
     /* --- CONTROLES --- */
     .controls {
       flex-shrink: 0; background: #fff; 
       border-bottom: 1px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      z-index: 10; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease;
-      padding: 15px 20px; max-height: 300px;
+      z-index: 10; overflow: hidden; transition: max-height 0.3s ease;
+      /* Ajuste padding para colapso suave */
+      padding: 10px 15px; max-height: 300px;
     }
-    .controls.collapsed { max-height: 0; padding: 0 20px; border-bottom: none; }
+    .controls.collapsed { max-height: 0; padding: 0 15px; border-bottom: none; }
 
-    .fila-controles { display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end; margin-bottom: 10px; }
-    .control-group { display: flex; flex-direction: column; gap: 4px; }
-    .control-group label { font-weight: 600; font-size: 0.8rem; color: #555; }
+    .fila-controles { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; margin-bottom: 10px; }
+    .control-group { display: flex; flex-direction: column; gap: 3px; flex-grow: 1; }
+    .control-group label { font-weight: 600; font-size: 0.75rem; color: #555; }
 
     input[type="text"], input[type="search"], select { 
-      padding: 6px 10px; border: 1px solid #ccd0d5; border-radius: 4px; font-size: 0.9rem;
+      padding: 6px; border: 1px solid #ccd0d5; border-radius: 4px; font-size: 0.9rem; width: 100%; box-sizing: border-box;
     }
-    #inputBusqueda { width: 200px; border-color: #3498db; }
-    
-    .btn-add {
-      padding: 6px 12px; background: #28a745; color: white; border: none;
-      border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.85rem;
-    }
+    .btn-add { padding: 6px 12px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
 
     /* TAGS */
-    #contenedorTags {
-      display: flex; flex-wrap: wrap; gap: 6px; padding: 5px; background: #fafafa; 
-      border: 1px dashed #ccc; border-radius: 4px; min-height: 30px; align-items: center;
-    }
-    .tag-excluido {
-      background: #e74c3c; color: white; padding: 2px 8px; border-radius: 12px; 
-      font-size: 0.75rem; display: flex; align-items: center; gap: 5px;
-    }
-    .tag-excluido span { cursor: pointer; font-weight: bold; width: 14px; height: 14px; 
-      background: rgba(0,0,0,0.2); border-radius: 50%; display: flex; 
-      justify-content: center; align-items: center; line-height: 1; }
+    #contenedorTags { display: flex; flex-wrap: wrap; gap: 5px; padding: 5px; background: #fafafa; border: 1px dashed #ccc; border-radius: 4px; min-height: 30px; align-items: center; }
+    .tag-excluido { background: #e74c3c; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; display: flex; align-items: center; gap: 5px; }
+    .tag-excluido span { cursor: pointer; font-weight: bold; }
 
-    /* --- SISTEMA DE ALINEACIÓN (GRID/TABLA UNIFICADO) --- */
-    /* Definimos anchos exactos que suman 100% */
-    .w-id      { width: 5%; }
-    .w-palabra { width: 25%; } /* Más ancho para los botones */
-    .w-total   { width: 10%; }
-    .w-cat     { width: 15%; } /* 4 columnas de 15% = 60% */
-    
-    /* --- TABLA PRINCIPAL --- */
-    .table-container {
-      flex-grow: 1; overflow-y: auto; position: relative;
-      background: #fff; padding: 0 20px 20px 20px;
-    }
+    /* --- TABLA & GRID SYSTEM --- */
+    .table-container { flex-grow: 1; overflow-y: auto; position: relative; background: #fff; padding: 0; }
     table { width: 100%; border-collapse: collapse; table-layout: fixed; }
     
     thead th { 
       position: sticky; top: 0; z-index: 5; background: #34495e; color: #ffffff !important; 
-      padding: 12px 5px; text-align: center; font-size: 0.85rem; box-shadow: 0 2px 2px rgba(0,0,0,0.1);
-      /* Centrado vertical y horizontal */
-      vertical-align: middle;
+      padding: 10px 5px; text-align: center; font-size: 0.8rem;
+    }
+    td { padding: 8px 5px; border-bottom: 1px solid #eee; text-align: center; overflow: hidden; text-overflow: ellipsis; vertical-align: middle; }
+    
+    /* === DEFINICIÓN DE ANCHOS DE COLUMNA === */
+    /* Modo Normal (4 Grupos) */
+    .w-id { width: 5%; }
+    .w-palabra { width: 25%; text-align: left; padding-left: 10px; font-weight: 600; color: #2c3e50; }
+    .w-total { width: 10%; font-weight: bold; }
+    .w-cat { width: 15%; } /* 15% * 4 = 60% */
+    
+    /* Por defecto, las columnas extras están ocultas */
+    .w-extra { display: none; } 
+
+    /* === MODO EXTRAS ACTIVADO (Clase .show-extras en body o container) === */
+    /* Recalculamos para 6 grupos */
+    .show-extras .w-cat, 
+    .show-extras .w-extra { 
+      width: 10%; /* 10% * 6 = 60% */
+      display: table-cell; 
     }
     
-    td { 
-      padding: 8px 5px; border-bottom: 1px solid #eee; 
-      overflow: hidden; text-overflow: ellipsis; vertical-align: middle;
+    /* Ajuste para el Grid CSS (Stats y Detalle) */
+    .grid-aligned {
+      display: grid;
+      /* Normal: 5 | 25 | 10 | 15 | 15 | 15 | 15 */
+      grid-template-columns: 5% 25% 10% 15% 15% 15% 15%;
+      align-items: start; justify-items: center;
+    }
+    
+    /* Grid cuando hay extras */
+    .show-extras .grid-aligned {
+      /* Extras: 5 | 25 | 10 | 10 | 10 | 10 | 10 | 10 | 10 */
+      grid-template-columns: 5% 25% 10% 10% 10% 10% 10% 10% 10%;
     }
 
-    /* Centrado de contenido en celdas normales */
-    .td-center { text-align: center; }
-    .td-left { text-align: left; padding-left: 10px; }
-    .td-number { font-weight: bold; color: #333; }
-
-    .fila-principal { cursor: pointer; transition: background 0.1s; border-left: 4px solid transparent;}
+    .fila-principal { cursor: pointer; transition: background 0.1s; }
     .fila-principal:hover { background-color: #f1f8ff; }
-    .fila-principal.activa { background-color: #e3f2fd; border-left-color: #2196f3; }
+    .fila-principal.activa { background-color: #e3f2fd; border-left: 4px solid #2196f3; }
 
-    /* --- DETALLES (ACORDEÓN) --- */
+    /* --- DETALLES --- */
     .fila-detalle { display: none; background-color: #fff; }
     .celda-detalle { padding: 0 !important; border-bottom: 2px solid #ddd; }
     
-    /* CLASE COMÚN PARA GRID ALINEADO CON TABLA */
-    .grid-aligned {
-      display: grid;
-      /* DEFINICIÓN EXACTA DE COLUMNAS IGUAL A LA TABLA */
-      grid-template-columns: 5% 25% 10% 15% 15% 15% 15%;
-      align-items: start; /* Alineación superior */
-    }
+    /* Vistas */
+    .desktop-detail-view { display: block; }
+    .mobile-detail-view { display: none; padding: 10px; background: #fdfdfd; border-bottom: 2px solid #ddd; }
 
-    /* --- FILA DE ESTADÍSTICAS --- */
-    .stats-row {
-      background-color: #fff9c4;
-      border-bottom: 1px solid #ffe0b2;
-      padding: 10px 0;
-      /* Centrado vertical de los items dentro del grid */
-      align-items: center; 
+    /* Fila Stats */
+    .stats-row-desktop {
+      background-color: #fff9c4; border-bottom: 1px solid #ffe0b2;
+      padding: 8px 0; align-items: center;
     }
+    .grid-detalle-desktop { padding: 10px 0; }
     
-    /* Columna 2: Contenedor de Botones */
-    .stats-controls {
-      grid-column: 2;
-      width: 100%; padding-left: 10px; /* Mismo padding que el texto de arriba */
-      display: flex; gap: 8px; flex-wrap: wrap;
-    }
-
-    /* Botones */
-    .btn-mini {
-      padding: 5px 10px; font-size: 0.75rem; border-radius: 4px; cursor: pointer; 
-      display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; 
-      border: 1px solid transparent; transition: all 0.2s; white-space: nowrap;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    }
+    /* Elementos */
+    .stats-controls-desktop { grid-column: 2; width: 100%; display: flex; gap: 5px; padding-left: 10px; justify-content: flex-start;}
     
+    .btn-mini { padding: 4px 8px; font-size: 0.75rem; border-radius: 4px; cursor: pointer; font-weight: 700; border: 1px solid transparent; white-space: nowrap; }
     .btn-ordenar { border-color: #90caf9; background: #fff; color: #1565c0; }
-    .btn-ordenar:hover { background: #e3f2fd; }
-    .btn-ordenar.active { background: #1565c0; color: white; border-color: #0d47a1; }
-    
+    .btn-ordenar.active { background: #1565c0; color: white; }
     .btn-limpiar { border-color: #ce93d8; background: #fff; color: #6a1b9a; }
-    .btn-limpiar:hover { background: #f3e5f5; }
-    .btn-limpiar.active { background: #7b1fa2; color: white; border-color: #4a148c; }
+    .btn-limpiar.active { background: #7b1fa2; color: white; }
 
-    /* Celdas de números (Contadores) */
-    .stat-cell { 
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      width: 100%; height: 100%;
-    }
-    .stat-val { font-weight: bold; font-size: 1.1rem; color: #333; line-height: 1; }
-    .stat-diff { font-size: 0.8rem; color: #d32f2f; font-weight: bold; margin-top: 3px; background: #ffcdd2; padding: 1px 4px; border-radius: 4px;}
+    .stat-cell { display: flex; flex-direction: column; align-items: center; width: 100%; }
+    .stat-val-main { font-weight: bold; font-size: 1rem; color: #333; line-height: 1; }
+    .stat-val-sec { font-size: 0.75rem; color: #888; margin-top: 2px; }
+    .stat-diff .stat-val-main { color: #d32f2f; }
+    .stat-diff .stat-val-sec { color: #d32f2f; font-weight: bold; opacity: 0.8; }
 
-    /* --- GRID DE CITAS --- */
-    .grid-citas-container {
-      padding: 15px 0;
-      /* align-items: start por defecto */
-    }
+    .grupo-citas { display: flex; flex-direction: column; gap: 3px; width: 100%; align-items: center; margin-top: 5px; }
+    .pos-sep { border-left: 1px dashed #eee; }
     
-    /* Columnas de botones */
-    .grupo-citas { 
-      display: flex; flex-direction: column; gap: 4px; 
-      width: 100%; 
-      align-items: center; /* CENTRADO PERFECTO EN LA COLUMNA */
-      padding: 0 5px;
-      box-sizing: border-box;
-    }
-    
-    /* Líneas divisorias tenues */
-    .border-left { border-left: 1px dashed #eee; height: 100%; }
+    /* Clases para ocultar/mostrar en grid de detalle las col extra */
+    .cell-extra { display: none; }
+    .show-extras .cell-extra { display: flex; } /* Flex para que funcione .stat-cell y .grupo-citas */
 
-    .btn-cita {
-      background: white; border: 1px solid #e0e0e0; padding: 4px 8px; 
-      border-radius: 12px; font-size: 0.75rem; cursor: pointer; text-align: center;
-      width: 90%; /* Ancho consistente */
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    .btn-cita { background: white; border: 1px solid #e0e0e0; padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; cursor: pointer; text-align: center; width: 90%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .btn-cita:hover { background: #2196f3; color: white; border-color: #1e88e5; }
+
+    /* --- MOBILE --- */
+    @media (max-width: 768px) {
+      /* En móvil ignoramos las columnas extras de la tabla principal, mostramos simplificado */
+      .w-cat, .w-extra { display: none !important; } 
+      .w-id { width: 12%; }
+      .w-palabra { width: 63%; }
+      .w-total { width: 25%; }
+
+      .desktop-detail-view { display: none; }
+      .mobile-detail-view { display: block; }
+
+      .mob-controls-row { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px dashed #ccc; }
+      .mob-total-display { text-align: right; font-size: 0.9rem; color: #444; }
+      .mob-total-big { font-weight: bold; font-size: 1.1rem; color: #000; }
+      .mob-diff-tag { color: #d32f2f; background: #ffcdd2; padding: 2px 6px; border-radius: 10px; font-size: 0.8rem; margin-left: 5px; font-weight: bold; }
+      
+      .mob-cards-container { display: flex; flex-direction: column; gap: 10px; }
+      .mob-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden; }
+      .mob-card-header { background: #f1f8e9; padding: 6px 10px; font-size: 0.85rem; font-weight: bold; color: #33691e; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #dcedc8; }
+      .mob-counters { font-size: 0.8rem; color: #555; }
+      .mob-num-orig { font-weight: bold; color: #333; }
+      
+      .mob-card-body { padding: 8px; display: flex; flex-wrap: wrap; gap: 5px; }
+      .btn-cita-mob { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 6px 10px; font-size: 0.85rem; flex-grow: 1; text-align: center; max-width: 100%; }
     }
-    .btn-cita:hover { background: #2196f3; color: white; border-color: #1e88e5; transform: scale(1.02); }
-    
+
     /* MODAL */
     .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(2px); }
-    .modal-content { background-color: #fefefe; margin: 5vh auto; padding: 25px; border: 1px solid #888; width: 90%; max-width: 800px; border-radius: 8px; max-height: 85vh; display: flex; flex-direction: column; }
-    .close { position: absolute; right: 15px; top: 10px; color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; }
-    #modalTextoCuerpo { margin-top: 15px; line-height: 1.6; font-size: 1.05rem; color: #444; overflow-y: auto; flex-grow: 1;}
+    .modal-content { background-color: #fefefe; margin: 5vh auto; padding: 20px; border: 1px solid #888; width: 90%; border-radius: 8px; max-height: 80vh; display: flex; flex-direction: column; }
+    .close { align-self: flex-end; font-size: 24px; font-weight: bold; cursor: pointer; color: #aaa; margin-bottom: 10px;}
+    #modalTextoCuerpo { line-height: 1.6; font-size: 1rem; color: #444; overflow-y: auto; flex-grow: 1;}
   </style>
 </head>
 <body>
 
 <div class="header-bar">
-  <h1>Análisis de Concordancias</h1>
-  <button id="btnTogglePanel" class="btn-toggle-panel">🔼 Ocultar Filtros</button>
+  <h1>Análisis Bíblico</h1>
+  <button id="btnTogglePanel" class="btn-toggle-panel">🔽 Mostrar Filtros</button>
 </div>
 
-<div id="panelControles" class="controls">
+<div id="panelControles" class="controls collapsed">
   <div class="fila-controles">
     <div class="control-group" style="flex-grow: 1;">
       <label>Excluir palabras:</label>
-      <div style="display: flex; gap: 5px;">
-        <input type="text" id="inputExcluir" placeholder="Ej: amor..." style="flex-grow: 1;">
-        <button id="btnAgregar" class="btn-add">Excluir</button>
+      <div style="display:flex; gap:5px;">
+        <input type="text" id="inputExcluir" placeholder="Ej: amor...">
+        <button id="btnAgregar" class="btn-add">Ok</button>
       </div>
     </div>
     <div id="contenedorTags" style="flex-grow: 2;"></div>
   </div>
 
-  <hr style="border: 0; border-top: 1px solid #eee; margin: 10px 0;">
+  <hr style="border:0; border-top:1px solid #eee; margin:10px 0;">
 
-  <div class="fila-controles" style="align-items: center;">
+  <div class="fila-controles">
     <div class="control-group">
       <label>Buscar:</label>
-      <input type="search" id="inputBusqueda" placeholder="Filtrar tabla...">
+      <input type="search" id="inputBusqueda" placeholder="Filtrar...">
     </div>
     <div class="control-group">
       <label>Orden:</label>
@@ -218,16 +205,20 @@
     </div>
   </div>
   
-  <div style="display: flex; justify-content: space-between; align-items: flex-end;">
-      <label style="font-size: 0.8rem; display: flex; align-items: center; gap: 5px; cursor: pointer;">
-        <input type="checkbox" id="checkEstricto" checked> 
-        Filtro Estricto (4 grupos)
-      </label>
+  <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top:5px; flex-wrap: wrap; gap:10px;">
+      <div style="display: flex; gap: 15px;">
+        <label style="font-size: 0.8rem; display: flex; align-items: center; gap: 5px; cursor: pointer;">
+            <input type="checkbox" id="checkEstricto" checked> Filtro 4 grupos
+        </label>
+        <label style="font-size: 0.8rem; display: flex; align-items: center; gap: 5px; cursor: pointer; color: #2c3e50;">
+            <input type="checkbox" id="checkExtras"> Incluir Salmos/Sap
+        </label>
+      </div>
       <div id="info" style="color: #999; font-size: 0.8rem;">Cargando...</div>
   </div>
 </div>
 
-<div class="table-container">
+<div id="tableContainer" class="table-container">
   <table id="tabla">
     <thead>
       <tr>
@@ -238,6 +229,8 @@
         <th class="w-cat">Prof.</th>
         <th class="w-cat">NT</th>
         <th class="w-cat">Ev.</th>
+        <th class="w-extra">Sal.</th>
+        <th class="w-extra">Sap.</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -247,7 +240,7 @@
 <div id="modalLectura" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
-    <h2 id="modalTitulo" style="margin: 0; color: #2c3e50; font-size: 1.4rem;"></h2>
+    <h2 id="modalTitulo" style="margin: 0; color: #2c3e50; font-size: 1.2rem;"></h2>
     <div id="modalTextoCuerpo"></div>
   </div>
 </div>

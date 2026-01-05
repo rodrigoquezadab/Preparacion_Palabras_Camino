@@ -22,9 +22,11 @@ const btnAgregar = document.getElementById("btnAgregar");
 const contenedorTags = document.getElementById("contenedorTags");
 const selectOrden = document.getElementById("selectOrden");
 const checkEstricto = document.getElementById("checkEstricto");
+const checkExtras = document.getElementById("checkExtras"); // NUEVO
 const inputBusqueda = document.getElementById("inputBusqueda");
 const panelControles = document.getElementById("panelControles");
 const btnTogglePanel = document.getElementById("btnTogglePanel");
+const tableContainer = document.getElementById("tableContainer"); // Para clase CSS dinámica
 
 const modal = document.getElementById("modalLectura");
 const modalTitulo = document.getElementById("modalTitulo");
@@ -87,7 +89,7 @@ function filtrarRedundancias(citas) {
 }
 
 // --- FETCH ---
-fetch("palabras.json")
+fetch("palabras.json") 
     .then(r => r.json())
     .then(data => {
         dbTextos = data.textos || {};
@@ -105,11 +107,15 @@ fetch("palabras.json")
                 lecturas: l, 
                 estaOrdenado: false, 
                 estaLimpio: false,
+                // Totales
                 total: (l.Historicos?.length||0) + (l.Profeticos?.length||0) + (l["Nuevo Testamento"]?.length||0) + (l.Evangelio?.length||0),
                 hist: l.Historicos?.length||0, 
                 prof: l.Profeticos?.length||0, 
                 nt: l["Nuevo Testamento"]?.length||0, 
-                ev: l.Evangelio?.length||0
+                ev: l.Evangelio?.length||0,
+                // Extras
+                sal: l.Salmos?.length||0,
+                sap: l.Sapienciales?.length||0
             };
         });
         setExcluidos.forEach(excl => { if (!setPalabrasExistentes.has(excl)) setExcluidos.delete(excl); });
@@ -118,10 +124,9 @@ fetch("palabras.json")
         actualizarTabla(); 
     }).catch(err => console.error(err));
 
-// --- RENDERIZADO GRID ---
-function renderizarGridDetalle(item, divGrid, statsRow) {
-    divGrid.innerHTML = "";
-    statsRow.innerHTML = ""; 
+// --- RENDERIZADO GRID DETALLE ---
+function renderizarGridDetalle(item, containerCell) {
+    containerCell.innerHTML = ""; 
 
     const procesar = (lista) => {
         let res = lista ? [...lista] : [];
@@ -134,74 +139,211 @@ function renderizarGridDetalle(item, divGrid, statsRow) {
         Hist: procesar(item.lecturas.Historicos),
         Prof: procesar(item.lecturas.Profeticos),
         NT: procesar(item.lecturas["Nuevo Testamento"]),
-        Ev: procesar(item.lecturas.Evangelio)
+        Ev: procesar(item.lecturas.Evangelio),
+        // Extras
+        Sal: procesar(item.lecturas.Salmos),
+        Sap: procesar(item.lecturas.Sapienciales)
     };
 
-    // --- 1. FILA DE ESTADÍSTICAS Y BOTONES ---
+    // Calculamos totales actuales para estadísticas
+    const tAct = datos.Hist.length + datos.Prof.length + datos.NT.length + datos.Ev.length; 
+    // Nota: El total 'item.total' es solo de los 4 grupos base, mantenemos consistencia en comparación
     
-    // Columna 1 (ID): vacía
-    statsRow.appendChild(document.createElement("div"));
+    const diff = tAct - item.total;
 
-    // Columna 2 (Palabra): BOTONES DE CONTROL
-    const divControles = document.createElement("div");
-    divControles.className = "stats-controls";
+    // --- A. VISTA ESCRITORIO ---
+    const divDesktop = document.createElement("div");
+    divDesktop.className = "desktop-detail-view";
+
+    // 1. Stats Row
+    const statsRow = document.createElement("div");
+    statsRow.className = "stats-row-desktop grid-aligned"; // Aplicamos grid
     
-    const btnOrd = document.createElement("button");
-    btnOrd.className = item.estaOrdenado ? "btn-mini btn-ordenar active" : "btn-mini btn-ordenar";
-    btnOrd.textContent = item.estaOrdenado ? "Original" : "Ordenar";
-    btnOrd.onclick = (e) => { e.stopPropagation(); toggleOrden(item, divGrid, statsRow); };
-
-    const btnLim = document.createElement("button");
-    btnLim.className = item.estaLimpio ? "btn-mini btn-limpiar active" : "btn-mini btn-limpiar";
-    btnLim.textContent = item.estaLimpio ? "Ver Todo" : "Limpiar";
-    btnLim.onclick = (e) => { e.stopPropagation(); toggleLimpieza(item, divGrid, statsRow); };
+    statsRow.appendChild(document.createElement("div")); // Col 1
     
-    divControles.appendChild(btnOrd);
-    divControles.appendChild(btnLim);
-    statsRow.appendChild(divControles);
+    // Controles
+    const ctrlDesktop = document.createElement("div");
+    ctrlDesktop.className = "stats-controls-desktop";
+    ctrlDesktop.appendChild(crearBtnAccion("Ordenar", item.estaOrdenado, "btn-ordenar", () => {
+        item.estaOrdenado = !item.estaOrdenado; renderizarGridDetalle(item, containerCell);
+    }));
+    ctrlDesktop.appendChild(crearBtnAccion("Limpiar", item.estaLimpio, "btn-limpiar", () => {
+        item.estaLimpio = !item.estaLimpio; renderizarGridDetalle(item, containerCell);
+    }));
+    statsRow.appendChild(ctrlDesktop); // Col 2
 
-    // Columnas 3-7: Contadores Centrados
-    const crearStat = (actual, original, col) => {
-        const div = document.createElement("div");
-        div.className = "stat-cell";
-        div.style.gridColumn = col;
+    // Stats Base
+    statsRow.appendChild(createStatCell(tAct, item.total));
+    statsRow.appendChild(createStatCell(datos.Hist.length, item.hist));
+    statsRow.appendChild(createStatCell(datos.Prof.length, item.prof));
+    statsRow.appendChild(createStatCell(datos.NT.length, item.nt));
+    statsRow.appendChild(createStatCell(datos.Ev.length, item.ev));
+    
+    // Stats Extras (Solo visibles si .show-extras está activo en CSS)
+    const statSal = createStatCell(datos.Sal.length, item.sal);
+    statSal.className += " cell-extra"; // Clase para togglear
+    statsRow.appendChild(statSal);
+
+    const statSap = createStatCell(datos.Sap.length, item.sap);
+    statSap.className += " cell-extra";
+    statsRow.appendChild(statSap);
+
+
+    // 2. Grid Citas
+    const gridCitas = document.createElement("div");
+    gridCitas.className = "grid-detalle-desktop grid-aligned";
+    
+    // Espaciadores Col 1,2,3
+    gridCitas.appendChild(document.createElement("div")); 
+    gridCitas.appendChild(document.createElement("div")); 
+    gridCitas.appendChild(document.createElement("div")); 
+    
+    // Columnas Base
+    gridCitas.appendChild(crearColumnaCitas(datos.Hist, "pos-sep"));
+    gridCitas.appendChild(crearColumnaCitas(datos.Prof, "pos-sep"));
+    gridCitas.appendChild(crearColumnaCitas(datos.NT, "pos-sep"));
+    gridCitas.appendChild(crearColumnaCitas(datos.Ev, "pos-sep"));
+    
+    // Columnas Extras
+    const colSal = crearColumnaCitas(datos.Sal, "pos-sep cell-extra");
+    gridCitas.appendChild(colSal);
+    const colSap = crearColumnaCitas(datos.Sap, "pos-sep cell-extra");
+    gridCitas.appendChild(colSap);
+
+    divDesktop.appendChild(statsRow);
+    divDesktop.appendChild(gridCitas);
+
+
+    // --- B. VISTA MÓVIL ---
+    const divMobile = document.createElement("div");
+    divMobile.className = "mobile-detail-view";
+
+    // 1. Controles
+    const mobControls = document.createElement("div");
+    mobControls.className = "mob-controls-row";
+    
+    const divMobBtns = document.createElement("div");
+    divMobBtns.style.display = "flex"; divMobBtns.style.gap = "10px";
+    divMobBtns.appendChild(crearBtnAccion("Ordenar", item.estaOrdenado, "btn-ordenar", () => {
+        item.estaOrdenado = !item.estaOrdenado; renderizarGridDetalle(item, containerCell);
+    }));
+    divMobBtns.appendChild(crearBtnAccion("Limpiar", item.estaLimpio, "btn-limpiar", () => {
+        item.estaLimpio = !item.estaLimpio; renderizarGridDetalle(item, containerCell);
+    }));
+
+    // Contador Móvil
+    const mobTotalDiv = document.createElement("div");
+    mobTotalDiv.className = "mob-total-display";
+    let txtDiff = diff !== 0 ? ` <span class="mob-diff-tag">${diff}</span>` : "";
+    // Nota: Aquí se muestra el total de los 4 grupos base para mantener consistencia con la fila principal
+    mobTotalDiv.innerHTML = `Total Var: <span class="mob-total-big">${tAct}</span>${txtDiff}`;
+
+    mobControls.appendChild(divMobBtns);
+    mobControls.appendChild(mobTotalDiv);
+    divMobile.appendChild(mobControls);
+
+    // 2. Tarjetas
+    const mobCards = document.createElement("div");
+    mobCards.className = "mob-cards-container";
+
+    const addMobCard = (titulo, original, lista) => {
+        const card = document.createElement("div");
+        card.className = "mob-card";
+        const header = document.createElement("div");
+        header.className = "mob-card-header";
         
-        const diff = actual - original;
-        let html = `<span class="stat-val">${actual}</span>`;
-        if (diff !== 0) {
-            html += `<span class="stat-diff">${diff}</span>`; // Muestra diferencia en rojo
+        const spanTitle = document.createElement("span");
+        spanTitle.textContent = titulo;
+        
+        // Formato: Orig [Diff]
+        const diffLocal = lista.length - original;
+        let diffLocalHtml = diffLocal !== 0 ? ` <span class="mob-diff-tag">${diffLocal}</span>` : "";
+        
+        const spanCounts = document.createElement("span");
+        spanCounts.className = "mob-counters";
+        spanCounts.innerHTML = `Total: <span class="mob-num-orig">${original}</span>${diffLocalHtml}`;
+        
+        header.appendChild(spanTitle);
+        header.appendChild(spanCounts);
+        
+        const body = document.createElement("div");
+        body.className = "mob-card-body";
+        
+        if (lista.length > 0) {
+            lista.forEach(c => {
+                const b = document.createElement("button");
+                b.className = "btn-cita-mob";
+                b.textContent = c.citaOriginal || `${c.libro} ${c.capitulo},${c.versiculoInicio}`;
+                b.onclick = (e) => { e.stopPropagation(); abrirModal(c); };
+                body.appendChild(b);
+            });
+        } else {
+            body.innerHTML = "<small style='color:#999; padding:5px;'>-</small>";
         }
-        div.innerHTML = html;
-        statsRow.appendChild(div);
+        card.appendChild(header);
+        card.appendChild(body);
+        mobCards.appendChild(card);
     };
 
-    const tAct = datos.Hist.length + datos.Prof.length + datos.NT.length + datos.Ev.length;
-    crearStat(tAct, item.total, 3);
-    crearStat(datos.Hist.length, item.hist, 4);
-    crearStat(datos.Prof.length, item.prof, 5);
-    crearStat(datos.NT.length, item.nt, 6);
-    crearStat(datos.Ev.length, item.ev, 7);
+    addMobCard("Históricos", item.hist, datos.Hist);
+    addMobCard("Proféticos", item.prof, datos.Prof);
+    addMobCard("Nuevo Testamento", item.nt, datos.NT);
+    addMobCard("Evangelio", item.ev, datos.Ev);
+    
+    // Agregar tarjetas extras solo si están activadas globalmente (o siempre, según preferencia)
+    // El usuario pidió "incluir un check... que permita mostrar".
+    // Lo lógico es mostrar las tarjetas si el check está activo.
+    if (checkExtras.checked) {
+        addMobCard("Salmos", item.sal, datos.Sal);
+        addMobCard("Sapienciales", item.sap, datos.Sap);
+    }
 
-    // --- 2. GRID DE CITAS ---
-    // Columna 1-3 vacías en el grid de citas
-    divGrid.appendChild(document.createElement("div")); // Col 1
-    divGrid.appendChild(document.createElement("div")); // Col 2
-    divGrid.appendChild(document.createElement("div")); // Col 3
+    divMobile.appendChild(mobCards);
 
-    divGrid.appendChild(crearColumnaCitas(datos.Hist, "pos-hist"));
-    divGrid.appendChild(crearColumnaCitas(datos.Prof, "pos-prof"));
-    divGrid.appendChild(crearColumnaCitas(datos.NT, "pos-nt"));
-    divGrid.appendChild(crearColumnaCitas(datos.Ev, "pos-ev"));
+    containerCell.appendChild(divDesktop);
+    containerCell.appendChild(divMobile);
 }
 
-function toggleOrden(item, divGrid, statsRow) {
-    item.estaOrdenado = !item.estaOrdenado;
-    renderizarGridDetalle(item, divGrid, statsRow);
+// Helpers
+function crearBtnAccion(texto, activo, claseBase, onClick) {
+    const btn = document.createElement("button");
+    btn.className = `btn-mini ${claseBase} ${activo ? "active" : ""}`;
+    let label = texto;
+    if (activo) {
+        if(texto === "Ordenar") label = "Original";
+        if(texto === "Limpiar") label = "Ver Todo";
+    }
+    btn.textContent = label;
+    btn.onclick = (e) => { e.stopPropagation(); onClick(); };
+    return btn;
 }
 
-function toggleLimpieza(item, divGrid, statsRow) {
-    item.estaLimpio = !item.estaLimpio;
-    renderizarGridDetalle(item, divGrid, statsRow);
+function createStatCell(val, original) {
+    const div = document.createElement("div");
+    div.className = "stat-cell";
+    const diff = val - original;
+    if (diff !== 0) div.classList.add("stat-diff");
+    div.innerHTML = `
+        <span class="stat-val-main">${val}</span>
+        <span class="stat-val-sec">/ ${original}</span>
+    `;
+    return div;
+}
+
+function crearColumnaCitas(arrayCitas, claseExtra) {
+    const divCol = document.createElement("div");
+    divCol.className = `grupo-citas ${claseExtra}`;
+    if (arrayCitas && arrayCitas.length > 0) {
+        arrayCitas.forEach(cita => {
+            const btn = document.createElement("button");
+            btn.className = "btn-cita";
+            btn.textContent = cita.citaOriginal || `${cita.libro} ${cita.capitulo},${cita.versiculoInicio}`;
+            btn.title = btn.textContent;
+            btn.onclick = (e) => { e.stopPropagation(); abrirModal(cita); };
+            divCol.appendChild(btn);
+        });
+    }
+    return divCol;
 }
 
 // --- COLLAPSE ---
@@ -211,7 +353,7 @@ btnTogglePanel.onclick = () => {
     btnTogglePanel.textContent = cerrado ? "🔽 Mostrar Filtros" : "🔼 Ocultar Filtros";
 };
 
-// --- RESTO IGUAL ---
+// --- EXCLUSIONES ---
 function agregarExclusiones() {
     const texto = inputExcluir.value;
     if (!texto) return;
@@ -226,7 +368,12 @@ function agregarExclusiones() {
     inputExcluir.value = "";
     if (cambios) guardarYActualizar();
 }
-function eliminarExclusion(p) { setExcluidos.delete(p); guardarYActualizar(); }
+function eliminarExclusion(p) { 
+    if(confirm(`¿Quitar exclusión de "${p}"?`)) {
+        setExcluidos.delete(p); 
+        guardarYActualizar(); 
+    }
+}
 function guardarLocalStorage() { localStorage.setItem('palabrasExcluidas', JSON.stringify([...setExcluidos])); }
 function guardarYActualizar() { guardarLocalStorage(); renderizarTags(); actualizarTabla(); }
 function renderizarTags() {
@@ -245,11 +392,20 @@ inputExcluir.addEventListener("keydown", (e) => { if (e.key === "Enter") agregar
 
 function actualizarTabla() {
     const modoEstricto = checkEstricto.checked;
+    const mostrarExtras = checkExtras.checked; // Leemos estado
     const orden = selectOrden.value;
     const textoBusqueda = normalizar(inputBusqueda.value);
 
+    // Activamos/Desactivamos clase CSS global para columnas
+    if (mostrarExtras) {
+        tableContainer.classList.add("show-extras");
+    } else {
+        tableContainer.classList.remove("show-extras");
+    }
+
     let lista = listaGlobal.filter(item => {
         if (setExcluidos.has(item.palabraNorm)) return false;
+        // Filtro estricto: Se mantiene en los 4 grupos principales
         if (modoEstricto && (item.hist === 0 || item.prof === 0 || item.nt === 0 || item.ev === 0)) return false; 
         if (textoBusqueda.length > 0 && !item.palabraNorm.includes(textoBusqueda)) return false;
         return true;
@@ -272,58 +428,43 @@ function dibujarTabla(lista) {
         const trMain = document.createElement("tr");
         trMain.className = "fila-principal";
         trMain.innerHTML = `
-            <td class="td-center w-id">${item.idOriginal}</td>
-            <td class="td-left w-palabra">${item.palabra} <small style="color:#aaa">▼</small></td>
-            <td class="td-center w-total td-number">${item.total}</td>
-            <td class="td-center w-cat">${item.hist || '<span style="color:#ddd">-</span>'}</td>
-            <td class="td-center w-cat">${item.prof || '<span style="color:#ddd">-</span>'}</td>
-            <td class="td-center w-cat">${item.nt || '<span style="color:#ddd">-</span>'}</td>
-            <td class="td-center w-cat">${item.ev || '<span style="color:#ddd">-</span>'}</td>
+            <td class="w-id td-center">${item.idOriginal}</td>
+            <td class="w-palabra td-left">${item.palabra} <small style="color:#aaa">▼</small></td>
+            <td class="w-total td-center td-number">${item.total}</td>
+            <td class="w-cat td-center">${item.hist || '<span style="color:#ddd">-</span>'}</td>
+            <td class="w-cat td-center">${item.prof || '<span style="color:#ddd">-</span>'}</td>
+            <td class="w-cat td-center">${item.nt || '<span style="color:#ddd">-</span>'}</td>
+            <td class="w-cat td-center">${item.ev || '<span style="color:#ddd">-</span>'}</td>
+            <td class="w-extra td-center">${item.sal || '<span style="color:#ddd">-</span>'}</td>
+            <td class="w-extra td-center">${item.sap || '<span style="color:#ddd">-</span>'}</td>
         `;
 
         const trDetail = document.createElement("tr");
         trDetail.className = "fila-detalle";
+        trDetail.style.display = "none";
+        
         const tdDetail = document.createElement("td");
-        tdDetail.colSpan = 7; 
+        tdDetail.colSpan = 9; // Aumentamos colspan para cubrir extras
         tdDetail.className = "celda-detalle";
 
-        const statsRow = document.createElement("div");
-        statsRow.className = "stats-row grid-aligned"; // Aplicamos grid alineado
+        renderizarGridDetalle(item, tdDetail);
 
-        const divGrid = document.createElement("div");
-        divGrid.className = "grid-citas-container grid-aligned"; // Aplicamos grid alineado
-        
-        renderizarGridDetalle(item, divGrid, statsRow);
-
-        tdDetail.appendChild(statsRow);
-        tdDetail.appendChild(divGrid);
         trDetail.appendChild(tdDetail);
         
         trMain.addEventListener("click", () => {
             const abierto = trDetail.style.display === "table-row";
-            if (abierto) { trDetail.style.display = "none"; trMain.classList.remove("activa"); }
-            else { trDetail.style.display = "table-row"; trMain.classList.add("activa"); }
+            if (abierto) { 
+                trDetail.style.display = "none"; 
+                trMain.classList.remove("activa"); 
+            } else { 
+                trDetail.style.display = "table-row"; 
+                trMain.classList.add("activa"); 
+            }
         });
 
         tbody.appendChild(trMain);
         tbody.appendChild(trDetail);
     });
-}
-
-function crearColumnaCitas(arrayCitas, clasePosicion) {
-    const divCol = document.createElement("div");
-    divCol.className = `grupo-citas ${clasePosicion}`; // border-left incluído aquí
-    if (arrayCitas && arrayCitas.length > 0) {
-        arrayCitas.forEach(cita => {
-            const btn = document.createElement("button");
-            btn.className = "btn-cita";
-            btn.textContent = cita.citaOriginal || `${cita.libro} ${cita.capitulo},${cita.versiculoInicio}`;
-            btn.title = btn.textContent;
-            btn.onclick = (e) => { e.stopPropagation(); abrirModal(cita); };
-            divCol.appendChild(btn);
-        });
-    }
-    return divCol;
 }
 
 function abrirModal(citaObj) {
@@ -338,4 +479,5 @@ window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; }
 
 selectOrden.addEventListener("change", actualizarTabla);
 checkEstricto.addEventListener("change", actualizarTabla);
+checkExtras.addEventListener("change", actualizarTabla); // Listener para extras
 inputBusqueda.addEventListener("input", actualizarTabla);
