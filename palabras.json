@@ -163,12 +163,12 @@
           {
             "citaOriginal": "Gen 22,12.16",
             "categoria": "Historicos",
-            "textoRef": null
+            "textoRef": "GEN-22"
           },
           {
             "citaOriginal": "Gen 22,8.13ss",
             "categoria": "Historicos",
-            "textoRef": null
+            "textoRef": "GEN-22"
           },
           {
             "citaOriginal": "Gen 22,12",
@@ -301,7 +301,7 @@
             "textoRef": "GEN-28"
           },
           {
-            "citaOriginal": "Gen 48,1ss",
+            "citaOriginal": "Gen 48,15s",
             "categoria": "Historicos",
             "libro": "GEN",
             "capitulo": 48,
@@ -311,7 +311,7 @@
             "textoRef": "GEN-48"
           },
           {
-            "citaOriginal": "Gen 50.24",
+            "citaOriginal": "Gen 50,24",
             "categoria": "Historicos",
             "textoRef": null
           },
@@ -3412,7 +3412,7 @@
             "textoRef": "SAL-32"
           },
           {
-            "citaOriginal": "Sal 29.10",
+            "citaOriginal": "Sal 29,10",
             "categoria": "Salmos",
             "textoRef": null
           },
@@ -5054,7 +5054,7 @@
             "textoRef": "SAL-145"
           },
           {
-            "citaOriginal": "Sal 30.5",
+            "citaOriginal": "Sal 30,5",
             "categoria": "Salmos",
             "textoRef": null
           },
@@ -5129,12 +5129,12 @@
             "textoRef": "SAL-105"
           },
           {
-            "citaOriginal": "Sal 145,6.",
+            "citaOriginal": "Sal 145,6",
             "categoria": "Salmos",
             "textoRef": null
           },
           {
-            "citaOriginal": "Sal 22,23.26",
+            "citaOriginal": "Sal 22,23-26",
             "categoria": "Salmos",
             "textoRef": null
           },
@@ -35543,7 +35543,7 @@
           {
             "citaOriginal": "Gen 3,7.10.16-19",
             "categoria": "Historicos",
-            "textoRef": null
+            "textoRef": "GEN-3"
           },
           {
             "citaOriginal": "Gen 22,8-14",
