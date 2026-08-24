@@ -43,8 +43,12 @@ Una celebración típica de la Liturgia de la Palabra en el Camino Neocatecumena
 - **Salmos:** Libro de los Salmos (usados para el canto/salmo responsorial entre lecturas).
 - **Sapienciales:** Job, Proverbios, Eclesiastés (Qohélet), Cantar de los Cantares, Sabiduría, Eclesiástico (Sirácida).
 
-### Criterio de "Palabra Completa / Preparable"
-Para que una palabra pueda servir eficazmente para una preparación litúrgica completa, debe poseer **al menos 1 cita en cada una de las 4 partes fundamentales** (Históricos, Proféticos, Cartas/NT y Evangelio). La aplicación ofrece un filtro estricto que resalta y filtra aquellas palabras que cumplen este criterio indispensable.
+### Criterio de "Palabra de Precatecumenado / Completa"
+Para que una palabra pueda servir eficazmente para una preparación litúrgica completa en la fase de **Precatecumenado**, debe poseer **al menos 1 cita en cada una de las 4 partes fundamentales** (Históricos, Proféticos, Cartas/NT y Evangelio). 
+
+La aplicación cuenta con un **selector de modo destacado en la barra de filtros**:
+1. **`🌱 Precatecumenado (4 Partes)` (Activado por defecto):** Muestra exclusivamente las 259 palabras que cuentan con lecturas completas en las 4 partes requeridas para preparar la liturgia de la comunidad.
+2. **`📚 Todas las Palabras`:** Permite explorar la totalidad de los 289 términos del *Vocabulario de Xavier Léon-Dufour*, indicando con una etiqueta `⚠️ Falta: ...` las partes ausentes en aquellas palabras que no son aptas para una celebración de 4 lecturas.
 
 ---
 

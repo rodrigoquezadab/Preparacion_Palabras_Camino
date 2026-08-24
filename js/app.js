@@ -47,16 +47,16 @@ let setExcluidos = new Set(JSON.parse(localStorage.getItem('palabrasExcluidas'))
 let setPalabrasExistentes = new Set();
 let palabraAbiertaId = null;
 
-// Estado de la Calculadora de Participantes
-let palabraCalculadoraActual = null;
-let numParticipantesActual = 4;
+// Filtro de Modo (Precatecumenado vs Vocabulario Completo)
+let modoFiltro = "precat"; // "precat" (por defecto) o "todas"
 
 // --- ELEMENTOS DEL DOM ---
 const contenedorLista = document.getElementById("contenedorPalabras");
 const infoStats = document.getElementById("infoStats");
 const inputBusqueda = document.getElementById("inputBusqueda");
 const selectOrden = document.getElementById("selectOrden");
-const checkEstricto = document.getElementById("checkEstricto");
+const btnModoPrecat = document.getElementById("btnModoPrecat");
+const btnModoTodas = document.getElementById("btnModoTodas");
 const checkExtras = document.getElementById("checkExtras");
 const inputExcluir = document.getElementById("inputExcluir");
 const btnAgregarExclusion = document.getElementById("btnAgregarExclusion");
@@ -288,14 +288,14 @@ fetch("palabras.json")
 // --- RENDERIZADO DE LA INTERFAZ (MOBILE FIRST & RESPONSIVE) ---
 
 function actualizarVista() {
-    const modoEstricto = checkEstricto.checked;
     const mostrarExtras = checkExtras.checked;
     const orden = selectOrden.value;
     const busqueda = normalizar(inputBusqueda.value);
 
     let lista = listaGlobal.filter(item => {
         if (setExcluidos.has(item.palabraNorm)) return false;
-        if (modoEstricto && !item.cumple4Partes) return false;
+        // Filtro de Modo Precatecumenado (activo por defecto)
+        if (modoFiltro === "precat" && !item.cumple4Partes) return false;
         if (busqueda.length > 0 && !item.palabraNorm.includes(busqueda)) return false;
         return true;
     });
@@ -311,8 +311,12 @@ function actualizarVista() {
         return 0;
     });
 
-    const aptasCount = listaGlobal.filter(i => i.cumple4Partes && !setExcluidos.has(i.palabraNorm)).length;
-    infoStats.innerHTML = `Mostrando <strong>${lista.length}</strong> de ${listaGlobal.length} palabras <span class="badge-apta-count" title="Palabras que cumplen el criterio litúrgico de las 4 partes">(${aptasCount} aptas para liturgia)</span>`;
+    const totalAptas = listaGlobal.filter(i => i.cumple4Partes && !setExcluidos.has(i.palabraNorm)).length;
+    if (modoFiltro === "precat") {
+        infoStats.innerHTML = `🌱 <strong>Precatecumenado:</strong> Viendo <strong>${lista.length}</strong> palabras válidas (con 4 partes) de ${listaGlobal.length} del vocabulario`;
+    } else {
+        infoStats.innerHTML = `📚 <strong>Vocabulario Completo:</strong> Viendo <strong>${lista.length}</strong> palabras de ${listaGlobal.length} <span class="badge-apta-count" title="Palabras válidas para Precatecumenado (${totalAptas})">(${totalAptas} válidas Precatecumenado)</span>`;
+    }
 
     dibujarLista(lista, mostrarExtras);
 }
@@ -373,9 +377,9 @@ function dibujarLista(lista, mostrarExtras) {
 
         const badgeCriterio = document.createElement("div");
         if (item.cumple4Partes) {
-            badgeCriterio.className = "badge-criterio badge-apta";
-            badgeCriterio.setAttribute("title", "Apta para Preparación Litúrgica: Posee citas en Históricos, Proféticos, Cartas/NT y Evangelios.");
-            badgeCriterio.innerHTML = `✨ Apta 4 Partes`;
+            badgeCriterio.className = "badge-criterio badge-precat";
+            badgeCriterio.setAttribute("title", "Palabra de Precatecumenado: Apta para preparación litúrgica completa (posee citas en Históricos, Proféticos, Cartas/NT y Evangelios).");
+            badgeCriterio.innerHTML = `🌱 Precatecumenado`;
         } else {
             const faltantes = [];
             if (item.hist === 0) faltantes.push("Hist");
@@ -383,7 +387,7 @@ function dibujarLista(lista, mostrarExtras) {
             if (item.nt === 0) faltantes.push("NT");
             if (item.ev === 0) faltantes.push("Ev");
             badgeCriterio.className = "badge-criterio badge-incompleta";
-            badgeCriterio.setAttribute("title", `Incompleta para 4 partes. Faltan: ${faltantes.join(", ")}`);
+            badgeCriterio.setAttribute("title", `Incompleta para preparación litúrgica. Faltan: ${faltantes.join(", ")}`);
             badgeCriterio.innerHTML = `⚠️ Falta: ${faltantes.join(", ")}`;
         }
 
@@ -1136,8 +1140,26 @@ if (btnToggleFiltros) {
     };
 }
 
+// --- LISTENERS DE MODO (PRECATECUMENADO VS TODAS) ---
+if (btnModoPrecat) {
+    btnModoPrecat.onclick = () => {
+        modoFiltro = "precat";
+        btnModoPrecat.classList.add("active");
+        if (btnModoTodas) btnModoTodas.classList.remove("active");
+        actualizarVista();
+    };
+}
+
+if (btnModoTodas) {
+    btnModoTodas.onclick = () => {
+        modoFiltro = "todas";
+        btnModoTodas.classList.add("active");
+        if (btnModoPrecat) btnModoPrecat.classList.remove("active");
+        actualizarVista();
+    };
+}
+
 // --- LISTENERS DE FILTROS Y BÚSQUEDA ---
 inputBusqueda.addEventListener("input", actualizarVista);
 selectOrden.addEventListener("change", actualizarVista);
-checkEstricto.addEventListener("change", actualizarVista);
 checkExtras.addEventListener("change", actualizarVista);
