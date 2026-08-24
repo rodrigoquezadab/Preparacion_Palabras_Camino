@@ -2,249 +2,1661 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Análisis Bíblico</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  
+  <!-- SEO & Metadatos -->
+  <title>Preparación de la Palabra — Camino Neocatecumenal</title>
+  <meta name="description" content="Herramienta mobile-first para la preparación de la Liturgia de la Palabra del Camino Neocatecumenal basada en el Vocabulario de Teología Bíblica de Xavier Léon-Dufour.">
+  <meta name="theme-color" content="#1e3a8a">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Cinzel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
   <style>
-    /* --- LAYOUT GLOBAL --- */
+    /* ==========================================================================
+       VARIABLES Y SISTEMA DE DISEÑO (LITÚRGICO & MODERNO)
+       ========================================================================== */
+    :root {
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-serif: 'Cinzel', Georgia, serif;
+
+      /* Paleta Principal */
+      --bg-app: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f1f5f9;
+      --border-color: #e2e8f0;
+      --border-dark: #cbd5e1;
+
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+
+      --primary: #1e3a8a;
+      --primary-hover: #1e40af;
+      --primary-light: #dbeafe;
+      
+      --gold-accent: #b45309;
+      --gold-light: #fef3c7;
+      
+      /* Colores Litúrgicos de las 4 Partes Bíblicas */
+      --color-hist: #059669; /* Verde Torá / Alianza */
+      --bg-hist-light: #ecfdf5;
+      --border-hist: #a7f3d0;
+
+      --color-prof: #dc2626; /* Rojo Fuego Profético */
+      --bg-prof-light: #fef2f2;
+      --border-prof: #fecaca;
+
+      --color-nt: #7c3aed; /* Púrpura Apostólico / Cartas */
+      --bg-nt-light: #f5f3ff;
+      --border-nt: #ddd6fe;
+
+      --color-ev: #d97706; /* Dorado / Luz de Cristo */
+      --bg-ev-light: #fffbeb;
+      --border-ev: #fde68a;
+
+      --color-sal: #0284c7; /* Azul Salmos */
+      --bg-sal-light: #f0f9ff;
+      --border-sal: #bae6fd;
+
+      --color-sap: #475569; /* Pizarra Sapiencial */
+      --bg-sap-light: #f8fafc;
+      --border-sap: #e2e8f0;
+
+      /* Sombras */
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-full: 9999px;
+    }
+
+    /* ==========================================================================
+       RESET Y ESTRUCTURA GLOBAL (MOBILE FIRST)
+       ========================================================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
     html, body {
-      height: 100%; margin: 0; overflow: hidden; 
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f6f8; color: #333;
-      display: flex; flex-direction: column;
+      font-family: var(--font-sans);
+      background-color: var(--bg-app);
+      color: var(--text-main);
+      min-height: 100%;
+      line-height: 1.5;
     }
-    
-    /* HEADER */
+
+    body {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 30px;
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    /* ==========================================================================
+       HEADER PRINCIPAL & BARRA SUPERIOR
+       ========================================================================== */
     .header-bar {
-      flex-shrink: 0; background: #fff; padding: 10px 15px;
-      display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid #ddd; z-index: 12;
-    }
-    h1 { margin: 0; color: #2c3e50; font-size: 1.1rem; }
-    
-    .btn-toggle-panel {
-      background: none; border: 1px solid #ccc; border-radius: 4px; 
-      cursor: pointer; font-size: 0.85rem; padding: 4px 8px; color: #555;
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      color: #ffffff;
+      padding: 14px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
 
-    /* --- CONTROLES --- */
-    .controls {
-      flex-shrink: 0; background: #fff; 
-      border-bottom: 1px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      z-index: 10; overflow: hidden; transition: max-height 0.3s ease;
-      /* Ajuste padding para colapso suave */
-      padding: 10px 15px; max-height: 300px;
+    .header-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
     }
-    .controls.collapsed { max-height: 0; padding: 0 15px; border-bottom: none; }
 
-    .fila-controles { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; margin-bottom: 10px; }
-    .control-group { display: flex; flex-direction: column; gap: 3px; flex-grow: 1; }
-    .control-group label { font-weight: 600; font-size: 0.75rem; color: #555; }
-
-    input[type="text"], input[type="search"], select { 
-      padding: 6px; border: 1px solid #ccd0d5; border-radius: 4px; font-size: 0.9rem; width: 100%; box-sizing: border-box;
+    .header-title-box {
+      display: flex;
+      flex-direction: column;
     }
-    .btn-add { padding: 6px 12px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
 
-    /* TAGS */
-    #contenedorTags { display: flex; flex-wrap: wrap; gap: 5px; padding: 5px; background: #fafafa; border: 1px dashed #ccc; border-radius: 4px; min-height: 30px; align-items: center; }
-    .tag-excluido { background: #e74c3c; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; display: flex; align-items: center; gap: 5px; }
-    .tag-excluido span { cursor: pointer; font-weight: bold; }
-
-    /* --- TABLA & GRID SYSTEM --- */
-    .table-container { flex-grow: 1; overflow-y: auto; position: relative; background: #fff; padding: 0; }
-    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-    
-    thead th { 
-      position: sticky; top: 0; z-index: 5; background: #34495e; color: #ffffff !important; 
-      padding: 10px 5px; text-align: center; font-size: 0.8rem;
+    .header-title {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
-    td { padding: 8px 5px; border-bottom: 1px solid #eee; text-align: center; overflow: hidden; text-overflow: ellipsis; vertical-align: middle; }
-    
-    /* === DEFINICIÓN DE ANCHOS DE COLUMNA === */
-    /* Modo Normal (4 Grupos) */
-    .w-id { width: 5%; }
-    .w-palabra { width: 25%; text-align: left; padding-left: 10px; font-weight: 600; color: #2c3e50; }
-    .w-total { width: 10%; font-weight: bold; }
-    .w-cat { width: 15%; } /* 15% * 4 = 60% */
-    
-    /* Por defecto, las columnas extras están ocultas */
-    .w-extra { display: none; } 
 
-    /* === MODO EXTRAS ACTIVADO (Clase .show-extras en body o container) === */
-    /* Recalculamos para 6 grupos */
-    .show-extras .w-cat, 
-    .show-extras .w-extra { 
-      width: 10%; /* 10% * 6 = 60% */
-      display: table-cell; 
+    .header-subtitle {
+      font-size: 0.72rem;
+      color: #93c5fd;
+      font-weight: 400;
     }
-    
-    /* Ajuste para el Grid CSS (Stats y Detalle) */
-    .grid-aligned {
+
+    .btn-toggle-filters {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      padding: 7px 12px;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-toggle-filters:hover, .btn-toggle-filters.active {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: #ffffff;
+    }
+
+    .badge-count {
+      background: #ef4444;
+      color: white;
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+    }
+
+    /* ==========================================================================
+       PANEL DE BÚSQUEDA Y FILTROS RÁPIDOS
+       ========================================================================== */
+    .search-section {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 16px;
+      position: sticky;
+      top: 59px;
+      z-index: 90;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .search-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+      font-size: 0.95rem;
+      pointer-events: none;
+    }
+
+    .input-search {
+      width: 100%;
+      padding: 10px 14px 10px 36px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background-color: var(--bg-app);
+      color: var(--text-main);
+      transition: all 0.2s ease;
+    }
+
+    .input-search:focus {
+      outline: none;
+      border-color: var(--primary);
+      background-color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+    }
+
+    .quick-toggles-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .toggle-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      user-select: none;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      transition: background 0.15s;
+    }
+
+    .toggle-label:hover {
+      background: var(--bg-card-hover);
+    }
+
+    .toggle-label input[type="checkbox"] {
+      accent-color: var(--primary);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .sort-wrapper {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sort-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .select-custom {
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      font-family: inherit;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      background-color: #ffffff;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .select-custom:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* ==========================================================================
+       PANEL COLAPSABLE DE FILTROS AVANZADOS Y EXCLUSIONES
+       ========================================================================== */
+    .advanced-panel {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-dark);
+      padding: 16px;
+      max-height: 500px;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .advanced-panel.collapsed {
+      max-height: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .advanced-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .panel-section-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+    }
+
+    .exclusion-form {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .input-text {
+      flex: 1;
+      min-width: 180px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      font-family: inherit;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+    }
+
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-submit:hover {
+      background: var(--primary-hover);
+    }
+
+    .tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 8px;
+      background: var(--bg-app);
+      border: 1px dashed var(--border-color);
+      border-radius: var(--radius-sm);
+      min-height: 40px;
+      align-items: center;
+    }
+
+    .sin-exclusiones {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    .tag-excluido {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-remove-tag {
+      background: none;
+      border: none;
+      color: #991b1b;
+      cursor: pointer;
+      font-size: 0.95rem;
+      line-height: 1;
+      font-weight: bold;
+      padding: 0 2px;
+    }
+
+    .btn-remove-tag:hover {
+      color: #7f1d1d;
+    }
+
+    /* ==========================================================================
+       BARRA DE ESTADO / ESTADÍSTICAS
+       ========================================================================== */
+    .status-bar {
+      max-width: 1100px;
+      margin: 10px auto 4px auto;
+      padding: 0 16px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .badge-apta-count {
+      color: #065f46;
+      font-weight: 600;
+      background: #d1fae5;
+      padding: 2px 6px;
+      border-radius: var(--radius-full);
+      margin-left: 4px;
+    }
+
+    /* ==========================================================================
+       LISTADO DE PALABRAS (MOBILE FIRST & TARJETAS)
+       ========================================================================== */
+    .main-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 8px 12px;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .word-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    }
+
+    .word-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: var(--shadow-md);
+    }
+
+    .word-card.expanded {
+      border-color: var(--primary);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .word-card.card-cumple {
+      border-left: 5px solid #10b981;
+    }
+
+    .word-card.card-incompleta {
+      border-left: 5px solid #f59e0b;
+    }
+
+    /* Encabezado de la Tarjeta */
+    .word-card-header {
+      padding: 12px 14px;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: background 0.15s;
+    }
+
+    .word-card-header:hover {
+      background-color: var(--bg-card-hover);
+    }
+
+    .word-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .word-title-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .word-number {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-light);
+      background: var(--bg-app);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+    }
+
+    .word-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.2px;
+    }
+
+    .badge-criterio {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      white-space: nowrap;
+    }
+
+    .badge-apta {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .badge-incompleta {
+      background: #fffbeb;
+      color: #92400e;
+      border: 1px solid #fde68a;
+    }
+
+    /* Pastillas de Conteo */
+    .word-counts-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 6px;
+      align-items: center;
+    }
+
+    .count-pill {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 7px;
+      border-radius: var(--radius-full);
+      background: var(--bg-app);
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .count-pill.total-pill {
+      background: #1e293b;
+      color: #ffffff;
+      border-color: #1e293b;
+    }
+
+    .count-pill.diff-tag {
+      color: #ef4444;
+      font-weight: 800;
+    }
+
+    .count-pill.cat-hist { background: var(--bg-hist-light); color: var(--color-hist); border-color: var(--border-hist); }
+    .count-pill.cat-prof { background: var(--bg-prof-light); color: var(--color-prof); border-color: var(--border-prof); }
+    .count-pill.cat-nt { background: var(--bg-nt-light); color: var(--color-nt); border-color: var(--border-nt); }
+    .count-pill.cat-ev { background: var(--bg-ev-light); color: var(--color-ev); border-color: var(--border-ev); }
+    .count-pill.cat-sal { background: var(--bg-sal-light); color: var(--color-sal); border-color: var(--border-sal); }
+    .count-pill.cat-sap { background: var(--bg-sap-light); color: var(--color-sap); border-color: var(--border-sap); }
+
+    .count-pill.zero {
+      opacity: 0.45;
+      background: var(--bg-app);
+      color: var(--text-light);
+      border-color: var(--border-color);
+    }
+
+    .chevron-icon {
+      margin-left: auto;
+      font-size: 0.75rem;
+      color: var(--text-light);
+      transition: transform 0.2s ease;
+    }
+
+    .word-card.expanded .chevron-icon {
+      transform: rotate(180deg);
+      color: var(--primary);
+    }
+
+    /* ==========================================================================
+       CUERPO DE LA TARJETA (CITAS POR CATEGORÍAS)
+       ========================================================================== */
+    .word-card-body {
+      border-top: 1px solid var(--border-color);
+      background: #ffffff;
+      padding: 12px;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-actions-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed var(--border-color);
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .btn-action {
+      background: #ffffff;
+      border: 1px solid var(--border-dark);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: var(--radius-md);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-action:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-action.active {
+      background: #dbeafe;
+      border-color: #3b82f6;
+      color: #1e3a8a;
+    }
+
+    .btn-copiar {
+      border-color: #cbd5e1;
+      color: #334155;
+    }
+
+    .btn-copiar:hover {
+      background: #f8fafc;
+      border-color: #059669;
+      color: #059669;
+    }
+
+    .btn-excluir {
+      margin-left: auto;
+      border-color: #fecaca;
+      color: #b91c1c;
+      background: #fff5f5;
+    }
+
+    .btn-excluir:hover {
+      background: #fee2e2;
+      border-color: #ef4444;
+    }
+
+    /* Grid de Categorías Bíblicas */
+    .categories-grid {
       display: grid;
-      /* Normal: 5 | 25 | 10 | 15 | 15 | 15 | 15 */
-      grid-template-columns: 5% 25% 10% 15% 15% 15% 15%;
-      align-items: start; justify-items: center;
-    }
-    
-    /* Grid cuando hay extras */
-    .show-extras .grid-aligned {
-      /* Extras: 5 | 25 | 10 | 10 | 10 | 10 | 10 | 10 | 10 */
-      grid-template-columns: 5% 25% 10% 10% 10% 10% 10% 10% 10%;
+      grid-template-columns: 1fr;
+      gap: 10px;
     }
 
-    .fila-principal { cursor: pointer; transition: background 0.1s; }
-    .fila-principal:hover { background-color: #f1f8ff; }
-    .fila-principal.activa { background-color: #e3f2fd; border-left: 4px solid #2196f3; }
-
-    /* --- DETALLES --- */
-    .fila-detalle { display: none; background-color: #fff; }
-    .celda-detalle { padding: 0 !important; border-bottom: 2px solid #ddd; }
-    
-    /* Vistas */
-    .desktop-detail-view { display: block; }
-    .mobile-detail-view { display: none; padding: 10px; background: #fdfdfd; border-bottom: 2px solid #ddd; }
-
-    /* Fila Stats */
-    .stats-row-desktop {
-      background-color: #fff9c4; border-bottom: 1px solid #ffe0b2;
-      padding: 8px 0; align-items: center;
-    }
-    .grid-detalle-desktop { padding: 10px 0; }
-    
-    /* Elementos */
-    .stats-controls-desktop { grid-column: 2; width: 100%; display: flex; gap: 5px; padding-left: 10px; justify-content: flex-start;}
-    
-    .btn-mini { padding: 4px 8px; font-size: 0.75rem; border-radius: 4px; cursor: pointer; font-weight: 700; border: 1px solid transparent; white-space: nowrap; }
-    .btn-ordenar { border-color: #90caf9; background: #fff; color: #1565c0; }
-    .btn-ordenar.active { background: #1565c0; color: white; }
-    .btn-limpiar { border-color: #ce93d8; background: #fff; color: #6a1b9a; }
-    .btn-limpiar.active { background: #7b1fa2; color: white; }
-
-    .stat-cell { display: flex; flex-direction: column; align-items: center; width: 100%; }
-    .stat-val-main { font-weight: bold; font-size: 1rem; color: #333; line-height: 1; }
-    .stat-val-sec { font-size: 0.75rem; color: #888; margin-top: 2px; }
-    .stat-diff .stat-val-main { color: #d32f2f; }
-    .stat-diff .stat-val-sec { color: #d32f2f; font-weight: bold; opacity: 0.8; }
-
-    .grupo-citas { display: flex; flex-direction: column; gap: 3px; width: 100%; align-items: center; margin-top: 5px; }
-    .pos-sep { border-left: 1px dashed #eee; }
-    
-    /* Clases para ocultar/mostrar en grid de detalle las col extra */
-    .cell-extra { display: none; }
-    .show-extras .cell-extra { display: flex; } /* Flex para que funcione .stat-cell y .grupo-citas */
-
-    .btn-cita { background: white; border: 1px solid #e0e0e0; padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; cursor: pointer; text-align: center; width: 90%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .btn-cita:hover { background: #2196f3; color: white; border-color: #1e88e5; }
-
-    /* --- MOBILE --- */
-    @media (max-width: 768px) {
-      /* En móvil ignoramos las columnas extras de la tabla principal, mostramos simplificado */
-      .w-cat, .w-extra { display: none !important; } 
-      .w-id { width: 12%; }
-      .w-palabra { width: 63%; }
-      .w-total { width: 25%; }
-
-      .desktop-detail-view { display: none; }
-      .mobile-detail-view { display: block; }
-
-      .mob-controls-row { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px dashed #ccc; }
-      .mob-total-display { text-align: right; font-size: 0.9rem; color: #444; }
-      .mob-total-big { font-weight: bold; font-size: 1.1rem; color: #000; }
-      .mob-diff-tag { color: #d32f2f; background: #ffcdd2; padding: 2px 6px; border-radius: 10px; font-size: 0.8rem; margin-left: 5px; font-weight: bold; }
-      
-      .mob-cards-container { display: flex; flex-direction: column; gap: 10px; }
-      .mob-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden; }
-      .mob-card-header { background: #f1f8e9; padding: 6px 10px; font-size: 0.85rem; font-weight: bold; color: #33691e; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #dcedc8; }
-      .mob-counters { font-size: 0.8rem; color: #555; }
-      .mob-num-orig { font-weight: bold; color: #333; }
-      
-      .mob-card-body { padding: 8px; display: flex; flex-wrap: wrap; gap: 5px; }
-      .btn-cita-mob { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 6px 10px; font-size: 0.85rem; flex-grow: 1; text-align: center; max-width: 100%; }
+    @media (min-width: 640px) {
+      .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
-    /* MODAL */
-    .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(2px); }
-    .modal-content { background-color: #fefefe; margin: 5vh auto; padding: 20px; border: 1px solid #888; width: 90%; border-radius: 8px; max-height: 80vh; display: flex; flex-direction: column; }
-    .close { align-self: flex-end; font-size: 24px; font-weight: bold; cursor: pointer; color: #aaa; margin-bottom: 10px;}
-    #modalTextoCuerpo { line-height: 1.6; font-size: 1rem; color: #444; overflow-y: auto; flex-grow: 1;}
+    @media (min-width: 1024px) {
+      .categories-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .category-box {
+      background: var(--bg-app);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .category-header {
+      padding: 8px 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .category-box.cat-hist .category-header { background: var(--bg-hist-light); color: var(--color-hist); border-bottom-color: var(--border-hist); }
+    .category-box.cat-prof .category-header { background: var(--bg-prof-light); color: var(--color-prof); border-bottom-color: var(--border-prof); }
+    .category-box.cat-nt .category-header { background: var(--bg-nt-light); color: var(--color-nt); border-bottom-color: var(--border-nt); }
+    .category-box.cat-ev .category-header { background: var(--bg-ev-light); color: var(--color-ev); border-bottom-color: var(--border-ev); }
+    .category-box.cat-sal .category-header { background: var(--bg-sal-light); color: var(--color-sal); border-bottom-color: var(--border-sal); }
+    .category-box.cat-sap .category-header { background: var(--bg-sap-light); color: var(--color-sap); border-bottom-color: var(--border-sap); }
+
+    .cat-badge {
+      background: rgba(0, 0, 0, 0.08);
+      padding: 1px 6px;
+      border-radius: var(--radius-full);
+      font-size: 0.7rem;
+    }
+
+    .citations-list {
+      padding: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-content: flex-start;
+      flex: 1;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+    .btn-citation {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+      text-align: left;
+    }
+
+    .btn-citation:hover {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-citation .read-icon {
+      font-size: 0.75rem;
+      opacity: 0.6;
+    }
+
+    .btn-citation:hover .read-icon {
+      opacity: 1;
+    }
+
+    .no-citations {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      font-style: italic;
+      padding: 6px 4px;
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* ==========================================================================
+       MODAL DE LECTURA BÍBLICA (MOBILE FIRST)
+       ========================================================================== */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      padding: 12px;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 650px;
+      max-height: 90vh;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, #1e293b 0%, #1e3a8a 100%);
+      color: #ffffff;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .modal-header-titles {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .modal-title {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .modal-subtitle {
+      font-size: 0.78rem;
+      color: #93c5fd;
+    }
+
+    .btn-close-modal {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #ffffff;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-full);
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+
+    .btn-close-modal:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .modal-body {
+      padding: 16px 20px;
+      overflow-y: auto;
+      flex: 1;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #334155;
+    }
+
+    .modal-footer {
+      background: var(--bg-app);
+      padding: 10px 18px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .highlighted-verse {
+      background: #fef08a;
+      color: #854d0e;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-weight: 500;
+      border-bottom: 2px solid #eab308;
+    }
+
+    /* ==========================================================================
+       MODAL CALCULADORA DE PARTICIPANTES (DISTRIBUCIÓN LINEAL BÍBLICA)
+       ========================================================================== */
+    .modal-calc-card {
+      max-width: 780px;
+    }
+
+    .calc-controls-box {
+      background: var(--bg-app);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .calc-row-flex {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .participant-counter-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-counter {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-dark);
+      background: #ffffff;
+      color: var(--text-main);
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+
+    .btn-counter:hover {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    .num-participants-display {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--primary);
+      min-width: 30px;
+      text-align: center;
+    }
+
+    .quick-chips-group {
+      display: flex;
+      gap: 4px;
+    }
+
+    .chip-num {
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: 1px solid var(--border-color);
+      background: #ffffff;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .chip-num:hover, .chip-num.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    .calc-summary-banner {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 8px 12px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-size: 0.8rem;
+      color: #1e3a8a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hermanos-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .hermano-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.15s;
+    }
+
+    .hermano-card:hover {
+      border-color: #94a3b8;
+    }
+
+    .hermano-header {
+      background: #f8fafc;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .hermano-title-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hermano-badge-avatar {
+      background: var(--primary);
+      color: #ffffff;
+      width: 26px;
+      height: 26px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    .hermano-name {
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--text-main);
+    }
+
+    .hermano-rango {
+      font-size: 0.78rem;
+      color: #0369a1;
+      background: #e0f2fe;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+    }
+
+    .btn-copiar-hermano {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+
+    .btn-copiar-hermano:hover {
+      background: #f1f5f9;
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .hermano-body {
+      padding: 10px 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+
+    /* ==========================================================================
+       MODAL GUÍA Y CRITERIOS EXPLICATIVOS
+       ========================================================================== */
+    .modal-guia-card {
+      max-width: 840px;
+    }
+
+    .guia-tabs-nav {
+      display: flex;
+      gap: 6px;
+      padding: 10px 16px;
+      background: var(--bg-app);
+      border-bottom: 1px solid var(--border-color);
+      overflow-x: auto;
+    }
+
+    .guia-tab-btn {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 7px 14px;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .guia-tab-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .guia-tab-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .guia-tab-pane {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .guia-tab-pane.active {
+      display: flex;
+    }
+
+    .guia-card-section {
+      background: var(--bg-app);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .guia-section-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .guia-text {
+      font-size: 0.88rem;
+      color: #334155;
+      line-height: 1.6;
+    }
+
+    .guia-parts-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    @media (min-width: 640px) {
+      .guia-parts-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .guia-part-box {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .guia-part-box.hist { border-left: 4px solid var(--color-hist); }
+    .guia-part-box.prof { border-left: 4px solid var(--color-prof); }
+    .guia-part-box.nt { border-left: 4px solid var(--color-nt); }
+    .guia-part-box.ev { border-left: 4px solid var(--color-ev); }
+
+    .guia-part-name {
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+
+    .guia-part-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* Tabla de Nomenclatura */
+    .nomenclatura-table-wrapper {
+      overflow-x: auto;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: #ffffff;
+    }
+
+    .nomenclatura-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      text-align: left;
+    }
+
+    .nomenclatura-table th {
+      background: #f1f5f9;
+      color: var(--text-main);
+      padding: 10px 12px;
+      font-weight: 700;
+      border-bottom: 1.5px solid var(--border-color);
+    }
+
+    .nomenclatura-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-color);
+      color: #334155;
+      vertical-align: middle;
+    }
+
+    .nomenclatura-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .symbol-chip {
+      display: inline-block;
+      background: #e2e8f0;
+      color: #0f172a;
+      font-family: monospace;
+      font-size: 0.95rem;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      border: 1px solid #cbd5e1;
+    }
+
+    .example-chip {
+      display: inline-block;
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+      font-family: monospace;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+    }
+
+    .callout-liturgico {
+      background: #fffbeb;
+      border: 1px solid #fef3c7;
+      border-left: 4px solid #d97706;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      color: #92400e;
+      line-height: 1.5;
+    }
+
+    /* ==========================================================================
+       ESTADO VACÍO & TOAST
+       ========================================================================== */
+    .empty-state {
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .empty-icon {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #1e293b;
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
 
-<div class="header-bar">
-  <h1>Análisis Bíblico</h1>
-  <button id="btnTogglePanel" class="btn-toggle-panel">🔽 Mostrar Filtros</button>
-</div>
-
-<div id="panelControles" class="controls collapsed">
-  <div class="fila-controles">
-    <div class="control-group" style="flex-grow: 1;">
-      <label>Excluir palabras:</label>
-      <div style="display:flex; gap:5px;">
-        <input type="text" id="inputExcluir" placeholder="Ej: amor...">
-        <button id="btnAgregar" class="btn-add">Ok</button>
+  <!-- 1. HEADER LITÚRGICO -->
+  <header class="header-bar">
+    <div class="header-content">
+      <div class="header-title-box">
+        <h1 class="header-title">📖 Preparación de la Palabra</h1>
+        <span class="header-subtitle">Vocabulario de Teología Bíblica — Xavier Léon-Dufour</span>
+      </div>
+      <div style="display:flex; gap:6px;">
+        <button id="btnAbrirGuia" class="btn-toggle-filters" title="Guía y Criterios: Consulta los 4 grupos litúrgicos del Camino, nomenclatura bíblica (s, ss, p, puntuación) y cómo usar la aplicación">
+          <span>📖 Guía</span>
+        </button>
+        <button id="btnToggleFiltros" class="btn-toggle-filters" title="Toca para desplegar u ocultar los filtros avanzados y la gestión de exclusiones">
+          <span>⚙️ Filtros</span>
+          <span id="badgeExcluidas" class="badge-count" style="display:none;" title="Cantidad de palabras excluidas">0</span>
+        </button>
       </div>
     </div>
-    <div id="contenedorTags" style="flex-grow: 2;"></div>
-  </div>
+  </header>
 
-  <hr style="border:0; border-top:1px solid #eee; margin:10px 0;">
-
-  <div class="fila-controles">
-    <div class="control-group">
-      <label>Buscar:</label>
-      <input type="search" id="inputBusqueda" placeholder="Filtrar...">
-    </div>
-    <div class="control-group">
-      <label>Orden:</label>
-      <select id="selectOrden">
-        <option value="alpha">Alfabético</option>
-        <option value="asc">Menor Total</option>
-        <option value="desc">Mayor Total</option>
-      </select>
-    </div>
-  </div>
-  
-  <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top:5px; flex-wrap: wrap; gap:10px;">
-      <div style="display: flex; gap: 15px;">
-        <label style="font-size: 0.8rem; display: flex; align-items: center; gap: 5px; cursor: pointer;">
-            <input type="checkbox" id="checkEstricto" checked> Filtro 4 grupos
-        </label>
-        <label style="font-size: 0.8rem; display: flex; align-items: center; gap: 5px; cursor: pointer; color: #2c3e50;">
-            <input type="checkbox" id="checkExtras"> Incluir Salmos/Sap
-        </label>
+  <!-- 2. BARRA DE BÚSQUEDA Y FILTROS RÁPIDOS (STICKY) -->
+  <section class="search-section">
+    <div class="search-container">
+      <div class="search-input-wrapper">
+        <span class="search-icon">🔍</span>
+        <input type="search" id="inputBusqueda" class="input-search" placeholder="Buscar palabra (ej. Abraham, Alianza, Fe...)" title="Escribe aquí cualquier término para filtrar instantáneamente el vocabulario">
       </div>
-      <div id="info" style="color: #999; font-size: 0.8rem;">Cargando...</div>
+
+      <div class="quick-toggles-row">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <label class="toggle-label" title="Muestra exclusivamente las palabras que tienen lecturas en las 4 partes litúrgicas fundamentales (Históricos, Proféticos, Cartas/NT y Evangelio)">
+            <input type="checkbox" id="checkEstricto" checked>
+            <span>Filtro 4 Partes</span>
+          </label>
+
+          <label class="toggle-label" title="Incluye en las tarjetas las citas complementarias de Salmos y Libros Sapienciales (ideales para cantos y salmo responsorial)">
+            <input type="checkbox" id="checkExtras">
+            <span>Salmos / Sap.</span>
+          </label>
+        </div>
+
+        <div class="sort-wrapper">
+          <label for="selectOrden" class="sort-label">Ordenar:</label>
+          <select id="selectOrden" class="select-custom" title="Selecciona el criterio de ordenación de las palabras">
+            <option value="alpha" title="Ordenar de la A a la Z">Alfabético</option>
+            <option value="desc" title="Mostrar primero las palabras con mayor cantidad de citas">Mayor Cantidad de Citas</option>
+            <option value="asc" title="Mostrar primero las palabras con menor cantidad de citas">Menor Cantidad de Citas</option>
+            <option value="hist" title="Ordenar por cantidad de citas en Históricos">Más en Históricos</option>
+            <option value="prof" title="Ordenar por cantidad de citas en Proféticos">Más en Proféticos</option>
+            <option value="nt" title="Ordenar por cantidad de citas en Cartas / NT">Más en Cartas / NT</option>
+            <option value="ev" title="Ordenar por cantidad de citas en Evangelios">Más en Evangelios</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. PANEL DESPLEGABLE DE EXCLUSIONES Y OPCIONES AVANZADAS -->
+  <section id="panelFiltros" class="advanced-panel collapsed">
+    <div class="advanced-content">
+      <div>
+        <h3 class="panel-section-title">Palabras Excluidas (Ya preparadas en la comunidad)</h3>
+        <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:8px;">
+          Añade palabras que ya hayan sido celebradas recientemente para que no aparezcan en la lista. Se guardan en tu dispositivo.
+        </p>
+        <div class="exclusion-form">
+          <input type="text" id="inputExcluir" class="input-text" placeholder="Ej: Bautismo, Cruz (separar por coma)" title="Escribe una o varias palabras para excluirlas">
+          <button id="btnAgregarExclusion" class="btn-submit" title="Pulsa para añadir a la lista de exclusiones">Añadir Exclusión</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="panel-section-title" style="margin-bottom: 6px;">Exclusiones activas:</div>
+        <div id="contenedorTags" class="tags-container"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. CONTADOR / BARRA DE ESTADO -->
+  <div class="status-bar">
+    <div id="infoStats">Cargando vocabulario bíblico...</div>
   </div>
-</div>
 
-<div id="tableContainer" class="table-container">
-  <table id="tabla">
-    <thead>
-      <tr>
-        <th class="w-id">#</th> 
-        <th class="w-palabra">Palabra</th>
-        <th class="w-total">Total</th>
-        <th class="w-cat">Hist.</th>
-        <th class="w-cat">Prof.</th>
-        <th class="w-cat">NT</th>
-        <th class="w-cat">Ev.</th>
-        <th class="w-extra">Sal.</th>
-        <th class="w-extra">Sap.</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
+  <!-- 5. CONTENEDOR PRINCIPAL DE TARJETAS (MOBILE FIRST) -->
+  <main id="contenedorPalabras" class="main-container"></main>
 
-<div id="modalLectura" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2 id="modalTitulo" style="margin: 0; color: #2c3e50; font-size: 1.2rem;"></h2>
-    <div id="modalTextoCuerpo"></div>
+  <!-- 6. MODAL DE PROCLAMACIÓN / LECTURA BÍBLICA -->
+  <div id="modalLectura" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-header-titles">
+          <h2 id="modalTitulo" class="modal-title">Cita Bíblica</h2>
+          <span id="modalSubtitulo" class="modal-subtitle">Libro y capítulo</span>
+        </div>
+        <button id="btnCerrarModal" class="btn-close-modal" aria-label="Cerrar modal" title="Cerrar ventana de lectura">&times;</button>
+      </div>
+      <div id="modalTextoCuerpo" class="modal-body"></div>
+      <div class="modal-footer">
+        <span style="font-size:0.75rem; color:var(--text-muted);">Texto Bíblico (Capítulo completo)</span>
+        <button id="btnCopiarModal" class="btn-action" title="Copia el texto bíblico al portapapeles para notas o WhatsApp">📋 Copiar Lectura</button>
+      </div>
+    </div>
   </div>
-</div>
 
-<script src="js/app.js"></script>
+  <!-- MODAL CALCULADORA DE PARTICIPANTES (DISTRIBUCIÓN LINEAL) -->
+  <div id="modalCalculadora" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-card modal-calc-card">
+      <div class="modal-header">
+        <div class="modal-header-titles">
+          <h2 id="calcModalTitulo" class="modal-title">👥 Calculadora de Preparación</h2>
+          <span id="calcModalSubtitulo" class="modal-subtitle">Distribución lineal optimizada en orden bíblico</span>
+        </div>
+        <button id="btnCerrarCalcModal" class="btn-close-modal" aria-label="Cerrar modal" title="Cerrar calculadora">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Controles de la Calculadora -->
+        <div class="calc-controls-box">
+          <div class="calc-row-flex">
+            <div style="display:flex; flex-direction:column; gap:4px;">
+              <span style="font-size:0.8rem; font-weight:700; color:var(--text-main);">Participantes en la preparación:</span>
+              <div class="participant-counter-wrapper">
+                <button id="btnDecPart" class="btn-counter" title="Reducir un participante">-</button>
+                <span id="numPartDisplay" class="num-participants-display">4</span>
+                <button id="btnIncPart" class="btn-counter" title="Aumentar un participante">+</button>
+                
+                <div class="quick-chips-group" style="margin-left: 8px;">
+                  <button class="chip-num" data-num="2" title="Repartir entre 2 hermanos">2</button>
+                  <button class="chip-num" data-num="3" title="Repartir entre 3 hermanos">3</button>
+                  <button class="chip-num active" data-num="4" title="Repartir entre 4 hermanos">4</button>
+                  <button class="chip-num" data-num="5" title="Repartir entre 5 hermanos">5</button>
+                  <button class="chip-num" data-num="6" title="Repartir entre 6 hermanos">6</button>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:4px; align-items:flex-start;">
+              <label class="toggle-label" title="Distribuye las perícopas consolidadas (contiguas unidas) o las citas sueltas">
+                <input type="checkbox" id="calcCheckUnido" checked>
+                <span>Usar perícopas unidas</span>
+              </label>
+              <label class="toggle-label" title="Incluir u omitir Salmos y Sapienciales en el reparto">
+                <input type="checkbox" id="calcCheckExtras">
+                <span>Incluir Salmos/Sap</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="calc-summary-banner">
+            <span>✨</span>
+            <span id="calcSummaryText">Distribución continua garantizada: cada hermano avanza hacia adelante en su Biblia sin retroceder.</span>
+          </div>
+        </div>
+
+        <!-- Lista de Reparto por Hermano -->
+        <div id="contenedorHermanos" class="hermanos-grid"></div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="btnCopiarRepartoCompleto" class="btn-action btn-copiar" style="background:#059669; color:#fff; border-color:#059669;" title="Copia el reparto de todos los participantes listo para enviar al grupo de WhatsApp de la preparación">
+          📋 Copiar Reparto Completo
+        </button>
+        <button id="btnCerrarCalcModalBottom" class="btn-action" title="Cerrar la calculadora">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL GUÍA Y CRITERIOS EXPLICATIVOS -->
+  <div id="modalGuia" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-card modal-guia-card">
+      <div class="modal-header">
+        <div class="modal-header-titles">
+          <h2 class="modal-title">📖 Guía de Criterios Litúrgicos y Nomenclatura</h2>
+          <span class="modal-subtitle">Camino Neocatecumenal y Vocabulario de Xavier Léon-Dufour</span>
+        </div>
+        <button id="btnCerrarGuiaModal" class="btn-close-modal" aria-label="Cerrar guía" title="Cerrar guía">&times;</button>
+      </div>
+
+      <!-- Pestañas de Navegación de la Guía -->
+      <div class="guia-tabs-nav">
+        <button class="guia-tab-btn active" data-tab="tab-liturgia">🕊️ Criterios del Camino (4 Partes)</button>
+        <button class="guia-tab-btn" data-tab="tab-nomenclatura">✍️ Nomenclatura Bíblica (s, ss, p)</button>
+        <button class="guia-tab-btn" data-tab="tab-herramientas">🛠️ Uso de la Aplicación</button>
+      </div>
+
+      <div class="modal-body" style="padding: 16px;">
+        
+        <!-- PESTAÑA 1: Criterios Litúrgicos del Camino -->
+        <div id="tab-liturgia" class="guia-tab-pane active">
+          <div class="guia-card-section">
+            <h3 class="guia-section-title">🕊️ Las 4 Partes de la Escritura en la Liturgia de la Palabra</h3>
+            <p class="guia-text">
+              En el Camino Neocatecumenal, la Liturgia de la Palabra es una proclamación integral de la <strong>Historia de la Salvación</strong>. Toda celebración estructurada en torno a una palabra o tema teológico debe contener lecturas que representen las 4 partes fundamentales de la Biblia:
+            </p>
+
+            <div class="guia-parts-grid">
+              <div class="guia-part-box hist">
+                <div class="guia-part-name" style="color:var(--color-hist);">1. Históricos / Torá (Ley)</div>
+                <div class="guia-part-desc">
+                  <strong>Libros:</strong> Pentateuco (Génesis a Deuteronomio) y Libros Históricos (Josué a 2 Macabeos).<br>
+                  <strong>Sentido:</strong> Revela la acción concreta y las maravillas que Dios ha realizado en la historia de los Patriarcas y del Pueblo de Israel.
+                </div>
+              </div>
+
+              <div class="guia-part-box prof">
+                <div class="guia-part-name" style="color:var(--color-prof);">2. Proféticos</div>
+                <div class="guia-part-desc">
+                  <strong>Libros:</strong> Isaías, Jeremías, Ezequiel, Daniel y los 12 Profetas Menores.<br>
+                  <strong>Sentido:</strong> La Palabra viva que juzga el pecado, llama a la conversión, consuela al pueblo en el destierro y anuncia la promesa del Mesías.
+                </div>
+              </div>
+
+              <div class="guia-part-box nt">
+                <div class="guia-part-name" style="color:var(--color-nt);">3. Cartas / Nuevo Testamento</div>
+                <div class="guia-part-desc">
+                  <strong>Libros:</strong> Hechos de los Apóstoles, Epístolas Paulinas, Cartas Católicas y Apocalipsis.<br>
+                  <strong>Sentido:</strong> La vida de la Iglesia apostólica, el misterio de la Gracia, la fe en la Resurrección, la comunión fraterna y la escatología.
+                </div>
+              </div>
+
+              <div class="guia-part-box ev">
+                <div class="guia-part-name" style="color:var(--color-ev);">4. Evangelio (Culminación)</div>
+                <div class="guia-part-desc">
+                  <strong>Libros:</strong> Mateo, Marcos, Lucas y Juan.<br>
+                  <strong>Sentido:</strong> La plenitud y cumplimiento de todas las Escrituras y promesas en la Persona, Pasión, Muerte y Resurrección de Jesucristo.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout-liturgico">
+            <strong>💡 Clave para la Preparación:</strong>
+            El equipo de preparación busca que las lecturas elegidas mantengan un <em>hilo conductor común</em> en torno a la palabra teológica. Entre las lecturas se intercala el canto de los <strong>Salmos</strong> correspondientes.
+          </div>
+        </div>
+
+        <!-- PESTAÑA 2: Nomenclatura Bíblica y Léon-Dufour -->
+        <div id="tab-nomenclatura" class="guia-tab-pane">
+          <div class="guia-card-section">
+            <h3 class="guia-section-title">✍️ Sistema de Puntuación y Símbolos en las Citas Bíblicas</h3>
+            <p class="guia-text">
+              El <em>Vocabulario de Teología Bíblica de Xavier Léon-Dufour</em> y la <em>Biblia de Jerusalén</em> emplean una nomenclatura precisa para indicar capítulos, versículos, continuidades y paralelos:
+            </p>
+
+            <div class="nomenclatura-table-wrapper">
+              <table class="nomenclatura-table">
+                <thead>
+                  <tr>
+                    <th style="width:18%;">Símbolo</th>
+                    <th style="width:27%;">Significado</th>
+                    <th style="width:25%;">Ejemplo</th>
+                    <th style="width:30%;">Interpretación</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="symbol-chip">s</span></td>
+                    <td><strong>Versículo siguiente</strong></td>
+                    <td><span class="example-chip">Gen 12,1s</span></td>
+                    <td>Se leen los versículos <strong>1 y 2</strong> de Génesis 12.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="symbol-chip">ss</span></td>
+                    <td><strong>Versículos siguientes</strong> (hasta fin de perícopa)</td>
+                    <td><span class="example-chip">Gen 13,15ss</span></td>
+                    <td>Se lee desde el versículo <strong>15 hasta el final</strong> de la perícopa o sección.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="symbol-chip">p</span></td>
+                    <td><strong>Pasaje paralelo</strong></td>
+                    <td><span class="example-chip">Mt 6,25 p</span></td>
+                    <td>Texto de Mateo 6,25 y su relato paralelo en los otros Evangelios sinópticos (ej. Lc 12,22).</td>
+                  </tr>
+                  <tr>
+                    <td><span class="symbol-chip">,</span> (coma)</td>
+                    <td><strong>Separa capítulo de versículo</strong></td>
+                    <td><span class="example-chip">Jn 3,16</span></td>
+                    <td>Evangelio de Juan, <strong>Capítulo 3</strong>, <strong>Versículo 16</strong>.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="symbol-chip">-</span> (guion)</td>
+                    <td><strong>Rango continuo de versículos</strong></td>
+                    <td><span class="example-chip">Gen 12,1-9</span></td>
+                    <td>Se leen todos los versículos <strong>del 1 al 9 de corrido</strong>.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="symbol-chip">-</span> (entre cap.)</td>
+                    <td><strong>Rango continuo entre capítulos</strong></td>
+                    <td><span class="example-chip">Gen 11,27-12,4</span></td>
+                    <td>Desde Génesis 11, versículo 27, hasta Génesis 12, versículo 4.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="symbol-chip">.</span> (punto)</td>
+                    <td><strong>Separa versículos no contiguos</strong></td>
+                    <td><span class="example-chip">Gen 4,1.25</span></td>
+                    <td>Se leen exclusivamente el <strong>versículo 1 y el versículo 25</strong> (salteando los versículos intermedios).</td>
+                  </tr>
+                  <tr>
+                    <td><span class="symbol-chip">;</span> (punto y coma)</td>
+                    <td><strong>Separa citas o libros distintos</strong></td>
+                    <td><span class="example-chip">Ex 3,1-6; 12,1-14</span></td>
+                    <td>Dos lecturas independientes dentro del libro del Éxodo.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="symbol-chip">a, b, c</span></td>
+                    <td><strong>Frases o cláusulas de un versículo</strong></td>
+                    <td><span class="example-chip">Sal 1,1c</span></td>
+                    <td>En versículos largos o poesía con varias frases: <strong>a</strong> = 1ª frase, <strong>b</strong> = 2ª frase, <strong>c</strong> = 3ª frase. (Ej. <em>Sal 1,1c</em> es la 3ª frase: <em>«ni en el banco de los burlones se sienta»</em>).</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- PESTAÑA 3: Herramientas de la Aplicación -->
+        <div id="tab-herramientas" class="guia-tab-pane">
+          <div class="guia-card-section">
+            <h3 class="guia-section-title">🛠️ Funcionalidades Especiales de la Aplicación</h3>
+            
+            <div style="display:flex; flex-direction:column; gap:12px; margin-top:4px;">
+              <div>
+                <strong>🔗 Perícopas Unidas vs. Citas Sueltas:</strong>
+                <p class="guia-text">
+                  Por defecto, la aplicación aplica una <em>unión matemática de intervalos</em> en citas contiguas dentro del mismo capítulo (ej. si Léon-Dufour lista <code>Gen 12,1-4</code> y <code>Gen 12,5-9</code>, se unen en <code>Gen 12,1-9</code>). Esto evita lecturas fragmentadas y deja perícopas completas listas para proclamar en la liturgia.
+                </p>
+              </div>
+
+              <div>
+                <strong>👥 Calculadora de Participantes (Búsqueda Lineal Continua):</strong>
+                <p class="guia-text">
+                  Permite distribuir las lecturas de cualquier palabra entre los hermanos que preparan (ej. 2, 3, 4, 5, 6 hermanos). Las citas se reparten en estricto orden canónico bíblico ($Génesis \rightarrow Apocalipsis$), garantizando que cada hermano avance siempre hacia adelante en su propia Biblia sin retroceder ni dar saltos.
+                </p>
+              </div>
+
+              <div>
+                <strong>🚫 Gestor de Palabras Excluidas:</strong>
+                <p class="guia-text">
+                  Permite ocultar las palabras que ya han sido preparadas en tu comunidad durante el curso. Se guardan localmente en tu teléfono o navegador para no repetir temas.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <span style="font-size:0.75rem; color:var(--text-muted);">Vocabulario de Teología Bíblica — Xavier Léon-Dufour</span>
+        <button id="btnCerrarGuiaModalBottom" class="btn-action" title="Cerrar la guía">Entendido</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. TOAST NOTIFICACIÓN -->
+  <div id="toast" class="toast">Notificación</div>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
 </body>
 </html>
