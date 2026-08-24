@@ -47,6 +47,10 @@ let setExcluidos = new Set(JSON.parse(localStorage.getItem('palabrasExcluidas'))
 let setPalabrasExistentes = new Set();
 let palabraAbiertaId = null;
 
+// Estado de la Calculadora de Participantes
+let palabraCalculadoraActual = null;
+let numParticipantesActual = 4;
+
 // Filtro de Modo (Precatecumenado vs Vocabulario Completo)
 let modoFiltro = "precat"; // "precat" (por defecto) o "todas"
 
@@ -611,8 +615,26 @@ function dibujarLista(lista, mostrarExtras) {
             badgeCriterio.innerHTML = `⚠️ Falta: ${faltantes.join(", ")}`;
         }
 
+        const rightHeaderBox = document.createElement("div");
+        rightHeaderBox.style.display = "flex";
+        rightHeaderBox.style.alignItems = "center";
+        rightHeaderBox.style.gap = "6px";
+        rightHeaderBox.style.flexWrap = "wrap";
+
+        const btnQuickCalc = document.createElement("button");
+        btnQuickCalc.className = "btn-quick-calc";
+        btnQuickCalc.setAttribute("title", `Toca para abrir la calculadora y repartir las lecturas de "${item.palabra}" entre los participantes`);
+        btnQuickCalc.innerHTML = `👥 Repartir`;
+        btnQuickCalc.onclick = (e) => {
+            e.stopPropagation();
+            abrirCalculadora(item);
+        };
+
+        rightHeaderBox.appendChild(btnQuickCalc);
+        rightHeaderBox.appendChild(badgeCriterio);
+
         titleRow.appendChild(titleDiv);
-        titleRow.appendChild(badgeCriterio);
+        titleRow.appendChild(rightHeaderBox);
         header.appendChild(titleRow);
 
         // Fila de resumen de conteos por categoría (Pastillas interactivas)
