@@ -864,7 +864,7 @@
     }
 
     /* ==========================================================================
-       MODAL DE LECTURA BÍBLICA (MOBILE FIRST)
+       MODALES Y JERARQUÍA DE SUPERPOSICIÓN (MOBILE FIRST)
        ========================================================================== */
     .modal-backdrop {
       display: none;
@@ -877,6 +877,18 @@
       align-items: center;
       justify-content: center;
       animation: fadeIn 0.2s ease;
+    }
+
+    #modalGuia {
+      z-index: 1050;
+    }
+
+    #modalCalculadora {
+      z-index: 1100;
+    }
+
+    #modalLectura {
+      z-index: 1200;
     }
 
     .modal-card {

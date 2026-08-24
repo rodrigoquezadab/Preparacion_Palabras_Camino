@@ -1218,18 +1218,14 @@ function formatearTextoConResaltado(html, cita) {
 
 function cerrarModal() {
     modalLectura.style.display = "none";
-    // Si el modal de la calculadora estaba abierto, mantener modal-open
-    if (modalCalculadora.style.display !== "flex") {
+    // Si el modal de la calculadora o guía estaba abierto, mantener modal-open en el body
+    if (modalCalculadora.style.display !== "flex" && modalGuia.style.display !== "flex") {
         document.body.classList.remove("modal-open");
     }
     citaModalActual = null;
 }
 
 btnCerrarModal.onclick = cerrarModal;
-window.onclick = (e) => {
-    if (e.target === modalLectura) cerrarModal();
-    if (e.target === modalCalculadora) cerrarCalculadora();
-};
 
 if (btnCopiarModal) {
     btnCopiarModal.onclick = () => {
@@ -1367,9 +1363,13 @@ guiaTabBtns.forEach(btn => {
 });
 
 window.addEventListener("click", (e) => {
-    if (e.target === modalLectura) cerrarModal();
-    if (e.target === modalCalculadora) cerrarCalculadora();
-    if (e.target === modalGuia) cerrarGuia();
+    if (e.target === modalLectura) {
+        cerrarModal();
+    } else if (e.target === modalCalculadora) {
+        cerrarCalculadora();
+    } else if (e.target === modalGuia) {
+        cerrarGuia();
+    }
 });
 
 // --- TOGGLE PANEL DE FILTROS ---
