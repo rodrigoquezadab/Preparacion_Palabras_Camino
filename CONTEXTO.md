@@ -43,12 +43,13 @@ Una celebración típica de la Liturgia de la Palabra en el Camino Neocatecumena
 - **Salmos:** Libro de los Salmos (usados para el canto/salmo responsorial entre lecturas).
 - **Sapienciales:** Job, Proverbios, Eclesiastés (Qohélet), Cantar de los Cantares, Sabiduría, Eclesiástico (Sirácida).
 
-### Criterio de "Palabra de Precatecumenado / Completa"
-Para que una palabra pueda servir eficazmente para una preparación litúrgica completa en la fase de **Precatecumenado**, debe poseer **al menos 1 cita en cada una de las 4 partes fundamentales** (Históricos, Proféticos, Cartas/NT y Evangelio). 
+### Lista Oficial de las 148 Palabras del Precatecumenado
+En la praxis de las comunidades del Camino Neocatecumenal, la preparación de la Liturgia de la Palabra durante la fase del **Precatecumenado** sigue el **documento y temario oficial de 148 palabras numeradas** (desde la `1. Agua`, `2. Aceite`, `3. Amén`, `4. Adán`... hasta la `148. Voluntad de Dios`). 
 
-La aplicación cuenta con un **selector de modo destacado en la barra de filtros**:
-1. **`🌱 Precatecumenado (4 Partes)` (Activado por defecto):** Muestra exclusivamente las 259 palabras que cuentan con lecturas completas en las 4 partes requeridas para preparar la liturgia de la comunidad.
-2. **`📚 Todas las Palabras`:** Permite explorar la totalidad de los 289 términos del *Vocabulario de Xavier Léon-Dufour*, indicando con una etiqueta `⚠️ Falta: ...` las partes ausentes en aquellas palabras que no son aptas para una celebración de 4 lecturas.
+La aplicación integra este catálogo exacto y ofrece un **selector de modo destacado en la barra principal**:
+1. **`🌱 Precatecumenado (148 Palabras)` (Activado por defecto):** Muestra directamente las **148 palabras del documento oficial del Camino** respetando su numeración `#1` a `#148` y su orden original, enlazadas directamente a los textos y citas teológicas del *Vocabulario de Xavier Léon-Dufour*.
+2. **`📚 Todas las Palabras (289)`:** Permite alternar con un solo toque al vocabulario completo de los **289 términos** de Xavier Léon-Dufour, identificando con una insignia verde cuáles pertenecen al temario del Precatecumenado.
+3. **Criterio de Ordenación Flexible:** Permite ordenar por `#️⃣ Orden Oficial del Precatecumenado (1-148)`, `🔤 Alfabético (A-Z)`, `📊 Mayor/Menor cantidad de citas` o por abundancia en cada una de las 4 partes litúrgicas.
 
 ---
 

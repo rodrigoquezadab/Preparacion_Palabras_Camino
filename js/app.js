@@ -227,6 +227,163 @@ function unirSegmentosContiguos(citas) {
     return ordenarCitasAsc(resultado);
 }
 
+// ==========================================================================
+// LISTA OFICIAL DEL PRECATECUMENADO DEL CAMINO NEOCATECUMENAL (148 PALABRAS)
+// ==========================================================================
+const LISTA_PRECATECUMENADO_148 = [
+  { num: 1, nombre: "Agua", vocabKey: "Agua" },
+  { num: 2, nombre: "Aceite", vocabKey: "Aceite" },
+  { num: 3, nombre: "Amén", vocabKey: "Amén" },
+  { num: 4, nombre: "Adán", vocabKey: "Adán" },
+  { num: 5, nombre: "Alabanza", vocabKey: "Alabanza" },
+  { num: 6, nombre: "Alianza", vocabKey: "Alianza" },
+  { num: 7, nombre: "Amigo", vocabKey: "Amigo" },
+  { num: 8, nombre: "Árbol", vocabKey: "Árbol" },
+  { num: 9, nombre: "Amor", vocabKey: "Amor" },
+  { num: 10, nombre: "Banquete", vocabKey: "Comida", subInfo: "Léon-Dufour: Comida" },
+  { num: 11, nombre: "Bautismo", vocabKey: "Bautismo" },
+  { num: 12, nombre: "Bendición", vocabKey: "Bendición" },
+  { num: 13, nombre: "Cabeza", vocabKey: "Cuerpo de Cristo", subInfo: "Léon-Dufour: Cuerpo de Cristo" },
+  { num: 14, nombre: "Cáliz", vocabKey: "Copa", subInfo: "Léon-Dufour: Copa" },
+  { num: 15, nombre: "Camino", vocabKey: "Camino" },
+  { num: 16, nombre: "Caridad", vocabKey: "Amor", subInfo: "Léon-Dufour: Amor" },
+  { num: 17, nombre: "Carisma", vocabKey: "Carisma" },
+  { num: 18, nombre: "Carne", vocabKey: "Carne" },
+  { num: 19, nombre: "Casa", vocabKey: "Casa" },
+  { num: 20, nombre: "Combate", vocabKey: "Guerra", subInfo: "Léon-Dufour: Guerra" },
+  { num: 21, nombre: "Comida", vocabKey: "Comida" },
+  { num: 22, nombre: "Comunidad", vocabKey: "Comunión", subInfo: "Léon-Dufour: Comunión" },
+  { num: 23, nombre: "Confesión", vocabKey: "Confesión" },
+  { num: 24, nombre: "Confianza", vocabKey: "Confianza" },
+  { num: 25, nombre: "Conversión", vocabKey: "Penitencia - Conversión", subInfo: "Léon-Dufour: Penitencia - Conversión" },
+  { num: 26, nombre: "Copa", vocabKey: "Copa" },
+  { num: 27, nombre: "Cordero", vocabKey: "Cordero de Dios", subInfo: "Léon-Dufour: Cordero de Dios" },
+  { num: 28, nombre: "Creación", vocabKey: "Creación" },
+  { num: 29, nombre: "Cruz", vocabKey: "Cruz" },
+  { num: 30, nombre: "Cuerpo", vocabKey: "Cuerpo" },
+  { num: 31, nombre: "Culto", vocabKey: "Culto" },
+  { num: 32, nombre: "Demonios", vocabKey: "Demonios" },
+  { num: 33, nombre: "Desierto", vocabKey: "Desierto" },
+  { num: 34, nombre: "Designios", vocabKey: "Designio de Dios", subInfo: "Léon-Dufour: Designio de Dios" },
+  { num: 35, nombre: "Día", vocabKey: "Día del Señor", subInfo: "Léon-Dufour: Día del Señor" },
+  { num: 36, nombre: "Diácono", vocabKey: "Ministerio", subInfo: "Léon-Dufour: Ministerio" },
+  { num: 37, nombre: "Dios", vocabKey: "Dios" },
+  { num: 38, nombre: "Diálogo", vocabKey: "Palabra de Dios", subInfo: "Léon-Dufour: Palabra de Dios" },
+  { num: 39, nombre: "Dinero", vocabKey: "Riquezas", subInfo: "Léon-Dufour: Riquezas" },
+  { num: 40, nombre: "Discípulo", vocabKey: "Discípulo" },
+  { num: 41, nombre: "Domingo", vocabKey: "Día del Señor", subInfo: "Léon-Dufour: Día del Señor" },
+  { num: 42, nombre: "Elección", vocabKey: "Elección" },
+  { num: 43, nombre: "Emmanuel", vocabKey: "Presencia de Dios", subInfo: "Léon-Dufour: Presencia de Dios" },
+  { num: 44, nombre: "Enemigo", vocabKey: "Enemigo" },
+  { num: 45, nombre: "Escuchar", vocabKey: "Escuchar" },
+  { num: 46, nombre: "Esperanza", vocabKey: "Esperanza" },
+  { num: 47, nombre: "Espíritu", vocabKey: "Espíritu" },
+  { num: 48, nombre: "Esposo", vocabKey: "Esposo" },
+  { num: 49, nombre: "Eucaristía", vocabKey: "Eucaristía" },
+  { num: 50, nombre: "Evangelio", vocabKey: "Evangelio" },
+  { num: 51, nombre: "Exilio", vocabKey: "Exilio" },
+  { num: 52, nombre: "Éxodo", vocabKey: "Éxodo" },
+  { num: 53, nombre: "Exorcismo", vocabKey: "Satán", subInfo: "Léon-Dufour: Satán" },
+  { num: 54, nombre: "Familia", vocabKey: "Casa", subInfo: "Léon-Dufour: Casa" },
+  { num: 55, nombre: "Fariseo", vocabKey: "Fariseos", subInfo: "Léon-Dufour: Fariseos" },
+  { num: 56, nombre: "Fe", vocabKey: "Fe" },
+  { num: 57, nombre: "Fiesta", vocabKey: "Fiestas", subInfo: "Léon-Dufour: Fiestas" },
+  { num: 58, nombre: "Fracción", vocabKey: "Pan", subInfo: "Léon-Dufour: Pan" },
+  { num: 59, nombre: "Gracia", vocabKey: "Gracia" },
+  { num: 60, nombre: "Grano", vocabKey: "Sembrar", subInfo: "Léon-Dufour: Sembrar" },
+  { num: 61, nombre: "Hermano", vocabKey: "Hermano" },
+  { num: 62, nombre: "Hijo", vocabKey: "Hijo" },
+  { num: 63, nombre: "Historia", vocabKey: "Tiempo", subInfo: "Léon-Dufour: Tiempo" },
+  { num: 64, nombre: "Hijo del hombre", vocabKey: "Hijo del hombre" },
+  { num: 65, nombre: "Hombre", vocabKey: "Hombre" },
+  { num: 66, nombre: "Hora", vocabKey: "Hora" },
+  { num: 67, nombre: "Ídolo", vocabKey: "Ídolos", subInfo: "Léon-Dufour: Ídolos" },
+  { num: 68, nombre: "Iglesia", vocabKey: "Iglesia" },
+  { num: 69, nombre: "Infierno", vocabKey: "Infierno" },
+  { num: 70, nombre: "Israel", vocabKey: "Israel" },
+  { num: 71, nombre: "Jesús", vocabKey: "Jesús" },
+  { num: 72, nombre: "Juicio", vocabKey: "Juicio" },
+  { num: 73, nombre: "Kerigma", vocabKey: "Predicar", subInfo: "Léon-Dufour: Predicar" },
+  { num: 74, nombre: "Ley", vocabKey: "Ley" },
+  { num: 75, nombre: "Limosna", vocabKey: "Limosna" },
+  { num: 76, nombre: "Liberación", vocabKey: "Liberación - Libertad", subInfo: "Léon-Dufour: Liberación - Libertad" },
+  { num: 77, nombre: "Luz", vocabKey: "Luz" },
+  { num: 78, nombre: "Llave", vocabKey: "Puerta", subInfo: "Léon-Dufour: Puerta" },
+  { num: 79, nombre: "Madre", vocabKey: "Madre" },
+  { num: 80, nombre: "Mal", vocabKey: "Bien - Mal", subInfo: "Léon-Dufour: Bien - Mal" },
+  { num: 81, nombre: "Mar", vocabKey: "Mar" },
+  { num: 82, nombre: "María", vocabKey: "María" },
+  { num: 83, nombre: "Memorial", vocabKey: "Memoria", subInfo: "Léon-Dufour: Memoria" },
+  { num: 84, nombre: "Mesías", vocabKey: "Mesías" },
+  { num: 85, nombre: "Misterio", vocabKey: "Misterio" },
+  { num: 86, nombre: "Misión", vocabKey: "Misión" },
+  { num: 87, nombre: "Muerte", vocabKey: "Muerte" },
+  { num: 88, nombre: "Mujer", vocabKey: "Mujer" },
+  { num: 89, nombre: "Mundo", vocabKey: "Mundo" },
+  { num: 90, nombre: "Niño", vocabKey: "Niño" },
+  { num: 91, nombre: "Noche", vocabKey: "Noche" },
+  { num: 92, nombre: "Nube", vocabKey: "Nube" },
+  { num: 93, nombre: "Nombre", vocabKey: "Nombre" },
+  { num: 94, nombre: "Nuevo", vocabKey: "Nuevo" },
+  { num: 95, nombre: "Oración", vocabKey: "Oración" },
+  { num: 96, nombre: "Padre", vocabKey: "Padres y Padre", subInfo: "Léon-Dufour: Padres y Padre" },
+  { num: 97, nombre: "Palabra", vocabKey: "Palabra de Dios", subInfo: "Léon-Dufour: Palabra de Dios" },
+  { num: 98, nombre: "Pan", vocabKey: "Pan" },
+  { num: 99, nombre: "Parusía", vocabKey: "Día del Señor", subInfo: "Léon-Dufour: Día del Señor" },
+  { num: 100, nombre: "Pascua", vocabKey: "Pascua" },
+  { num: 101, nombre: "Pastor", vocabKey: "Pastor - Rebaño", subInfo: "Léon-Dufour: Pastor - Rebaño" },
+  { num: 102, nombre: "Paz", vocabKey: "Paz" },
+  { num: 103, nombre: "Pecado", vocabKey: "Pecado" },
+  { num: 104, nombre: "Perdón", vocabKey: "Perdón" },
+  { num: 105, nombre: "Piedra", vocabKey: "Piedra" },
+  { num: 106, nombre: "Pobres", vocabKey: "Pobres" },
+  { num: 107, nombre: "Presencia", vocabKey: "Presencia de Dios", subInfo: "Léon-Dufour: Presencia de Dios" },
+  { num: 108, nombre: "Profeta", vocabKey: "Profeta" },
+  { num: 109, nombre: "Promesa", vocabKey: "Promesas", subInfo: "Léon-Dufour: Promesas" },
+  { num: 110, nombre: "Prueba", vocabKey: "Prueba - Tentación", subInfo: "Léon-Dufour: Prueba - Tentación" },
+  { num: 111, nombre: "Pueblo", vocabKey: "Pueblo" },
+  { num: 112, nombre: "Puerta", vocabKey: "Puerta" },
+  { num: 113, nombre: "Reconciliación", vocabKey: "Reconciliación" },
+  { num: 114, nombre: "Redención", vocabKey: "Redención" },
+  { num: 115, nombre: "Reino", vocabKey: "Reino" },
+  { num: 116, nombre: "Reposo", vocabKey: "Reposo" },
+  { num: 117, nombre: "Resto", vocabKey: "Resto" },
+  { num: 118, nombre: "Rey", vocabKey: "Rey" },
+  { num: 119, nombre: "Resurrección", vocabKey: "Resurrección" },
+  { num: 120, nombre: "Riquezas", vocabKey: "Riquezas" },
+  { num: 121, nombre: "Roca", vocabKey: "Roca" },
+  { num: 122, nombre: "Sacerdocio", vocabKey: "Sacerdocio" },
+  { num: 123, nombre: "Sacrificios", vocabKey: "Sacrificio", subInfo: "Léon-Dufour: Sacrificio" },
+  { num: 124, nombre: "Salmo", vocabKey: "Alabanza", subInfo: "Léon-Dufour: Alabanza" },
+  { num: 125, nombre: "Salvación", vocabKey: "Salvación" },
+  { num: 126, nombre: "Sangre", vocabKey: "Sangre" },
+  { num: 127, nombre: "Santo", vocabKey: "Santo" },
+  { num: 128, nombre: "Satán", vocabKey: "Satán" },
+  { num: 129, nombre: "Sello", vocabKey: "Sello" },
+  { num: 130, nombre: "Señor", vocabKey: "Señor" },
+  { num: 131, nombre: "Siervo", vocabKey: "Siervo de Yahveh", subInfo: "Léon-Dufour: Siervo de Yahveh" },
+  { num: 132, nombre: "Templo", vocabKey: "Templo" },
+  { num: 133, nombre: "Trabajo", vocabKey: "Trabajo" },
+  { num: 134, nombre: "Trinidad", vocabKey: "Dios", subInfo: "Léon-Dufour: Dios" },
+  { num: 135, nombre: "Sufrimiento", vocabKey: "Sufrimiento" },
+  { num: 136, nombre: "Unión", vocabKey: "Comunión", subInfo: "Léon-Dufour: Comunión" },
+  { num: 137, nombre: "Unidad", vocabKey: "Unidad" },
+  { num: 138, nombre: "Verdad", vocabKey: "Verdad" },
+  { num: 139, nombre: "Vestido", vocabKey: "Vestido" },
+  { num: 140, nombre: "Vida", vocabKey: "Vida" },
+  { num: 141, nombre: "Viña", vocabKey: "Viña" },
+  { num: 142, nombre: "Vino", vocabKey: "Vino" },
+  { num: 143, nombre: "Virgen", vocabKey: "Virginidad", subInfo: "Léon-Dufour: Virginidad" },
+  { num: 144, nombre: "Vocación", vocabKey: "Vocación" },
+  { num: 145, nombre: "Vista", vocabKey: "Ver", subInfo: "Léon-Dufour: Ver" },
+  { num: 146, nombre: "Victoria", vocabKey: "Victoria" },
+  { num: 147, nombre: "Misericordia", vocabKey: "Misericordia" },
+  { num: 148, nombre: "Voluntad de Dios", vocabKey: "Voluntad de Dios" }
+];
+
+let listaPrecat = [];
+let listaTodas = [];
+
 // --- CARGA DE DATOS ---
 fetch("palabras.json")
     .then(r => {
@@ -235,10 +392,59 @@ fetch("palabras.json")
     })
     .then(data => {
         dbTextos = data.textos || {};
-        let rawList = Object.values(data.palabras);
+        const rawVocab = data.palabras;
+
+        // Construir mapa de números de Precatecumenado
+        const precatMap = new Map();
+        LISTA_PRECATECUMENADO_148.forEach(item => {
+            precatMap.set(item.vocabKey.toLowerCase(), item.num);
+        });
+
+        // 1. Construir lista oficial del Precatecumenado (148 palabras con su orden y numeración)
+        listaPrecat = LISTA_PRECATECUMENADO_148.map(item => {
+            const entry = rawVocab[item.vocabKey] || { palabra: item.nombre, lecturas: {} };
+            const l = entry.lecturas || {};
+            const hist = l.Historicos || [];
+            const prof = l.Profeticos || [];
+            const nt = l["Nuevo Testamento"] || [];
+            const ev = l.Evangelio || [];
+            const sal = l.Salmos || [];
+            const sap = l.Sapienciales || [];
+
+            const totalBase = hist.length + prof.length + nt.length + ev.length;
+            const cumple4Partes = (hist.length > 0 && prof.length > 0 && nt.length > 0 && ev.length > 0);
+
+            const pNorm = normalizar(item.nombre) + " " + normalizar(item.vocabKey);
+            setPalabrasExistentes.add(normalizar(item.nombre));
+            setPalabrasExistentes.add(normalizar(item.vocabKey));
+
+            return {
+                id: item.num,
+                numPrecat: item.num,
+                palabra: item.nombre,
+                subInfo: item.subInfo || "",
+                vocabKey: item.vocabKey,
+                palabraNorm: pNorm,
+                lecturas: l,
+                estaOrdenado: true,
+                estaUnido: true,
+                cumple4Partes: cumple4Partes,
+                total: totalBase,
+                totalConExtras: totalBase + sal.length + sap.length,
+                hist: hist.length,
+                prof: prof.length,
+                nt: nt.length,
+                ev: ev.length,
+                sal: sal.length,
+                sap: sap.length
+            };
+        });
+
+        // 2. Construir lista completa de todas las palabras (289 de Léon-Dufour)
+        let rawList = Object.values(rawVocab);
         rawList.sort((a, b) => a.palabra.localeCompare(b.palabra, 'es', { sensitivity: 'base' }));
 
-        listaGlobal = rawList.map((p, index) => {
+        listaTodas = rawList.map((p, index) => {
             const pNorm = normalizar(p.palabra);
             setPalabrasExistentes.add(pNorm);
             const l = p.lecturas || {};
@@ -252,14 +458,18 @@ fetch("palabras.json")
 
             const totalBase = hist.length + prof.length + nt.length + ev.length;
             const cumple4Partes = (hist.length > 0 && prof.length > 0 && nt.length > 0 && ev.length > 0);
+            const numPrecat = precatMap.get(p.palabra.toLowerCase()) || null;
 
             return {
                 id: index + 1,
+                numPrecat: numPrecat,
                 palabra: p.palabra,
+                subInfo: numPrecat ? `Precat. #${numPrecat}` : "",
+                vocabKey: p.palabra,
                 palabraNorm: pNorm,
                 lecturas: l,
                 estaOrdenado: true,
-                estaUnido: true, // Por defecto unificamos pericopas contiguas para facilitar la preparación
+                estaUnido: true,
                 cumple4Partes: cumple4Partes,
                 total: totalBase,
                 totalConExtras: totalBase + sal.length + sap.length,
@@ -271,6 +481,8 @@ fetch("palabras.json")
                 sap: sap.length
             };
         });
+
+        listaGlobal = listaPrecat;
 
         // Limpiar exclusiones obsoletas
         setExcluidos.forEach(excl => {
@@ -292,15 +504,21 @@ function actualizarVista() {
     const orden = selectOrden.value;
     const busqueda = normalizar(inputBusqueda.value);
 
-    let lista = listaGlobal.filter(item => {
-        if (setExcluidos.has(item.palabraNorm)) return false;
-        // Filtro de Modo Precatecumenado (activo por defecto)
-        if (modoFiltro === "precat" && !item.cumple4Partes) return false;
+    const baseList = (modoFiltro === "precat") ? listaPrecat : listaTodas;
+
+    let lista = baseList.filter(item => {
+        if (setExcluidos.has(item.palabraNorm) || setExcluidos.has(normalizar(item.palabra))) return false;
         if (busqueda.length > 0 && !item.palabraNorm.includes(busqueda)) return false;
         return true;
     });
 
     lista.sort((a, b) => {
+        if (orden === 'precat') {
+            if (a.numPrecat && b.numPrecat) return a.numPrecat - b.numPrecat;
+            if (a.numPrecat) return -1;
+            if (b.numPrecat) return 1;
+            return a.id - b.id;
+        }
         if (orden === 'alpha') return a.palabra.localeCompare(b.palabra, 'es');
         if (orden === 'asc') return a.total - b.total;
         if (orden === 'desc') return b.total - a.total;
@@ -311,11 +529,10 @@ function actualizarVista() {
         return 0;
     });
 
-    const totalAptas = listaGlobal.filter(i => i.cumple4Partes && !setExcluidos.has(i.palabraNorm)).length;
     if (modoFiltro === "precat") {
-        infoStats.innerHTML = `🌱 <strong>Precatecumenado:</strong> Viendo <strong>${lista.length}</strong> palabras válidas (con 4 partes) de ${listaGlobal.length} del vocabulario`;
+        infoStats.innerHTML = `🌱 <strong>Precatecumenado:</strong> Viendo <strong>${lista.length}</strong> de 148 palabras oficiales del documento`;
     } else {
-        infoStats.innerHTML = `📚 <strong>Vocabulario Completo:</strong> Viendo <strong>${lista.length}</strong> palabras de ${listaGlobal.length} <span class="badge-apta-count" title="Palabras válidas para Precatecumenado (${totalAptas})">(${totalAptas} válidas Precatecumenado)</span>`;
+        infoStats.innerHTML = `📚 <strong>Vocabulario Completo:</strong> Viendo <strong>${lista.length}</strong> de ${listaTodas.length} palabras de Xavier Léon-Dufour`;
     }
 
     dibujarLista(lista, mostrarExtras);
@@ -371,8 +588,11 @@ function dibujarLista(lista, mostrarExtras) {
         const titleDiv = document.createElement("div");
         titleDiv.className = "word-title-wrapper";
         titleDiv.innerHTML = `
-            <span class="word-number">#${item.id}</span>
-            <h2 class="word-name">${item.palabra}</h2>
+            <span class="word-number">#${item.numPrecat || item.id}</span>
+            <h2 class="word-name">
+                ${item.palabra}
+                ${item.subInfo ? `<span class="word-subname" title="Referencia en Léon-Dufour">(${item.subInfo})</span>` : ''}
+            </h2>
         `;
 
         const badgeCriterio = document.createElement("div");
@@ -387,7 +607,7 @@ function dibujarLista(lista, mostrarExtras) {
             if (item.nt === 0) faltantes.push("NT");
             if (item.ev === 0) faltantes.push("Ev");
             badgeCriterio.className = "badge-criterio badge-incompleta";
-            badgeCriterio.setAttribute("title", `Incompleta para preparación litúrgica. Faltan: ${faltantes.join(", ")}`);
+            badgeCriterio.setAttribute("title", `Incompleta para preparación litúrgica de 4 partes. Faltan: ${faltantes.join(", ")}`);
             badgeCriterio.innerHTML = `⚠️ Falta: ${faltantes.join(", ")}`;
         }
 
@@ -1146,6 +1366,7 @@ if (btnModoPrecat) {
         modoFiltro = "precat";
         btnModoPrecat.classList.add("active");
         if (btnModoTodas) btnModoTodas.classList.remove("active");
+        selectOrden.value = "precat";
         actualizarVista();
     };
 }
@@ -1155,6 +1376,9 @@ if (btnModoTodas) {
         modoFiltro = "todas";
         btnModoTodas.classList.add("active");
         if (btnModoPrecat) btnModoPrecat.classList.remove("active");
+        if (selectOrden.value === "precat") {
+            selectOrden.value = "alpha";
+        }
         actualizarVista();
     };
 }

@@ -558,6 +558,20 @@
       font-weight: 700;
       color: var(--text-main);
       letter-spacing: -0.2px;
+      display: inline-flex;
+      align-items: baseline;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .word-subname {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: #64748b;
+      background: #f1f5f9;
+      padding: 1px 6px;
+      border-radius: var(--radius-sm);
+      border: 1px solid #e2e8f0;
     }
 
     .badge-criterio {
@@ -566,6 +580,12 @@
       padding: 3px 8px;
       border-radius: var(--radius-full);
       white-space: nowrap;
+    }
+
+    .badge-precat {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
     }
 
     .badge-apta {
@@ -1400,11 +1420,11 @@
 
       <!-- Selector de Modo / Alcance de Palabras (Precatecumenado por defecto) -->
       <div class="filter-mode-pills">
-        <button id="btnModoPrecat" class="btn-mode-pill active" title="Filtro Precatecumenado (Activado por defecto): Muestra las palabras que contienen lecturas en las 4 partes fundamentales de la Biblia (Históricos, Proféticos, Cartas/NT y Evangelio) válidas para preparar la celebración">
-          <span>🌱 Precatecumenado (4 Partes)</span>
+        <button id="btnModoPrecat" class="btn-mode-pill active" title="Filtro Precatecumenado (Activado por defecto): Muestra las 148 palabras oficiales del documento de preparación del Precatecumenado con su orden y numeración original">
+          <span>🌱 Precatecumenado (148 Palabras)</span>
         </button>
         <button id="btnModoTodas" class="btn-mode-pill" title="Vocabulario Completo: Muestra todas las 289 palabras del Vocabulario de Teología Bíblica de Xavier Léon-Dufour">
-          <span>📚 Todas las Palabras</span>
+          <span>📚 Todas las Palabras (289)</span>
         </button>
       </div>
 
@@ -1419,6 +1439,7 @@
         <div class="sort-wrapper">
           <label for="selectOrden" class="sort-label">Ordenar:</label>
           <select id="selectOrden" class="select-custom" title="Selecciona el criterio de ordenación de las palabras">
+            <option value="precat" id="optOrdenPrecat" title="Ordenar por la numeración oficial del documento del Precatecumenado (#1 a #148)">#️⃣ Orden Precatecumenado (1-148)</option>
             <option value="alpha" title="Ordenar de la A a la Z">Alfabético (A-Z)</option>
             <option value="desc" title="Mostrar primero las palabras con mayor cantidad de citas">Mayor Cantidad de Citas</option>
             <option value="asc" title="Mostrar primero las palabras con menor cantidad de citas">Menor Cantidad de Citas</option>
