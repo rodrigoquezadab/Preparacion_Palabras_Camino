@@ -722,6 +722,29 @@
       box-shadow: 0 2px 4px rgba(59, 130, 246, 0.25);
     }
 
+    .btn-quick-art {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1.5px solid #fde68a;
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn-quick-art:hover {
+      background: #d97706;
+      color: #ffffff;
+      border-color: #d97706;
+      box-shadow: 0 2px 4px rgba(217, 119, 6, 0.25);
+    }
+
     .btn-action:hover {
       background: var(--bg-card-hover);
       border-color: var(--primary);
@@ -732,6 +755,18 @@
       background: #dbeafe;
       border-color: #3b82f6;
       color: #1e3a8a;
+    }
+
+    .btn-articulo {
+      background: #fffbeb;
+      border-color: #fde68a;
+      color: #92400e;
+    }
+
+    .btn-articulo:hover {
+      background: #fef3c7;
+      border-color: #d97706;
+      color: #78350f;
     }
 
     .btn-copiar {
@@ -887,8 +922,12 @@
       z-index: 1100;
     }
 
+    #modalArticulo {
+      z-index: 1150;
+    }
+
     #modalLectura {
-      z-index: 1200;
+      z-index: 1250;
     }
 
     .modal-card {
@@ -1387,6 +1426,157 @@
     }
 
     /* ==========================================================================
+       MODAL ARTÍCULO TEOLÓGICO DE XAVIER LÉON-DUFOUR
+       ========================================================================== */
+    .modal-articulo-card {
+      max-width: 820px;
+    }
+
+    .modal-header-articulo {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+    }
+
+    .badge-autor-dufour {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      color: #fde68a;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .modal-body-articulo {
+      font-family: 'Merriweather', Georgia, 'Times New Roman', serif;
+      font-size: 1.02rem;
+      line-height: 1.8;
+      color: #1e293b;
+      background: #fafaf9;
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .modal-body-articulo p {
+      margin-bottom: 16px;
+      text-align: justify;
+    }
+
+    .modal-body-articulo .frag {
+      margin-bottom: 20px;
+    }
+
+    .modal-body-articulo .fid {
+      font-weight: 800;
+      color: #4338ca;
+      margin-right: 4px;
+      font-family: var(--font-sans);
+    }
+
+    .modal-body-articulo .hf1,
+    .modal-body-articulo .hf2,
+    .modal-body-articulo .hf3 {
+      font-weight: 800;
+      color: #0f172a;
+      font-family: var(--font-sans);
+      font-size: 1.05rem;
+      margin-bottom: 6px;
+      display: inline;
+    }
+
+    .modal-body-articulo cite {
+      font-style: normal;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 700;
+      background: #e0e7ff;
+      color: #3730a3;
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      border: 1px solid #c7d2fe;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.15s ease;
+      margin: 0 2px;
+    }
+
+    .modal-body-articulo cite:hover {
+      background: #4338ca;
+      color: #ffffff;
+      border-color: #4338ca;
+      box-shadow: 0 2px 4px rgba(67, 56, 202, 0.3);
+    }
+
+    .modal-body-articulo cite::after {
+      content: ' 📖';
+      font-size: 0.75rem;
+    }
+
+    .modal-body-articulo a.otro {
+      color: #0284c7;
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 1px dashed #38bdf8;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .modal-body-articulo a.otro:hover {
+      color: #0369a1;
+      border-bottom-style: solid;
+      background: #e0f2fe;
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+
+    .articulo-relacionados-box {
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 2px dashed #cbd5e1;
+      font-family: var(--font-sans);
+    }
+
+    .articulo-relacionados-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .articulo-relacionados-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chip-relacionado {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .chip-relacionado:hover {
+      background: #4338ca;
+      color: #ffffff;
+      border-color: #4338ca;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ==========================================================================
        ESTADO VACÍO & TOAST
        ========================================================================== */
     .empty-state {
@@ -1594,6 +1784,31 @@
           📋 Copiar Reparto Completo
         </button>
         <button id="btnCerrarCalcModalBottom" class="btn-action" title="Cerrar la calculadora">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL ARTÍCULO ÍNTEGRO DE XAVIER LÉON-DUFOUR -->
+  <div id="modalArticulo" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-card modal-articulo-card">
+      <div class="modal-header modal-header-articulo">
+        <div class="modal-header-titles">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="badge-autor-dufour">Xavier Léon-Dufour</span>
+            <h2 id="articuloModalTitulo" class="modal-title">Artículo Teológico</h2>
+          </div>
+          <span id="articuloModalSubtitulo" class="modal-subtitle">Vocabulario de Teología Bíblica</span>
+        </div>
+        <button id="btnCerrarArticuloModal" class="btn-close-modal" aria-label="Cerrar modal" title="Cerrar artículo">&times;</button>
+      </div>
+
+      <div class="modal-body modal-body-articulo" id="articuloModalCuerpo"></div>
+
+      <div class="modal-footer">
+        <button id="btnCopiarArticulo" class="btn-action btn-copiar" title="Copiar texto íntegro del artículo para apuntes o estudio">
+          📋 Copiar Artículo
+        </button>
+        <button id="btnCerrarArticuloModalBottom" class="btn-action" title="Cerrar artículo">Cerrar</button>
       </div>
     </div>
   </div>

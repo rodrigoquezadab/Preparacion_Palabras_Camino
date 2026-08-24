@@ -41,6 +41,7 @@ const NOMBRES_LIBROS = {
 };
 
 // --- VARIABLES GLOBALES DE ESTADO ---
+let dataGlobalRef = null;
 let listaGlobal = [];
 let dbTextos = {};
 let setExcluidos = new Set(JSON.parse(localStorage.getItem('palabrasExcluidas')) || []);
@@ -50,6 +51,9 @@ let palabraAbiertaId = null;
 // Estado de la Calculadora de Participantes
 let palabraCalculadoraActual = null;
 let numParticipantesActual = 4;
+
+// Estado de Artículo Teológico
+let articuloActual = null;
 
 // Filtro de Modo (Precatecumenado vs Vocabulario Completo)
 let modoFiltro = "precat"; // "precat" (por defecto) o "todas"
@@ -93,6 +97,15 @@ const calcCheckExtras = document.getElementById("calcCheckExtras");
 const calcSummaryText = document.getElementById("calcSummaryText");
 const contenedorHermanos = document.getElementById("contenedorHermanos");
 const btnCopiarRepartoCompleto = document.getElementById("btnCopiarRepartoCompleto");
+
+// Modal de Artículo Teológico de Léon-Dufour
+const modalArticulo = document.getElementById("modalArticulo");
+const articuloModalTitulo = document.getElementById("articuloModalTitulo");
+const articuloModalSubtitulo = document.getElementById("articuloModalSubtitulo");
+const articuloModalCuerpo = document.getElementById("articuloModalCuerpo");
+const btnCerrarArticuloModal = document.getElementById("btnCerrarArticuloModal");
+const btnCerrarArticuloModalBottom = document.getElementById("btnCerrarArticuloModalBottom");
+const btnCopiarArticulo = document.getElementById("btnCopiarArticulo");
 
 // Toast de notificación
 const toast = document.getElementById("toast");
@@ -395,6 +408,7 @@ fetch("palabras.json")
         return r.json();
     })
     .then(data => {
+        dataGlobalRef = data;
         dbTextos = data.textos || {};
         const rawVocab = data.palabras;
 
@@ -430,6 +444,8 @@ fetch("palabras.json")
                 vocabKey: item.vocabKey,
                 palabraNorm: pNorm,
                 lecturas: l,
+                contenido: entry.contenido || "",
+                relacionados: entry.relacionados || [],
                 estaOrdenado: true,
                 estaUnido: true,
                 cumple4Partes: cumple4Partes,
@@ -472,6 +488,8 @@ fetch("palabras.json")
                 vocabKey: p.palabra,
                 palabraNorm: pNorm,
                 lecturas: l,
+                contenido: p.contenido || "",
+                relacionados: p.relacionados || [],
                 estaOrdenado: true,
                 estaUnido: true,
                 cumple4Partes: cumple4Partes,
@@ -621,6 +639,15 @@ function dibujarLista(lista, mostrarExtras) {
         rightHeaderBox.style.gap = "6px";
         rightHeaderBox.style.flexWrap = "wrap";
 
+        const btnQuickArticulo = document.createElement("button");
+        btnQuickArticulo.className = "btn-quick-art";
+        btnQuickArticulo.setAttribute("title", `Leer el artículo teológico íntegro de Xavier Léon-Dufour sobre "${item.palabra}"`);
+        btnQuickArticulo.innerHTML = `📚 Artículo`;
+        btnQuickArticulo.onclick = (e) => {
+            e.stopPropagation();
+            abrirModalArticulo(item);
+        };
+
         const btnQuickCalc = document.createElement("button");
         btnQuickCalc.className = "btn-quick-calc";
         btnQuickCalc.setAttribute("title", `Toca para abrir la calculadora y repartir las lecturas de "${item.palabra}" entre los participantes`);
@@ -630,6 +657,7 @@ function dibujarLista(lista, mostrarExtras) {
             abrirCalculadora(item);
         };
 
+        rightHeaderBox.appendChild(btnQuickArticulo);
         rightHeaderBox.appendChild(btnQuickCalc);
         rightHeaderBox.appendChild(badgeCriterio);
 
@@ -665,6 +693,16 @@ function dibujarLista(lista, mostrarExtras) {
         // Barra de acciones del cuerpo
         const actionsBar = document.createElement("div");
         actionsBar.className = "card-actions-bar";
+
+        // Botón Leer Léon-Dufour
+        const btnArticulo = document.createElement("button");
+        btnArticulo.className = "btn-action btn-articulo";
+        btnArticulo.setAttribute("title", `Lee el artículo y comentario teológico íntegro de Xavier Léon-Dufour sobre "${item.palabra}"`);
+        btnArticulo.innerHTML = `📚 Leer Léon-Dufour`;
+        btnArticulo.onclick = (e) => {
+            e.stopPropagation();
+            abrirModalArticulo(item);
+        };
 
         // Botón Calculadora / Repartir entre Hermanos
         const btnCalc = document.createElement("button");
@@ -712,6 +750,7 @@ function dibujarLista(lista, mostrarExtras) {
             excluirPalabraDirecta(item.palabra);
         };
 
+        actionsBar.appendChild(btnArticulo);
         actionsBar.appendChild(btnCalc);
         actionsBar.appendChild(btnUnir);
         actionsBar.appendChild(btnCopiar);
@@ -1176,6 +1215,180 @@ btnCerrarCalcModal.onclick = cerrarCalculadora;
 btnCerrarCalcModalBottom.onclick = cerrarCalculadora;
 btnCopiarRepartoCompleto.onclick = copiarRepartoCompleto;
 
+// ==========================================================================
+// MODAL DE ARTÍCULO TEOLÓGICO DE XAVIER LÉON-DUFOUR
+// ==========================================================================
+
+function abrirModalArticulo(item) {
+    if (!item) return;
+    articuloActual = item;
+    
+    // Clave en Léon-Dufour
+    const vocabKey = item.vocabKey || item.palabra;
+    const datosEntrada = (dataGlobalRef && dataGlobalRef.palabras) ? dataGlobalRef.palabras[vocabKey] : null;
+    const rawContenido = (datosEntrada && datosEntrada.contenido) ? datosEntrada.contenido : (item.contenido || "");
+    const relacionados = (datosEntrada && datosEntrada.relacionados) ? datosEntrada.relacionados : (item.relacionados || []);
+
+    articuloModalTitulo.textContent = item.palabra;
+    if (item.subInfo) {
+        articuloModalSubtitulo.textContent = `Vocabulario de Teología Bíblica (${item.subInfo})`;
+    } else {
+        articuloModalSubtitulo.textContent = `Vocabulario de Teología Bíblica — Xavier Léon-Dufour`;
+    }
+
+    if (rawContenido) {
+        articuloModalCuerpo.innerHTML = formatearArticuloHTML(rawContenido, relacionados);
+        activarInteractividadArticulo(item);
+    } else {
+        articuloModalCuerpo.innerHTML = `
+            <div class="empty-state">
+                <p>No se encontró el texto completo del artículo para <strong>${item.palabra}</strong>.</p>
+                <small>Puedes consultar las citas bíblicas directamente en la lista.</small>
+            </div>
+        `;
+    }
+
+    modalArticulo.style.display = "flex";
+    document.body.classList.add("modal-open");
+}
+
+function cerrarModalArticulo() {
+    modalArticulo.style.display = "none";
+    if (modalCalculadora.style.display !== "flex" && modalLectura.style.display !== "flex" && modalGuia.style.display !== "flex") {
+        document.body.classList.remove("modal-open");
+    }
+    articuloActual = null;
+}
+
+function formatearArticuloHTML(rawHtml, relacionados) {
+    // 1. Transformar <cite>...</cite> en botones interactivos con clase cite-pill
+    let html = rawHtml.replace(/<cite[^>]*>([\s\S]*?)<\/cite>/gi, (match, citeText) => {
+        const cleanText = citeText.replace(/<[^>]*>/g, '').trim();
+        return `<cite class="cite-pill" data-cite="${cleanText}" title="Toca para leer el texto bíblico completo de: ${cleanText}">${cleanText}</cite>`;
+    });
+
+    // 2. Transformar enlaces cruzados de Léon-Dufour
+    html = html.replace(/<a class="otro" href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/gi, (match, href, linkText) => {
+        const cleanWord = linkText.replace(/<[^>]*>/g, '').trim();
+        return `<a class="otro" data-palabra="${cleanWord}" title="Explorar tema: ${cleanWord}">${linkText}</a>`;
+    });
+
+    // 3. Agregar caja de temas y vocablos relacionados al final
+    if (relacionados && relacionados.length > 0) {
+        html += `
+            <div class="articulo-relacionados-box">
+                <div class="articulo-relacionados-title">
+                    <span>🔗</span> Temas y Vocablos Teológicos Relacionados:
+                </div>
+                <div class="articulo-relacionados-chips">
+        `;
+        relacionados.forEach(rel => {
+            const nombreRel = (typeof rel === 'object' && rel.text) ? rel.text : rel;
+            html += `<button class="chip-relacionado" data-palabra="${nombreRel}" title="Ver tema teológico '${nombreRel}'">${nombreRel}</button>`;
+        });
+        html += `
+                </div>
+            </div>
+        `;
+    }
+
+    return html;
+}
+
+function resolverCitaDesdeTexto(citeText, item) {
+    if (!citeText) return null;
+    const clean = citeText.trim();
+
+    // 1. Buscar coincidencia exacta en las lecturas de la palabra
+    if (item && item.lecturas) {
+        for (const cat of Object.keys(item.lecturas)) {
+            const arr = item.lecturas[cat];
+            if (arr) {
+                const found = arr.find(c => c.citaOriginal.toLowerCase() === clean.toLowerCase());
+                if (found) return found;
+            }
+        }
+    }
+
+    // 2. Parseo inteligente de libro y capítulo
+    const m = clean.match(/^([0-9]?[a-záéíóúñA-ZÁÉÍÓÚÑ]+)\s*([0-9]+)(?:[,:]([0-9]+)(?:-([0-9]+))?)?/i);
+    if (m) {
+        const rawBook = normalizar(m[1]);
+        const cap = parseInt(m[2], 10);
+        const vIni = m[3] ? parseInt(m[3], 10) : null;
+        const vFin = m[4] ? parseInt(m[4], 10) : null;
+
+        let bookCode = null;
+        for (const [code, name] of Object.entries(NOMBRES_LIBROS)) {
+            const nameNorm = normalizar(name);
+            const codeNorm = normalizar(code);
+            if (codeNorm === rawBook || nameNorm.startsWith(rawBook) || rawBook.startsWith(codeNorm) || rawBook.startsWith(nameNorm.slice(0, 3))) {
+                bookCode = code;
+                break;
+            }
+        }
+
+        if (bookCode) {
+            const ref = `${bookCode}-${cap}`;
+            if (dbTextos[ref]) {
+                return {
+                    citaOriginal: clean,
+                    libro: bookCode,
+                    libroNombre: NOMBRES_LIBROS[bookCode] || bookCode,
+                    capitulo: cap,
+                    versiculoInicio: vIni,
+                    versiculoFin: vFin,
+                    textoRef: ref
+                };
+            }
+        }
+    }
+    return null;
+}
+
+function activarInteractividadArticulo(item) {
+    // Clic en citas bíblicas dentro del artículo
+    articuloModalCuerpo.querySelectorAll(".cite-pill").forEach(pill => {
+        pill.onclick = (e) => {
+            e.stopPropagation();
+            const citeText = pill.dataset.cite;
+            const citaObj = resolverCitaDesdeTexto(citeText, item);
+            if (citaObj) {
+                abrirModalLectura(citaObj);
+            } else {
+                mostrarToast(`📖 Referencia: ${citeText}`);
+            }
+        };
+    });
+
+    // Clic en términos relacionados o enlaces internos
+    articuloModalCuerpo.querySelectorAll(".otro, .chip-relacionado").forEach(btn => {
+        btn.onclick = (e) => {
+            e.stopPropagation();
+            const termino = btn.dataset.palabra;
+            cerrarModalArticulo();
+            inputBusqueda.value = termino;
+            actualizarVista();
+            mostrarToast(`🔍 Explorando "${termino}"`);
+        };
+    });
+}
+
+if (btnCerrarArticuloModal) btnCerrarArticuloModal.onclick = cerrarModalArticulo;
+if (btnCerrarArticuloModalBottom) btnCerrarArticuloModalBottom.onclick = cerrarModalArticulo;
+
+if (btnCopiarArticulo) {
+    btnCopiarArticulo.onclick = () => {
+        if (!articuloActual) return;
+        const textoPlano = articuloModalCuerpo.innerText;
+        const header = `📖 VOCABULARIO DE TEOLOGÍA BÍBLICA — XAVIER LÉON-DUFOUR\nTema: "${articuloActual.palabra.toUpperCase()}"\n==================================================\n\n`;
+        const copia = header + textoPlano;
+        navigator.clipboard.writeText(copia).then(() => {
+            mostrarToast(`✅ Artículo íntegro de "${articuloActual.palabra}" copiado`);
+        });
+    };
+}
+
 // --- MODAL DE LECTURA BÍBLICA ---
 function abrirModalLectura(cita) {
     citaModalActual = cita;
@@ -1218,8 +1431,8 @@ function formatearTextoConResaltado(html, cita) {
 
 function cerrarModal() {
     modalLectura.style.display = "none";
-    // Si el modal de la calculadora o guía estaba abierto, mantener modal-open en el body
-    if (modalCalculadora.style.display !== "flex" && modalGuia.style.display !== "flex") {
+    // Si el modal de la calculadora, artículo o guía estaba abierto, mantener modal-open en el body
+    if (modalCalculadora.style.display !== "flex" && modalArticulo.style.display !== "flex" && modalGuia.style.display !== "flex") {
         document.body.classList.remove("modal-open");
     }
     citaModalActual = null;
@@ -1367,6 +1580,8 @@ window.addEventListener("click", (e) => {
         cerrarModal();
     } else if (e.target === modalCalculadora) {
         cerrarCalculadora();
+    } else if (e.target === modalArticulo) {
+        cerrarModalArticulo();
     } else if (e.target === modalGuia) {
         cerrarGuia();
     }

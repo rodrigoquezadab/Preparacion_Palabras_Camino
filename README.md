@@ -41,9 +41,14 @@ Semanalmente, un grupo de hermanos de la comunidad prepara la celebración de la
 #### 📖 D. Visor Bíblico Integrado (100% Biblia de Jerusalén)
 - **Texto Sagrado Completo:** Base de datos con los 73 libros canónicos (1.335 capítulos, 35.549 versículos) integrados localmente sin textos faltantes.
 - **Resaltado Inteligente:** Al abrir cualquier cita, el visor resalta los versículos específicos de la perícopa dentro del capítulo completo.
-- **Superposición Inteligente de Modales:** La lectura bíblica se abre por encima de la calculadora sin cerrarla, permitiendo explorar varias citas consecutivas.
+- **Superposición Inteligente de Modales:** La lectura bíblica se abre por encima de la calculadora y del artículo sin cerrarlos, permitiendo explorar varias citas consecutivas.
 
-#### 📱 E. Diseño Mobile-First & Guía Litúrgica
+#### 📚 E. Acceso al Artículo Íntegro del Libro de Xavier Léon-Dufour
+- **Texto Teológico Completo:** Acceso directo a la lectura íntegra del artículo del *Vocabulario de Teología Bíblica* de Xavier Léon-Dufour para cada palabra (`📚 Leer Léon-Dufour` y `📚 Artículo`).
+- **Citas Bíblicas Interactivas dentro del Texto:** Cada cita mencionada en el cuerpo del artículo (ej. `<cite>Rom 4,11</cite>`) es interactiva: al pulsarla, abre de inmediato el pasaje bíblico en la *Biblia de Jerusalén*.
+- **Enlaces Cruzados y Temas Relacionados:** Navegación fluida entre vocablos teológicos afines y botón para copiar el artículo íntegro para estudio o catequesis.
+
+#### 📱 F. Diseño Mobile-First & Guía Litúrgica
 - **Optimizado para Móviles:** Interfaz táctil ergonómica y rápida para su uso en reuniones comunitarias de preparación.
 - **Tooltips Explicativos:** Cada botón y control dispone de textos descriptivos.
 - **Centro de Ayuda (`📖 Guía`):** Explicación de las 4 partes litúrgicas, reglas del Camino y nomenclatura bíblica (`s`, `ss`, `p`, `.`, `-`, `,`, `a,b,c`).
@@ -52,7 +57,7 @@ Semanalmente, un grupo de hermanos de la comunidad prepara la celebración de la
 
 ### 3. Fuentes de Datos Oficiales
 
-1. **Vocabulario Teológico:** [Xavier Léon-Dufour](https://leondufour.com/) (*Vocabulario de Teología Bíblica*, Editorial Herder). 25.845 citas auditadas.
+1. **Vocabulario Teológico:** [Xavier Léon-Dufour](https://leondufour.com/) (*Vocabulario de Teología Bíblica*, Editorial Herder). 25.845 citas auditadas y 289 artículos completos.
 2. **Texto Bíblico:** *Biblia de Jerusalén* (Editorial Desclée de Brouwer).
 
 ---
@@ -85,7 +90,7 @@ npx serve .
 
 This web application is designed to **facilitate and enrich the preparation of the Liturgy of the Word in communities of the Neocatechumenal Way**.
 
-Every week, a group of brothers and sisters prepares the community's Liturgy of the Word based on a theological topic or word from **Xavier Léon-Dufour's Vocabulary of Biblical Theology**. The application automates citation discovery, validates liturgical requirements, offers full in-app Bible reading, and provides an equitable, linear distribution of readings among participants.
+Every week, a group of brothers and sisters prepares the community's Liturgy of the Word based on a theological topic or word from **Xavier Léon-Dufour's Vocabulary of Biblical Theology**. The application automates citation discovery, validates liturgical requirements, offers full in-app Bible reading, full theological article access, and provides an equitable, linear distribution of readings among participants.
 
 ---
 
@@ -108,9 +113,14 @@ Every week, a group of brothers and sisters prepares the community's Liturgy of 
 #### 📖 D. Built-in Bible Reader (100% Jerusalem Bible)
 - **Complete Sacred Text:** Integrated database with all 73 Catholic canonical books (1,335 chapters, 35,549 verses) with 0 missing texts.
 - **Smart Verse Highlighting:** Opening any citation highlights the specific verses within the full chapter context.
-- **Layered Modal Navigation:** The scripture reader opens seamlessly on top of the calculator without closing it, allowing users to inspect multiple readings without losing their place.
+- **Layered Modal Navigation:** The scripture reader opens seamlessly on top of the calculator and articles without closing them, allowing users to inspect multiple readings without losing their place.
 
-#### 📱 E. Mobile-First Ergonomics & Liturgical Guide
+#### 📚 E. Unabridged Xavier Léon-Dufour Theological Articles
+- **Full Book Entries:** Direct access to the complete, original entry from Xavier Léon-Dufour's *Dictionary of Biblical Theology* for every word (`📚 Leer Léon-Dufour` and `📚 Artículo`).
+- **Interactive Scripture Links:** Every Bible reference embedded in the article text (e.g. `Rom 4:11`) is an interactive button that opens the biblical passage directly in the Jerusalem Bible.
+- **Theological Cross-References:** Instant navigation between related theological themes and one-tap button to copy the entire article for study or preparation notes.
+
+#### 📱 F. Mobile-First Ergonomics & Liturgical Guide
 - **Designed for Smartphones:** Fast, touch-friendly UI tailored for mobile devices used during preparation meetings.
 - **Interactive Tooltips:** Every button includes descriptive text explaining its function.
 - **Help Center (`📖 Guía`):** Detailed explanations of the 4 liturgical parts, community rules, and biblical notation (`s`, `ss`, `p`, `.`, `-`, `,`, `a,b,c`).
@@ -119,7 +129,7 @@ Every week, a group of brothers and sisters prepares the community's Liturgy of 
 
 ### 3. Canonical Sources
 
-1. **Theological Vocabulary:** [Xavier Léon-Dufour](https://leondufour.com/) (*Dictionary of Biblical Theology*). Over 25,845 audited citations.
+1. **Theological Vocabulary:** [Xavier Léon-Dufour](https://leondufour.com/) (*Dictionary of Biblical Theology*). Over 25,845 audited citations and 289 full unabridged articles.
 2. **Biblical Text:** *Biblia de Jerusalén* (Editorial Desclée de Brouwer).
 
 ---

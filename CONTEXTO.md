@@ -108,6 +108,13 @@ La aplicación integra este catálogo exacto y ofrece un **selector de modo dest
      - Letras `a`, `b`, `c` (frases o cláusulas sucesivas de un mismo versículo: `a` = 1ª frase, `b` = 2ª frase, `c` = 3ª frase, muy común en versículos poéticos o largos con 3 partes).
   3. *Uso de la Aplicación:* Detalle de perícopas unidas, calculadora lineal y gestión de exclusiones.
 
+### F. Lectura Íntegra del Artículo Teológico de Xavier Léon-Dufour
+- **Acceso Completo al Vocabulario Original:** Cada término teológico incluye un botón destacado (`📚 Leer Léon-Dufour` y `📚 Artículo`) para leer el artículo teológico íntegro y sin abreviar de la obra de Xavier Léon-Dufour (*Vocabulario de Teología Bíblica*).
+- **Tipografía y Legibilidad Editorial:** Modal diseñado para lectura reposada y estudio bíblico, respetando la estructura original (introducción, desarrollo de la revelación en el AT y NT, divisiones numeradas y notas dogmáticas).
+- **Citas Bíblicas Interactivas dentro del Texto:** Cada cita que aparece mencionada en el texto del artículo se transforma automáticamente en un botón interactivo (`<cite class="cite-pill">`). Al tocarlo, abre de inmediato el pasaje bíblico en la *Biblia de Jerusalén* por encima del artículo sin cerrar la lectura.
+- **Navegación por Términos Relacionados:** Al final del artículo se listan los vocablos teológicos afines para saltar directamente a su estudio y preparación.
+- **Copia Integral:** Permite copiar el texto del artículo completo al portapapeles para notas o resúmenes de preparación.
+
 ---
 
 ## 5. Estructura de Archivos del Proyecto

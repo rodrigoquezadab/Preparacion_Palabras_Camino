@@ -412,6 +412,8 @@ rawEntries.forEach((entry) => {
 
     palabrasObj[title] = {
         palabra: title,
+        contenido: entry.content || "",
+        relacionados: entry.related || [],
         lecturas: lecturas
     };
 });
