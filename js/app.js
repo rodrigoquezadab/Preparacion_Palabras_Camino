@@ -600,6 +600,50 @@ function copiarEsquemaPalabra(item, lecturas, mostrarExtras) {
 // CALCULADORA DE PARTICIPANTES (DISTRIBUCIÓN LINEAL BÍBLICA SIN SALTOS)
 // ==========================================================================
 
+function calcularCaracteresCita(cita) {
+    if (!cita || !cita.textoRef) return 150;
+    const rawHtml = dbTextos[cita.textoRef];
+    if (!rawHtml) {
+        const ini = cita.versiculoInicio || 1;
+        const fin = (cita.continuidad === 's' ? ini + 1 : (cita.continuidad === 'ss' ? ini + 5 : (cita.versiculoFin || ini)));
+        return Math.max(100, (fin - ini + 1) * 150);
+    }
+
+    const ini = cita.versiculoInicio;
+    const fin = cita.versiculoFin;
+    const cont = cita.continuidad;
+
+    if (!ini && !fin && !cont) {
+        const plain = rawHtml.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+        return plain.length || 1500;
+    }
+
+    const verseRegex = /<strong>(\d+)<\/strong>\s*-\s*([^<]*)/g;
+    let m;
+    let totalChars = 0;
+    let foundAny = false;
+
+    const vStart = ini || 1;
+    let vEnd = fin || vStart;
+    if (cont === 's') vEnd = vStart + 1;
+    else if (cont === 'ss') vEnd = 9999;
+
+    while ((m = verseRegex.exec(rawHtml)) !== null) {
+        const vNum = parseInt(m[1], 10);
+        if (vNum >= vStart && vNum <= vEnd) {
+            foundAny = true;
+            totalChars += m[2].trim().length;
+        }
+    }
+
+    if (!foundAny || totalChars === 0) {
+        const count = vEnd >= 9990 ? 5 : (vEnd - vStart + 1);
+        return Math.max(100, count * 150);
+    }
+
+    return totalChars;
+}
+
 function obtenerRangoLibros(lista) {
     if (!lista || lista.length === 0) return "Sin lecturas";
     const primerLibro = lista[0].libroNombre || NOMBRES_LIBROS[lista[0].libro] || lista[0].libro;
@@ -616,25 +660,21 @@ function calcularDistribucionLineal(citas, k) {
     const n = ordenadas.length;
     const numPart = Math.max(1, Math.min(k, n));
 
+    // Ponderación precisa basada en caracteres reales de los textos bíblicos
+    const weights = ordenadas.map(c => calcularCaracteresCita(c));
+    const totalCharsGeneral = weights.reduce((a, b) => a + b, 0);
+    const targetPerPerson = totalCharsGeneral / numPart;
+
     if (numPart === 1) {
         return [{
             hermano: 1,
             citas: ordenadas,
             rango: obtenerRangoLibros(ordenadas),
-            totalCitas: n
+            totalCitas: n,
+            totalCaracteres: totalCharsGeneral,
+            porcentaje: 100
         }];
     }
-
-    // Ponderación de citas según versículos para balancear la carga de lectura
-    const weights = ordenadas.map(c => {
-        const r = obtenerRango(c);
-        if (r.esCompleto) return 10;
-        const count = r.end >= 9990 ? 8 : (r.end - r.start + 1);
-        return Math.max(1, Math.min(15, count));
-    });
-
-    const totalWeight = weights.reduce((a, b) => a + b, 0);
-    const targetPerPerson = totalWeight / numPart;
 
     const partitions = [];
     let startIdx = 0;
@@ -642,11 +682,14 @@ function calcularDistribucionLineal(citas, k) {
     for (let p = 0; p < numPart; p++) {
         if (p === numPart - 1) {
             const slice = ordenadas.slice(startIdx);
+            const sliceChars = slice.reduce((sum, c) => sum + calcularCaracteresCita(c), 0);
             partitions.push({
                 hermano: p + 1,
                 citas: slice,
                 rango: obtenerRangoLibros(slice),
-                totalCitas: slice.length
+                totalCitas: slice.length,
+                totalCaracteres: sliceChars,
+                porcentaje: totalCharsGeneral > 0 ? Math.round((sliceChars / totalCharsGeneral) * 100) : 0
             });
             break;
         }
@@ -668,11 +711,14 @@ function calcularDistribucionLineal(citas, k) {
         }
 
         const slice = ordenadas.slice(startIdx, bestIdx);
+        const sliceChars = slice.reduce((sum, c) => sum + calcularCaracteresCita(c), 0);
         partitions.push({
             hermano: p + 1,
             citas: slice,
             rango: obtenerRangoLibros(slice),
-            totalCitas: slice.length
+            totalCitas: slice.length,
+            totalCaracteres: sliceChars,
+            porcentaje: totalCharsGeneral > 0 ? Math.round((sliceChars / totalCharsGeneral) * 100) : 0
         });
         startIdx = bestIdx;
     }
@@ -719,9 +765,10 @@ function renderizarCalculadora() {
     // Ordenar de forma canónica bíblica para garantizar búsqueda lineal continua
     const citasFinales = ordenarCitasAsc(citasAConsolidar);
     const totalLecturas = citasFinales.length;
+    const totalCharsGeneral = citasFinales.reduce((sum, c) => sum + calcularCaracteresCita(c), 0);
 
     numPartDisplay.textContent = numParticipantesActual;
-    calcModalSubtitulo.textContent = `${totalLecturas} ${usarUnidas ? 'perícopas unidas' : 'citas'} distribuidas en orden bíblico lineal entre ${numParticipantesActual} participantes`;
+    calcModalSubtitulo.textContent = `${totalLecturas} ${usarUnidas ? 'perícopas unidas' : 'citas'} (${totalCharsGeneral.toLocaleString()} caracteres) en orden bíblico entre ${numParticipantesActual} participantes`;
 
     // Actualizar botones chips activos
     chipNums.forEach(chip => {
@@ -729,9 +776,10 @@ function renderizarCalculadora() {
     });
 
     const particiones = calcularDistribucionLineal(citasFinales, numParticipantesActual);
+    const promedioChars = Math.round(totalCharsGeneral / Math.max(1, particiones.length));
 
-    // Banner de optimización
-    calcSummaryText.textContent = `Búsqueda lineal continua: cada hermano avanza en su Biblia desde el inicio de su rango hasta el final sin saltos hacia atrás.`;
+    // Banner de optimización y transparencia
+    calcSummaryText.textContent = `Búsqueda lineal equilibrada (~${promedioChars.toLocaleString()} caracteres por hermano): la cantidad de lecturas varía según la extensión de cada pasaje para repartir equitativamente el tiempo de preparación.`;
 
     // Renderizar tarjetas por hermano
     contenedorHermanos.innerHTML = "";
@@ -748,14 +796,18 @@ function renderizarCalculadora() {
             <div class="hermano-badge-avatar" title="Participante ${p.hermano}">${p.hermano}</div>
             <div>
                 <span class="hermano-name">Hermano ${p.hermano}</span>
-                <span style="font-size:0.75rem; color:var(--text-muted); margin-left:4px;">(${p.totalCitas} lecturas)</span>
+                <div class="hermano-stats-badge">
+                    <span>(${p.totalCitas} lecturas)</span>
+                    <span class="hermano-char-badge" title="Volumen total de texto asignado en caracteres">🔤 ~${p.totalCaracteres.toLocaleString()} car.</span>
+                    <span class="hermano-pct-badge" title="Porcentaje del texto total asignado">${p.porcentaje}%</span>
+                </div>
             </div>
             <span class="hermano-rango" title="Sección de la Biblia asignada a este hermano">📖 ${p.rango}</span>
         `;
 
         const btnCopiarHermano = document.createElement("button");
         btnCopiarHermano.className = "btn-copiar-hermano";
-        btnCopiarHermano.setAttribute("title", `Copiar asignación del Hermano ${p.hermano} para WhatsApp`);
+        btnCopiarHermano.setAttribute("title", `Copiar asignación del Hermano ${p.hermano} con caracteres para WhatsApp`);
         btnCopiarHermano.innerHTML = `📲 Copiar para Hermano ${p.hermano}`;
         btnCopiarHermano.onclick = () => {
             copiarAsignacionIndividual(item.palabra, p);
@@ -769,10 +821,11 @@ function renderizarCalculadora() {
         hBody.className = "hermano-body";
 
         p.citas.forEach(c => {
+            const chars = calcularCaracteresCita(c);
             const btnCita = document.createElement("button");
             btnCita.className = "btn-citation";
-            btnCita.setAttribute("title", `Toca para leer el texto bíblico completo de: ${c.citaOriginal}`);
-            btnCita.innerHTML = `<span class="cita-txt">${c.citaOriginal}</span> <span class="read-icon">📖</span>`;
+            btnCita.setAttribute("title", `Toca para leer el texto bíblico completo de: ${c.citaOriginal} (~${chars.toLocaleString()} caracteres)`);
+            btnCita.innerHTML = `<span class="cita-txt">${c.citaOriginal}</span> <span class="read-icon" title="Extensión estimada: ~${chars.toLocaleString()} caracteres">📖</span>`;
             btnCita.onclick = (e) => {
                 e.stopPropagation();
                 abrirModalLectura(c);
@@ -788,10 +841,12 @@ function renderizarCalculadora() {
 function copiarAsignacionIndividual(palabra, p) {
     let msg = `🕊️ *PREPARACIÓN DE LA PALABRA:* "${palabra.toUpperCase()}"\n`;
     msg += `👤 *Asignación para Hermano ${p.hermano}*\n`;
-    msg += `📖 *Rango Bíblico:* ${p.rango} (${p.totalCitas} lecturas)\n`;
+    msg += `📖 *Rango Bíblico:* ${p.rango}\n`;
+    msg += `📊 *Carga:* ${p.totalCitas} lecturas · ~${p.totalCaracteres.toLocaleString()} caracteres (${p.porcentaje}% del total)\n`;
     msg += `------------------------------------\n`;
     p.citas.forEach((c, idx) => {
-        msg += `${idx + 1}. ${c.citaOriginal}\n`;
+        const chars = calcularCaracteresCita(c);
+        msg += `${idx + 1}. ${c.citaOriginal} (~${chars.toLocaleString()} car.)\n`;
     });
     msg += `------------------------------------\n`;
     msg += `Búsqueda lineal en orden bíblico continuo.`;
@@ -821,24 +876,26 @@ function copiarRepartoCompleto() {
     }
 
     const citasFinales = ordenarCitasAsc(citasAConsolidar);
+    const totalCharsGeneral = citasFinales.reduce((sum, c) => sum + calcularCaracteresCita(c), 0);
     const particiones = calcularDistribucionLineal(citasFinales, numParticipantesActual);
 
     let msg = `📖 *REPARTO DE LECTURAS PARA LA PREPARACIÓN*\n`;
     msg += `Palabra: *"${item.palabra.toUpperCase()}"* (Léon-Dufour)\n`;
-    msg += `👥 ${numParticipantesActual} Participantes | ${citasFinales.length} lecturas en orden bíblico\n`;
+    msg += `👥 ${numParticipantesActual} Participantes | ${citasFinales.length} lecturas (~${totalCharsGeneral.toLocaleString()} caracteres en total)\n`;
     msg += `====================================\n\n`;
 
     particiones.forEach(p => {
-        msg += `👤 *HERMANO ${p.hermano}* (${p.totalCitas} lecturas)\n`;
+        msg += `👤 *HERMANO ${p.hermano}* (${p.totalCitas} lecturas · ~${p.totalCaracteres.toLocaleString()} car. · ${p.porcentaje}%)\n`;
         msg += `📖 *Rango:* ${p.rango}\n`;
         p.citas.forEach(c => {
-            msg += `  • ${c.citaOriginal}\n`;
+            const chars = calcularCaracteresCita(c);
+            msg += `  • ${c.citaOriginal} (~${chars.toLocaleString()} car.)\n`;
         });
         msg += `\n`;
     });
 
     msg += `====================================\n`;
-    msg += `Cada hermano avanza de forma continua en su Biblia sin retroceder.`;
+    msg += `Distribución lineal equilibrada en caracteres. Cada hermano avanza en su Biblia sin retroceder.`;
 
     navigator.clipboard.writeText(msg).then(() => {
         mostrarToast("✅ Reparto completo copiado para WhatsApp");

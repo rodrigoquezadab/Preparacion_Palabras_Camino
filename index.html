@@ -1034,6 +1034,38 @@
       color: var(--text-main);
     }
 
+    .hermano-stats-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+
+    .hermano-char-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #334155;
+      background: #f1f5f9;
+      padding: 1px 7px;
+      border-radius: var(--radius-full);
+      border: 1px solid #cbd5e1;
+    }
+
+    .hermano-pct-badge {
+      font-size: 0.70rem;
+      font-weight: 800;
+      color: #059669;
+      background: #ecfdf5;
+      padding: 1px 6px;
+      border-radius: var(--radius-full);
+      border: 1px solid #a7f3d0;
+    }
+
     .hermano-rango {
       font-size: 0.78rem;
       color: #0369a1;
@@ -1628,9 +1660,11 @@
               </div>
 
               <div>
-                <strong>👥 Calculadora de Participantes (Búsqueda Lineal Continua):</strong>
+                <strong>👥 Calculadora de Participantes y Balance en Caracteres:</strong>
                 <p class="guia-text">
-                  Permite distribuir las lecturas de cualquier palabra entre los hermanos que preparan (ej. 2, 3, 4, 5, 6 hermanos). Las citas se reparten en estricto orden canónico bíblico ($Génesis \rightarrow Apocalipsis$), garantizando que cada hermano avance siempre hacia adelante en su propia Biblia sin retroceder ni dar saltos.
+                  Permite distribuir las lecturas entre los hermanos que preparan (ej. 2, 3, 4, 5, 6 hermanos). Para garantizar un reparto 100% transparente y equitativo:
+                  <br>• <strong>Búsqueda lineal sin saltos:</strong> Las citas se ordenan de $Génesis \rightarrow Apocalipsis$, de modo que cada hermano avanza siempre hacia adelante en su Biblia.
+                  <br>• <strong>Conteo de caracteres real:</strong> Se calcula la extensión de texto de cada pasaje en la Biblia de Jerusalén. Por eso un hermano con pasajes cortos puede recibir más lecturas (ej. 16) y otro con capítulos extensos menos (ej. 6), manteniendo ambos una carga de lectura similar (~3.200 caracteres).
                 </p>
               </div>
 

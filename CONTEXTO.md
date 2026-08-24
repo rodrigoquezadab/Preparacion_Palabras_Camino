@@ -83,10 +83,11 @@ Para que una palabra pueda servir eficazmente para una preparación litúrgica c
 - Permite a los hermanos preparadores indicar el **número de participantes** (ej. 2, 3, 4, 5, 6 o más hermanos).
 - **Optimización de Búsqueda Lineal:** Las lecturas se distribuyen en **estricto orden canónico bíblico continuo** ($Génesis \rightarrow Apocalipsis$).
 - **Sin Saltos en la Biblia:** Cada hermano recibe un bloque contiguo de libros y capítulos (ej. *Hermano 1: Génesis a Jueces*, *Hermano 2: 1 Samuel a Salmos*, etc.), de modo que avanza siempre hacia adelante buscando sus citas sin necesidad de retroceder ni dar saltos en su Biblia física.
-- **Equilibrio de Carga:** El algoritmo pondera la longitud estimada de versículos y lecturas para balancear equitativamente el tiempo de preparación.
+- **Transparencia y Balance por Caracteres:** El algoritmo evalúa el **volumen real de texto en caracteres** de cada perícopa en la *Biblia de Jerusalén*. Esto explica y transparenta por qué un hermano con lecturas de 1 solo versículo puede recibir más citas (ej. 16) y otro con capítulos extensos menos citas (ej. 6), manteniendo ambos una carga y tiempo de lectura equivalentes (~3.200 caracteres).
+- **Badges de Caracteres y Porcentaje:** Cada tarjeta de participante muestra el número de lecturas, el total de caracteres (`🔤 ~8.180 car.`) y el porcentaje del texto total (`26%`).
 - **Botones de Copia para WhatsApp:**
-  * *Copia individual:* Genera el mensaje formateado con las citas asignadas a un hermano específico.
-  * *Copia grupal:* Genera el reparto completo de toda la preparación para enviarlo directamente al grupo de la comunidad.
+  * *Copia individual:* Genera el mensaje formateado con las citas asignadas a un hermano específico incluyendo conteo de caracteres por cita.
+  * *Copia grupal:* Genera el reparto completo de toda la preparación con el desglose de caracteres para enviarlo directamente al grupo de la comunidad.
 
 ### E. Área de Guía y Nomenclatura Bíblica
 - **Acceso Directo en Header (`📖 Guía`):** Despliega un centro de ayuda litúrgica y teológica interactivo organizado en 3 secciones:
