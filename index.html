@@ -1010,10 +1010,29 @@
     .highlighted-verse {
       background: #fef08a;
       color: #854d0e;
-      padding: 2px 4px;
-      border-radius: 3px;
+      padding: 3px 6px;
+      border-radius: 4px;
       font-weight: 500;
-      border-bottom: 2px solid #eab308;
+      border-left: 3px solid #eab308;
+      scroll-margin-top: 50px;
+      scroll-margin-bottom: 50px;
+      display: inline;
+    }
+
+    #cita-start-target {
+      position: relative;
+      animation: highlightPulse 1.5s ease-out;
+    }
+
+    @keyframes highlightPulse {
+      0% {
+        background: #fde047;
+        box-shadow: 0 0 0 6px rgba(234, 179, 8, 0.45);
+      }
+      100% {
+        background: #fef08a;
+        box-shadow: 0 0 0 0 rgba(234, 179, 8, 0);
+      }
     }
 
     /* ==========================================================================

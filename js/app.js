@@ -1412,18 +1412,42 @@ function abrirModalLectura(cita) {
 
     modalLectura.style.display = "flex";
     document.body.classList.add("modal-open");
+
+    // Auto-scroll y posicionamiento exacto en el versículo donde comienza la cita
+    setTimeout(() => {
+        const target = modalTextoCuerpo.querySelector("#cita-start-target") || modalTextoCuerpo.querySelector(".highlighted-verse");
+        if (target) {
+            target.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else {
+            modalTextoCuerpo.scrollTop = 0;
+        }
+    }, 60);
 }
 
 function formatearTextoConResaltado(html, cita) {
-    if (!cita.versiculoInicio) return html;
+    if (!cita) return html;
 
-    const start = parseInt(cita.versiculoInicio, 10);
-    const end = cita.versiculoFin ? parseInt(cita.versiculoFin, 10) : (cita.continuidad === 's' ? start + 1 : (cita.continuidad === 'ss' ? 9999 : start));
+    let start = cita.versiculoInicio ? parseInt(cita.versiculoInicio, 10) : null;
+    let end = cita.versiculoFin ? parseInt(cita.versiculoFin, 10) : (cita.continuidad === 's' ? start + 1 : (cita.continuidad === 'ss' ? 9999 : start));
 
+    // Si el objeto cita no tiene versiculoInicio directo, extraerlo de citaOriginal (ej. "Mt 5,38-42" -> 38)
+    if (!start && cita.citaOriginal) {
+        const m = cita.citaOriginal.match(/,\s*(\d+)(?:\s*-\s*(\d+))?/);
+        if (m) {
+            start = parseInt(m[1], 10);
+            end = m[2] ? parseInt(m[2], 10) : (cita.continuidad === 's' ? start + 1 : (cita.continuidad === 'ss' ? 9999 : start));
+        }
+    }
+
+    if (!start) return html;
+
+    let isFirstHighlighted = true;
     return html.replace(/<strong>(\d+)<\/strong>([^<]*)/g, (match, vNum, vContent) => {
         const num = parseInt(vNum, 10);
-        if (num >= start && num <= end) {
-            return `<mark class="highlighted-verse"><strong>${vNum}</strong>${vContent}</mark>`;
+        if (num >= start && num <= (end || start)) {
+            const idAttr = isFirstHighlighted ? ' id="cita-start-target"' : '';
+            if (isFirstHighlighted) isFirstHighlighted = false;
+            return `<mark${idAttr} class="highlighted-verse"><strong>${vNum}</strong>${vContent}</mark>`;
         }
         return `<strong>${vNum}</strong>${vContent}`;
     });
