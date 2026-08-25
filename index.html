@@ -463,6 +463,33 @@
       color: #7f1d1d;
     }
 
+    .btn-exclusion-action {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+      color: var(--text-main);
+    }
+
+    .btn-exclusion-action.btn-reload:hover {
+      background: #eff6ff;
+      border-color: #3b82f6;
+      color: #1e3a8a;
+    }
+
+    .btn-exclusion-action.btn-clear:hover {
+      background: #fef2f2;
+      border-color: #ef4444;
+      color: #991b1b;
+    }
+
     /* ==========================================================================
        BARRA DE ESTADO / ESTADÍSTICAS
        ========================================================================== */
@@ -1823,7 +1850,19 @@
       </div>
 
       <div>
-        <div class="panel-section-title" style="margin-bottom: 6px;">Exclusiones activas:</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
+          <div class="panel-section-title">Exclusiones activas (<span id="countExcluidasHeader">0</span>):</div>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button id="btnRestaurarExclusiones" class="btn-exclusion-action btn-reload"
+              title="Volver a cargar las 25 palabras excluidas por defecto (temas ya preparados en la comunidad)">
+              🔄 Cargar Predeterminadas
+            </button>
+            <button id="btnBorrarTodasExclusiones" class="btn-exclusion-action btn-clear"
+              title="Borrar todas las palabras excluidas para ver el temario completo">
+              🗑️ Borrar Todas
+            </button>
+          </div>
+        </div>
         <div id="contenedorTags" class="tags-container"></div>
       </div>
     </div>

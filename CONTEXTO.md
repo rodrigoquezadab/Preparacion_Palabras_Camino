@@ -86,7 +86,11 @@ La aplicación integra este catálogo exacto y ofrece un **selector de modo dest
 - Ajusta dinámicamente los conteos de perícopas, la verificación de 4 partes (`🌱 Precatecumenado`), el reparto en la Calculadora de Participantes y el esquema copiado.
 
 ### D. Gestor de Exclusiones
-- Permite a la comunidad registrar palabras que ya se han preparado para que queden ocultas automáticamente.
+- Permite a la comunidad registrar palabras que ya se han preparado para que queden ocultas automáticamente de la lista.
+- **Lista Predeterminada:** Precarga automáticamente los temas celebrados (#45 Escuchar, #2 Aceite, #57 Fiesta, #83 Memorial, #121 Roca, #40 Discípulo, #90 Niño, #4 Adán, #26 Copa, #11 Bautismo, #1 Agua, #105 Piedra, #8 Árbol, #15 Camino, #19 Casa, #21 Comida, #3 Amén, #129 Sello, #146 Victoria, #81 Mar, #147 Misericordia, #55 Fariseo, #78/#112 Llave-Puerta, Aleluya/Alabanza, #7 Amigo, #48 Esposo).
+- **Acciones Rápidas:**
+  * `🗑️ Borrar Todas`: Limpia todas las exclusiones para visualizar y explorar el catálogo completo de 148 palabras.
+  * `🔄 Cargar Predeterminadas`: Restaura instantáneamente la lista de temas celebrados en la comunidad.
 - Persistencia en el navegador mediante `localStorage`.
 
 ### E. Calculadora de Participantes y Reparto Lineal Continuo

@@ -3,6 +3,12 @@
 // Basado en el Vocabulario de Teología Bíblica de Xavier Léon-Dufour
 // ==========================================================================
 
+// --- UTILIDADES GLOBALES ---
+function normalizar(s) {
+    if (!s) return "";
+    return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+}
+
 // --- ORDEN CANÓNICO BÍBLICO (73 Libros) ---
 const ORDEN_BIBLICO = [
     "GEN", "EX", "LEV", "NUM", "DT", "JOS", "JUE", "RUT", "1SAM", "2SAM", "1RE", "2RE", "1CRO", "2CRO", "ESD", "NEH", "TOB", "JUD", "EST", "1MAC", "2MAC",
@@ -47,11 +53,62 @@ const esPentateuco = (l) => {
     return LIBROS_PENTATEUCO.has(l.toUpperCase().trim());
 };
 
+// --- LISTA PREDETERMINADA DE PALABRAS EXCLUIDAS (YA CELEBRADAS) ---
+const EXCLUSIONES_PREDETERMINADAS = [
+    "Escuchar",       // #45
+    "Aceite",         // #2
+    "Fiesta",         // #57
+    "Memorial",       // #83
+    "Roca",           // #121
+    "Discípulo",      // #40
+    "Niño",           // #90
+    "Adán",           // #4
+    "Copa",           // #26
+    "Bautismo",       // #11
+    "Agua",           // #1
+    "Piedra",         // #105
+    "Árbol",          // #8
+    "Camino",         // #15
+    "Casa",           // #19
+    "Comida",         // #21
+    "Amén",           // #3
+    "Sello",          // #129
+    "Victoria",       // #146
+    "Mar",            // #81
+    "Misericordia",   // #147
+    "Fariseo",        // #55
+    "Llave",          // #78
+    "Puerta",         // #112
+    "Aleluya",
+    "Alabanza",       // #5
+    "Amigo",          // #7
+    "Esposo"          // #48
+];
+
+function obtenerExclusionesIniciales() {
+    const versionInit = localStorage.getItem('palabrasExcluidas_init_v2');
+    const guardadas = localStorage.getItem('palabrasExcluidas');
+
+    if (versionInit && guardadas !== null) {
+        try {
+            return JSON.parse(guardadas);
+        } catch (e) {
+            console.error("Error parseando palabrasExcluidas:", e);
+        }
+    }
+
+    // Carga inicial por defecto con la lista predeterminada
+    const listaInicial = EXCLUSIONES_PREDETERMINADAS.map(p => normalizar(p));
+    localStorage.setItem('palabrasExcluidas_init_v2', 'true');
+    localStorage.setItem('palabrasExcluidas', JSON.stringify(listaInicial));
+    return listaInicial;
+}
+
 // --- VARIABLES GLOBALES DE ESTADO ---
 let dataGlobalRef = null;
 let listaGlobal = [];
 let dbTextos = {};
-let setExcluidos = new Set(JSON.parse(localStorage.getItem('palabrasExcluidas')) || []);
+let setExcluidos = new Set(obtenerExclusionesIniciales());
 let setPalabrasExistentes = new Set();
 let palabraAbiertaId = null;
 
@@ -76,6 +133,9 @@ const checkPentateuco = document.getElementById("checkPentateuco");
 const checkExtras = document.getElementById("checkExtras");
 const inputExcluir = document.getElementById("inputExcluir");
 const btnAgregarExclusion = document.getElementById("btnAgregarExclusion");
+const countExcluidasHeader = document.getElementById("countExcluidasHeader");
+const btnBorrarTodasExclusiones = document.getElementById("btnBorrarTodasExclusiones");
+const btnRestaurarExclusiones = document.getElementById("btnRestaurarExclusiones");
 const contenedorTags = document.getElementById("contenedorTags");
 const panelFiltros = document.getElementById("panelFiltros");
 const btnToggleFiltros = document.getElementById("btnToggleFiltros");
@@ -118,9 +178,6 @@ const btnCopiarArticulo = document.getElementById("btnCopiarArticulo");
 
 // Toast de notificación
 const toast = document.getElementById("toast");
-
-// --- UTILIDADES ---
-const normalizar = (s) => (!s ? "" : s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim());
 
 function mostrarToast(mensaje, duracion = 2500) {
     if (!toast) return;
@@ -543,7 +600,11 @@ function actualizarVista() {
     const baseList = (modoFiltro === "precat") ? listaPrecat : listaTodas;
 
     let lista = baseList.filter(item => {
-        if (setExcluidos.has(item.palabraNorm) || setExcluidos.has(normalizar(item.palabra))) return false;
+        const pNormPalabra = normalizar(item.palabra);
+        const pNormVocab = item.vocabKey ? normalizar(item.vocabKey) : "";
+        if (setExcluidos.has(item.palabraNorm) || setExcluidos.has(pNormPalabra) || (pNormVocab && setExcluidos.has(pNormVocab))) {
+            return false;
+        }
         if (busqueda.length > 0 && !item.palabraNorm.includes(busqueda)) return false;
         return true;
     });
@@ -1542,24 +1603,34 @@ function guardarLocalStorage() {
         badgeExcluidas.textContent = setExcluidos.size;
         badgeExcluidas.style.display = setExcluidos.size > 0 ? "inline-flex" : "none";
     }
+    if (countExcluidasHeader) {
+        countExcluidasHeader.textContent = setExcluidos.size;
+    }
 }
 
 function renderizarTags() {
     contenedorTags.innerHTML = "";
     if (setExcluidos.size === 0) {
-        contenedorTags.innerHTML = `<span class="sin-exclusiones">Sin palabras excluidas.</span>`;
+        contenedorTags.innerHTML = `<span class="sin-exclusiones">Sin palabras excluidas. Toca "🔄 Cargar Predeterminadas" para cargar la lista de temas ya celebrados.</span>`;
+        if (countExcluidasHeader) countExcluidasHeader.textContent = "0";
         return;
     }
 
+    if (countExcluidasHeader) countExcluidasHeader.textContent = setExcluidos.size;
+
     setExcluidos.forEach(pNorm => {
-        const item = listaGlobal.find(i => i.palabraNorm === pNorm);
-        const nombreOriginal = item ? item.palabra : pNorm;
+        // Encontrar objeto de palabra para mostrar el nombre con formato y número
+        const item = listaGlobal.find(i => normalizar(i.palabra) === pNorm || (i.vocabKey && normalizar(i.vocabKey) === pNorm) || (i.palabraNorm && i.palabraNorm.includes(pNorm)));
+        let nombreMostrar = item ? item.palabra : (pNorm.charAt(0).toUpperCase() + pNorm.slice(1));
+        if (item && item.numPrecat) {
+            nombreMostrar = `#${item.numPrecat} ${item.palabra}`;
+        }
 
         const tag = document.createElement("div");
         tag.className = "tag-excluido";
-        tag.setAttribute("title", `Toca la '×' para quitar la exclusión de "${nombreOriginal}"`);
-        tag.innerHTML = `<span>${nombreOriginal}</span> <button class="btn-remove-tag" aria-label="Quitar exclusión">&times;</button>`;
-        tag.querySelector("button").onclick = () => eliminarExclusion(pNorm, nombreOriginal);
+        tag.setAttribute("title", `Toca la '×' para quitar la exclusión de "${item ? item.palabra : pNorm}"`);
+        tag.innerHTML = `<span>${nombreMostrar}</span> <button class="btn-remove-tag" aria-label="Quitar exclusión">&times;</button>`;
+        tag.querySelector("button").onclick = () => eliminarExclusion(pNorm, item ? item.palabra : nombreMostrar);
         contenedorTags.appendChild(tag);
     });
 }
@@ -1614,10 +1685,35 @@ function eliminarExclusion(pNorm, nombreOriginal) {
     mostrarToast(`✨ Exclusión de "${nombreOriginal}" eliminada`);
 }
 
+function borrarTodasExclusiones() {
+    if (setExcluidos.size === 0) {
+        mostrarToast("ℹ️ No hay palabras excluidas actualmente");
+        return;
+    }
+    setExcluidos.clear();
+    guardarLocalStorage();
+    renderizarTags();
+    actualizarVista();
+    mostrarToast("🗑️ Todas las exclusiones han sido borradas");
+}
+
+function restaurarExclusionesPredeterminadas() {
+    EXCLUSIONES_PREDETERMINADAS.forEach(p => {
+        setExcluidos.add(normalizar(p));
+    });
+    guardarLocalStorage();
+    renderizarTags();
+    actualizarVista();
+    mostrarToast("🔄 Lista predeterminada de 25 temas cargada");
+}
+
 btnAgregarExclusion.addEventListener("click", agregarExclusiones);
 inputExcluir.addEventListener("keydown", (e) => {
     if (e.key === "Enter") agregarExclusiones();
 });
+
+if (btnBorrarTodasExclusiones) btnBorrarTodasExclusiones.onclick = borrarTodasExclusiones;
+if (btnRestaurarExclusiones) btnRestaurarExclusiones.onclick = restaurarExclusionesPredeterminadas;
 
 // --- MODAL DE GUÍA Y CRITERIOS EXPLICATIVOS ---
 const modalGuia = document.getElementById("modalGuia");
