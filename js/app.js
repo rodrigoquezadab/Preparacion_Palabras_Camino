@@ -722,24 +722,22 @@ function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
         card.className = `word-card ${cumple4PartesActual ? 'card-cumple' : 'card-incompleta'}`;
         card.id = `card-${item.id}`;
 
-        // --- ENCABEZADO DE LA TARJETA ---
+        // --- ENCABEZADO DE LA TARJETA (ESTRUCTURA UNIFORME DE 3 NIVELES) ---
         const header = document.createElement("div");
         header.className = "word-card-header";
         header.setAttribute("title", "Toca para desplegar las citas bíblicas de esta palabra");
 
-        // Fila superior: Título e indicador de 4 partes
-        const titleRow = document.createElement("div");
-        titleRow.className = "word-title-row";
+        // 1. Barra Superior Uniforme (Número + Criterio a la izquierda, Acciones Rápidas a la derecha)
+        const topBar = document.createElement("div");
+        topBar.className = "word-card-top-bar";
 
-        const titleDiv = document.createElement("div");
-        titleDiv.className = "word-title-wrapper";
-        titleDiv.innerHTML = `
-            <span class="word-number">#${item.numPrecat || item.id}</span>
-            <h2 class="word-name">
-                ${item.palabra}
-                ${item.subInfo ? `<span class="word-subname" title="Referencia en Léon-Dufour">(${item.subInfo})</span>` : ''}
-            </h2>
-        `;
+        const metaLeft = document.createElement("div");
+        metaLeft.className = "word-card-meta-left";
+
+        const numSpan = document.createElement("span");
+        numSpan.className = "word-number";
+        numSpan.textContent = `#${item.numPrecat || item.id}`;
+        metaLeft.appendChild(numSpan);
 
         const badgeCriterio = document.createElement("div");
         if (cumple4PartesActual) {
@@ -756,12 +754,10 @@ function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
             badgeCriterio.setAttribute("title", `Incompleta para preparación litúrgica de 4 partes. Faltan: ${faltantes.join(", ")}`);
             badgeCriterio.innerHTML = `⚠️ Falta: ${faltantes.join(", ")}`;
         }
+        metaLeft.appendChild(badgeCriterio);
 
-        const rightHeaderBox = document.createElement("div");
-        rightHeaderBox.style.display = "flex";
-        rightHeaderBox.style.alignItems = "center";
-        rightHeaderBox.style.gap = "6px";
-        rightHeaderBox.style.flexWrap = "wrap";
+        const actionsRight = document.createElement("div");
+        actionsRight.className = "word-card-actions-right";
 
         const btnQuickArticulo = document.createElement("button");
         btnQuickArticulo.className = "btn-quick-art";
@@ -781,15 +777,25 @@ function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
             abrirCalculadora(item);
         };
 
-        rightHeaderBox.appendChild(btnQuickArticulo);
-        rightHeaderBox.appendChild(btnQuickCalc);
-        rightHeaderBox.appendChild(badgeCriterio);
+        actionsRight.appendChild(btnQuickArticulo);
+        actionsRight.appendChild(btnQuickCalc);
 
-        titleRow.appendChild(titleDiv);
-        titleRow.appendChild(rightHeaderBox);
-        header.appendChild(titleRow);
+        topBar.appendChild(metaLeft);
+        topBar.appendChild(actionsRight);
+        header.appendChild(topBar);
 
-        // Fila de resumen de conteos por categoría (Pastillas interactivas)
+        // 2. Fila del Nombre de la Palabra (Fila dedicada de ancho completo)
+        const nameRow = document.createElement("div");
+        nameRow.className = "word-name-row";
+        nameRow.innerHTML = `
+            <h2 class="word-name">
+                ${item.palabra}
+                ${item.subInfo ? `<span class="word-subname" title="Referencia en Léon-Dufour">(${item.subInfo})</span>` : ''}
+            </h2>
+        `;
+        header.appendChild(nameRow);
+
+        // 3. Fila de resumen de conteos por categoría (Pastillas interactivas)
         const countsRow = document.createElement("div");
         countsRow.className = "word-counts-row";
         
