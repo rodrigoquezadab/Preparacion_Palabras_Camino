@@ -1733,14 +1733,31 @@ function renderizarTags() {
     if (countExcluidasHeader) countExcluidasHeader.textContent = setExcluidos.size;
     actualizarEstadoModoEdicion();
 
-    setExcluidos.forEach(pNorm => {
-        // Encontrar objeto de palabra para mostrar el nombre con formato y número
+    // Mapear y ordenar numéricamente por número de Precatecumenado (#1, #2, #3...)
+    const listaTags = Array.from(setExcluidos).map(pNorm => {
         const item = listaGlobal.find(i => normalizar(i.palabra) === pNorm || (i.vocabKey && normalizar(i.vocabKey) === pNorm) || (i.palabraNorm && i.palabraNorm.includes(pNorm)));
+        const num = (item && item.numPrecat) ? Number(item.numPrecat) : 99999;
         let nombreMostrar = item ? item.palabra : (pNorm.charAt(0).toUpperCase() + pNorm.slice(1));
         if (item && item.numPrecat) {
             nombreMostrar = `#${item.numPrecat} ${item.palabra}`;
         }
+        return {
+            pNorm,
+            item,
+            num,
+            palabra: item ? item.palabra : pNorm,
+            nombreMostrar
+        };
+    });
 
+    listaTags.sort((a, b) => {
+        if (a.num !== b.num) {
+            return a.num - b.num;
+        }
+        return a.palabra.localeCompare(b.palabra, 'es');
+    });
+
+    listaTags.forEach(({ pNorm, item, nombreMostrar }) => {
         const tag = document.createElement("div");
         tag.className = "tag-excluido";
         tag.setAttribute("title", `Exclusión activa: "${item ? item.palabra : pNorm}"`);
