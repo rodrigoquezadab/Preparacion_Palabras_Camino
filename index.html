@@ -1260,6 +1260,39 @@
       gap: 6px;
     }
 
+    .calc-select-criterio {
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      font-family: inherit;
+      font-weight: 600;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: border-color 0.15s ease;
+      max-width: 100%;
+    }
+
+    .calc-select-criterio:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .calc-balance-badge {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      font-size: 0.72rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
     .hermanos-grid {
       display: flex;
       flex-direction: column;
@@ -1937,21 +1970,34 @@
         <!-- Controles de la Calculadora -->
         <div class="calc-controls-box">
           <div class="calc-row-flex">
-            <div style="display:flex; flex-direction:column; gap:4px;">
-              <span style="font-size:0.8rem; font-weight:700; color:var(--text-main);">Participantes en la
-                preparación:</span>
-              <div class="participant-counter-wrapper">
-                <button id="btnDecPart" class="btn-counter" title="Reducir un participante">-</button>
-                <span id="numPartDisplay" class="num-participants-display">4</span>
-                <button id="btnIncPart" class="btn-counter" title="Aumentar un participante">+</button>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <div style="display:flex; flex-direction:column; gap:4px;">
+                <span style="font-size:0.8rem; font-weight:700; color:var(--text-main);">Participantes en la preparación:</span>
+                <div class="participant-counter-wrapper">
+                  <button id="btnDecPart" class="btn-counter" title="Reducir un participante">-</button>
+                  <span id="numPartDisplay" class="num-participants-display">4</span>
+                  <button id="btnIncPart" class="btn-counter" title="Aumentar un participante">+</button>
 
-                <div class="quick-chips-group" style="margin-left: 8px;">
-                  <button class="chip-num" data-num="2" title="Repartir entre 2 hermanos">2</button>
-                  <button class="chip-num" data-num="3" title="Repartir entre 3 hermanos">3</button>
-                  <button class="chip-num active" data-num="4" title="Repartir entre 4 hermanos">4</button>
-                  <button class="chip-num" data-num="5" title="Repartir entre 5 hermanos">5</button>
-                  <button class="chip-num" data-num="6" title="Repartir entre 6 hermanos">6</button>
+                  <div class="quick-chips-group" style="margin-left: 8px;">
+                    <button class="chip-num" data-num="2" title="Repartir entre 2 hermanos">2</button>
+                    <button class="chip-num" data-num="3" title="Repartir entre 3 hermanos">3</button>
+                    <button class="chip-num active" data-num="4" title="Repartir entre 4 hermanos">4</button>
+                    <button class="chip-num" data-num="5" title="Repartir entre 5 hermanos">5</button>
+                    <button class="chip-num" data-num="6" title="Repartir entre 6 hermanos">6</button>
+                  </div>
                 </div>
+              </div>
+
+              <div style="display:flex; flex-direction:column; gap:4px;">
+                <label for="calcSelectCriterio" style="font-size:0.76rem; font-weight:700; color:var(--text-muted);">
+                  Criterio de Reparto Equitativo:
+                </label>
+                <select id="calcSelectCriterio" class="calc-select-criterio"
+                  title="Algoritmo de Programación Dinámica Global: Selecciona cómo equilibrar el reparto">
+                  <option value="caracteres" selected>⚖️ Por Tiempo de Lectura (Caracteres Reales - DP Óptimo)</option>
+                  <option value="hibrido">📖 Híbrido (Texto + Esfuerzo de Búsqueda)</option>
+                  <option value="citas">🔢 Por Cantidad de Citas (Cargas Iguales de Citas)</option>
+                </select>
               </div>
             </div>
 
@@ -1974,9 +2020,15 @@
           </div>
 
           <div class="calc-summary-banner">
-            <span>✨</span>
-            <span id="calcSummaryText">Distribución continua garantizada: cada hermano avanza hacia adelante en su
-              Biblia sin retroceder.</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; width:100%;">
+              <div style="display:flex; align-items:center; gap:6px; flex:1; min-width:240px;">
+                <span>✨</span>
+                <span id="calcSummaryText">Búsqueda lineal óptima garantizada por Programación Dinámica.</span>
+              </div>
+              <span id="calcBalanceIndicator" class="calc-balance-badge" title="Medida matemática de equidad entre participantes">
+                ⚖️ Balance Óptimo (±0.0%)
+              </span>
+            </div>
           </div>
         </div>
 

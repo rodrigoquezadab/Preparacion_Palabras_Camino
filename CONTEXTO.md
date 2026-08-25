@@ -95,13 +95,17 @@ La aplicación integra este catálogo exacto y ofrece un **selector de modo dest
 
 ### E. Calculadora de Participantes y Reparto Lineal Continuo
 - Permite a los hermanos preparadores indicar el **número de participantes** (ej. 2, 3, 4, 5, 6 o más hermanos).
-- **Optimización de Búsqueda Lineal:** Las lecturas se distribuyen en **estricto orden canónico bíblico continuo** ($Génesis \rightarrow Apocalipsis$).
-- **Sin Saltos en la Biblia:** Cada hermano recibe un bloque contiguo de libros y capítulos (ej. *Hermano 1: Génesis a Jueces*, *Hermano 2: 1 Samuel a Salmos*, etc.), de modo que avanza siempre hacia adelante buscando sus citas sin necesidad de retroceder ni dar saltos en su Biblia física.
-- **Transparencia y Balance por Caracteres:** El algoritmo evalúa el **volumen real de texto en caracteres** de cada perícopa en la *Biblia de Jerusalén*. Esto explica y transparenta por qué un hermano con lecturas de 1 solo versículo puede recibir más citas (ej. 16) y otro con capítulos extensos menos citas (ej. 6), manteniendo ambos una carga y tiempo de lectura equivalentes (~3.200 caracteres).
-- **Badges de Caracteres y Porcentaje:** Cada tarjeta de participante muestra el número de lecturas, el total de caracteres (`🔤 ~8.180 car.`) y el porcentaje del texto total (`26%`).
+- **Algoritmo de Programación Dinámica Global ($O(K \cdot N^2)$):** Resuelve el problema de partición lineal óptima minimizando la varianza cuadrática entre todos los hermanos simultáneamente, garantizando una división matemáticamente justa y eliminando los desbalances en los últimos participantes.
+- **Sin Saltos en la Biblia:** Cada hermano recibe un bloque contiguo de libros y capítulos ($Génesis \rightarrow Apocalipsis$), de modo que avanza siempre hacia adelante buscando sus citas sin retroceder ni dar saltos en su Biblia física.
+- **Selector de 3 Criterios de Reparto:**
+  1. ⚖️ **Tiempo de Lectura (Caracteres Reales - DP Óptimo):** Distribuye equitativamente el volumen real de texto bíblico en caracteres de la *Biblia de Jerusalén* (~25% cada hermano para 4 participantes).
+  2. 📖 **Híbrido (Texto + Esfuerzo de Búsqueda):** Pondera tanto los caracteres reales como el costo cognitivo de ubicar cada cita física en la Biblia (~200 car. por cita).
+  3. 🔢 **Cantidad de Citas:** Divide en partes exactamente iguales el número de perícopas ($N / K$).
+- **Badge de Equidad y Balance en Tiempo Real:** Muestra la precisión matemática del reparto (`⚖️ Balance Óptimo (±0.8%)`).
+- **Badges de Caracteres y Porcentaje:** Cada tarjeta de participante muestra el número de lecturas, el total de caracteres (`🔤 ~8.180 car.`) y el porcentaje del texto total (`25%`).
 - **Botones de Copia para WhatsApp:**
   * *Copia individual:* Genera el mensaje formateado con las citas asignadas a un hermano específico incluyendo conteo de caracteres por cita.
-  * *Copia grupal:* Genera el reparto completo de toda la preparación con el desglose de caracteres para enviarlo directamente al grupo de la comunidad.
+  * *Copia grupal:* Genera el reparto completo de toda la preparación con el desglose de caracteres y el criterio aplicado para enviarlo directamente al grupo de la comunidad.
 
 ### F. Área de Guía y Nomenclatura Bíblica
 - **Acceso Directo en Header (`📖 Guía`):** Despliega un centro de ayuda litúrgica y teológica interactivo organizado en 3 secciones:

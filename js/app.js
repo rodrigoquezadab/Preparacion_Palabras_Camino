@@ -163,6 +163,8 @@ const chipNums = document.querySelectorAll(".chip-num");
 const calcCheckUnido = document.getElementById("calcCheckUnido");
 const calcCheckPentateuco = document.getElementById("calcCheckPentateuco");
 const calcCheckExtras = document.getElementById("calcCheckExtras");
+const calcSelectCriterio = document.getElementById("calcSelectCriterio");
+const calcBalanceIndicator = document.getElementById("calcBalanceIndicator");
 const calcSummaryText = document.getElementById("calcSummaryText");
 const contenedorHermanos = document.getElementById("contenedorHermanos");
 const btnCopiarRepartoCompleto = document.getElementById("btnCopiarRepartoCompleto");
@@ -1048,16 +1050,14 @@ function obtenerRangoLibros(lista) {
     return `${primerLibro} → ${ultimoLibro}`;
 }
 
-function calcularDistribucionLineal(citas, k) {
+function calcularDistribucionLineal(citas, k, criterio = "caracteres") {
     if (!citas || citas.length === 0) return [];
     const ordenadas = ordenarCitasAsc(citas);
     const n = ordenadas.length;
     const numPart = Math.max(1, Math.min(k, n));
 
-    // Ponderación precisa basada en caracteres reales de los textos bíblicos
-    const weights = ordenadas.map(c => calcularCaracteresCita(c));
-    const totalCharsGeneral = weights.reduce((a, b) => a + b, 0);
-    const targetPerPerson = totalCharsGeneral / numPart;
+    const rawChars = ordenadas.map(c => calcularCaracteresCita(c));
+    const totalCharsGeneral = rawChars.reduce((a, b) => a + b, 0);
 
     if (numPart === 1) {
         return [{
@@ -1070,41 +1070,62 @@ function calcularDistribucionLineal(citas, k) {
         }];
     }
 
-    const partitions = [];
-    let startIdx = 0;
+    // 1. Asignar pesos según el criterio seleccionado
+    let weights;
+    if (criterio === "citas") {
+        // Cargas iguales de cantidad de citas
+        weights = Array(n).fill(1);
+    } else if (criterio === "hibrido") {
+        // Texto real + costo cognitivo de búsqueda en Biblia (~200 car. por cita)
+        weights = rawChars.map(c => c + 200);
+    } else {
+        // 'caracteres' por defecto: tiempo de lectura real
+        weights = rawChars.map(c => Math.max(50, c));
+    }
 
-    for (let p = 0; p < numPart; p++) {
-        if (p === numPart - 1) {
-            const slice = ordenadas.slice(startIdx);
-            const sliceChars = slice.reduce((sum, c) => sum + calcularCaracteresCita(c), 0);
-            partitions.push({
-                hermano: p + 1,
-                citas: slice,
-                rango: obtenerRangoLibros(slice),
-                totalCitas: slice.length,
-                totalCaracteres: sliceChars,
-                porcentaje: totalCharsGeneral > 0 ? Math.round((sliceChars / totalCharsGeneral) * 100) : 0
-            });
-            break;
-        }
+    const prefWeights = [0];
+    for (let i = 0; i < n; i++) {
+        prefWeights.push(prefWeights[i] + weights[i]);
+    }
+    const totalWeight = prefWeights[n];
+    const targetWeight = totalWeight / numPart;
 
-        const remainingPersons = numPart - p - 1;
-        const maxIdx = n - remainingPersons;
+    // 2. Programación Dinámica Global (Mínima Varianza / Error Cuadrático Global)
+    // dp[p][i]: costo mínimo de repartir las primeras i citas entre p hermanos
+    const dp = Array.from({ length: numPart + 1 }, () => Array(n + 1).fill(Infinity));
+    const parent = Array.from({ length: numPart + 1 }, () => Array(n + 1).fill(0));
+    dp[0][0] = 0;
 
-        let accum = 0;
-        let bestIdx = startIdx + 1;
-        let bestDiff = Infinity;
-
-        for (let i = startIdx; i < maxIdx; i++) {
-            accum += weights[i];
-            const diff = Math.abs(accum - targetPerPerson);
-            if (diff < bestDiff) {
-                bestDiff = diff;
-                bestIdx = i + 1;
+    for (let p = 1; p <= numPart; p++) {
+        const minI = p;
+        const maxI = n - (numPart - p);
+        for (let i = minI; i <= maxI; i++) {
+            for (let j = p - 1; j < i; j++) {
+                const segWeight = prefWeights[i] - prefWeights[j];
+                const cost = dp[p - 1][j] + Math.pow(segWeight - targetWeight, 2);
+                if (cost < dp[p][i]) {
+                    dp[p][i] = cost;
+                    parent[p][i] = j;
+                }
             }
         }
+    }
 
-        const slice = ordenadas.slice(startIdx, bestIdx);
+    // 3. Reconstruir los puntos de corte óptimos
+    const splits = [];
+    let curr = n;
+    for (let p = numPart; p >= 1; p--) {
+        splits.unshift(curr);
+        curr = parent[p][curr];
+    }
+    splits.unshift(0);
+
+    // 4. Generar particiones resultantes con estadísticas de balance
+    const partitions = [];
+    for (let p = 0; p < numPart; p++) {
+        const from = splits[p];
+        const to = splits[p + 1];
+        const slice = ordenadas.slice(from, to);
         const sliceChars = slice.reduce((sum, c) => sum + calcularCaracteresCita(c), 0);
         partitions.push({
             hermano: p + 1,
@@ -1114,7 +1135,6 @@ function calcularDistribucionLineal(citas, k) {
             totalCaracteres: sliceChars,
             porcentaje: totalCharsGeneral > 0 ? Math.round((sliceChars / totalCharsGeneral) * 100) : 0
         });
-        startIdx = bestIdx;
     }
 
     return partitions;
@@ -1176,11 +1196,37 @@ function renderizarCalculadora() {
         chip.classList.toggle("active", parseInt(chip.dataset.num, 10) === numParticipantesActual);
     });
 
-    const particiones = calcularDistribucionLineal(citasFinales, numParticipantesActual);
+    const criterioActual = calcSelectCriterio ? calcSelectCriterio.value : "caracteres";
+    const particiones = calcularDistribucionLineal(citasFinales, numParticipantesActual, criterioActual);
     const promedioChars = Math.round(totalCharsGeneral / Math.max(1, particiones.length));
 
-    // Banner de optimización y transparencia
-    calcSummaryText.textContent = `Búsqueda lineal equilibrada (~${promedioChars.toLocaleString()} caracteres por hermano): la cantidad de lecturas varía según la extensión de cada pasaje para repartir equitativamente el tiempo de preparación.`;
+    // Actualizar indicador de balance y transparencia
+    const pcts = particiones.map(p => p.porcentaje);
+    const minPct = Math.min(...pcts);
+    const maxPct = Math.max(...pcts);
+    const devMax = (maxPct - minPct) / 2;
+
+    if (calcBalanceIndicator) {
+        if (devMax <= 3.5) {
+            calcBalanceIndicator.innerHTML = `⚖️ Balance Óptimo (±${devMax.toFixed(1)}%)`;
+            calcBalanceIndicator.style.background = "#ecfdf5";
+            calcBalanceIndicator.style.color = "#065f46";
+            calcBalanceIndicator.style.borderColor = "#a7f3d0";
+        } else {
+            calcBalanceIndicator.innerHTML = `📊 Reparto Adaptado (±${devMax.toFixed(1)}%)`;
+            calcBalanceIndicator.style.background = "#eff6ff";
+            calcBalanceIndicator.style.color = "#1e3a8a";
+            calcBalanceIndicator.style.borderColor = "#bfdbfe";
+        }
+    }
+
+    if (criterioActual === "citas") {
+        calcSummaryText.textContent = `Reparto por cantidad de citas: cada hermano recibe un número similar de lecturas en orden bíblico continuo.`;
+    } else if (criterioActual === "hibrido") {
+        calcSummaryText.textContent = `Reparto híbrido: equilibra el volumen de texto (~${promedioChars.toLocaleString()} car.) y el esfuerzo de búsqueda en la Biblia.`;
+    } else {
+        calcSummaryText.textContent = `Reparto por tiempo de lectura (DP Óptimo): equilibra el volumen de texto (~${promedioChars.toLocaleString()} car. por hermano) para igualar el tiempo de preparación.`;
+    }
 
     // Renderizar tarjetas por hermano
     contenedorHermanos.innerHTML = "";
@@ -1280,13 +1326,19 @@ function copiarRepartoCompleto() {
         citasAConsolidar.push(...procesar(item.lecturas.Sapienciales));
     }
 
-    const citasFinales = ordenarCitasAsc(citasAConsolidar);
-    const totalCharsGeneral = citasFinales.reduce((sum, c) => sum + calcularCaracteresCita(c), 0);
-    const particiones = calcularDistribucionLineal(citasFinales, numParticipantesActual);
+    const criterioActual = calcSelectCriterio ? calcSelectCriterio.value : "caracteres";
+    const criterioNombres = {
+        caracteres: "Tiempo de Lectura (Caracteres Reales)",
+        hibrido: "Híbrido (Texto + Búsquedas)",
+        citas: "Cantidad de Citas"
+    };
+    const criterioTxt = criterioNombres[criterioActual] || "Tiempo de Lectura";
+    const particiones = calcularDistribucionLineal(citasFinales, numParticipantesActual, criterioActual);
 
     let msg = `📖 *REPARTO DE LECTURAS PARA LA PREPARACIÓN*\n`;
     msg += `Palabra: *"${item.palabra.toUpperCase()}"* (Léon-Dufour)\n`;
     msg += `👥 ${numParticipantesActual} Participantes | ${citasFinales.length} lecturas (~${totalCharsGeneral.toLocaleString()} caracteres en total)${soloPentCalc ? ' · [Solo Pentateuco]' : ''}\n`;
+    msg += `⚖️ Criterio: ${criterioTxt}\n`;
     msg += `====================================\n\n`;
 
     particiones.forEach(p => {
@@ -1300,7 +1352,7 @@ function copiarRepartoCompleto() {
     });
 
     msg += `====================================\n`;
-    msg += `Distribución lineal equilibrada en caracteres. Cada hermano avanza en su Biblia sin retroceder.`;
+    msg += `Distribución lineal óptima por Programación Dinámica. Cada hermano avanza en su Biblia sin retroceder.`;
 
     navigator.clipboard.writeText(msg).then(() => {
         mostrarToast("✅ Reparto completo copiado para WhatsApp");
@@ -1332,6 +1384,7 @@ chipNums.forEach(chip => {
 calcCheckUnido.onchange = renderizarCalculadora;
 if (calcCheckPentateuco) calcCheckPentateuco.onchange = renderizarCalculadora;
 calcCheckExtras.onchange = renderizarCalculadora;
+if (calcSelectCriterio) calcSelectCriterio.onchange = renderizarCalculadora;
 btnCerrarCalcModal.onclick = cerrarCalculadora;
 btnCerrarCalcModalBottom.onclick = cerrarCalculadora;
 btnCopiarRepartoCompleto.onclick = copiarRepartoCompleto;
