@@ -1788,12 +1788,17 @@ function agregarExclusiones() {
 function excluirPalabraDirecta(nombrePalabra) {
     const pNorm = normalizar(nombrePalabra);
     if (!setExcluidos.has(pNorm)) {
+        if (!confirm(`🚫 ¿Estás seguro de que deseas excluir "${nombrePalabra}" del temario?\n\nDejará de aparecer en la lista principal (puedes restaurarla en cualquier momento desde ⚙️ Filtros > Editar Palabras).`)) {
+            return;
+        }
         setExcluidos.add(pNorm);
         guardarLocalStorage();
         renderizarTags();
         actualizarVista();
         if (contenedorTags) contenedorTags.scrollTop = contenedorTags.scrollHeight;
         mostrarToast(`🚫 "${nombrePalabra}" añadida a excluidas`);
+    } else {
+        mostrarToast(`ℹ️ "${nombrePalabra}" ya está excluida`);
     }
 }
 
