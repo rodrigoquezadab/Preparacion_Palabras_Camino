@@ -467,10 +467,8 @@
       background: var(--bg-card);
       border-bottom: 1px solid var(--border-dark);
       padding: 16px;
-      max-height: 85vh;
-      overflow-y: auto;
-      overscroll-behavior: contain;
-      -webkit-overflow-scrolling: touch;
+      max-height: 1200px;
+      overflow: visible;
       transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, padding 0.3s ease;
       box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
     }
@@ -554,25 +552,21 @@
       scrollbar-color: var(--border-dark) var(--bg-app);
     }
 
-    .tags-container::-webkit-scrollbar,
-    .advanced-panel::-webkit-scrollbar {
+    .tags-container::-webkit-scrollbar {
       width: 6px;
     }
 
-    .tags-container::-webkit-scrollbar-track,
-    .advanced-panel::-webkit-scrollbar-track {
+    .tags-container::-webkit-scrollbar-track {
       background: var(--bg-app);
       border-radius: var(--radius-full);
     }
 
-    .tags-container::-webkit-scrollbar-thumb,
-    .advanced-panel::-webkit-scrollbar-thumb {
+    .tags-container::-webkit-scrollbar-thumb {
       background: var(--border-dark);
       border-radius: var(--radius-full);
     }
 
-    .tags-container::-webkit-scrollbar-thumb:hover,
-    .advanced-panel::-webkit-scrollbar-thumb:hover {
+    .tags-container::-webkit-scrollbar-thumb:hover {
       background: var(--text-muted);
     }
 
