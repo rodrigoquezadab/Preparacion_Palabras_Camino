@@ -1987,6 +1987,7 @@ const guiaTabPanes = document.querySelectorAll(".guia-tab-pane");
 function abrirGuia() {
     if (modalGuia) {
         modalGuia.style.display = "flex";
+        modalGuia.scrollTop = 0;
         document.body.classList.add("modal-open");
         if (!indiceGuiaInicializado) inicializarIndiceGuia();
     }
@@ -1996,7 +1997,7 @@ function cerrarGuia() {
     if (modalGuia) {
         modalGuia.style.display = "none";
         // Si no hay otros modales abiertos, remover modal-open
-        if (modalLectura.style.display !== "flex" && modalCalculadora.style.display !== "flex") {
+        if (modalLectura.style.display !== "flex" && modalCalculadora.style.display !== "flex" && modalArticulo.style.display !== "flex") {
             document.body.classList.remove("modal-open");
         }
     }

@@ -1721,28 +1721,95 @@
     }
 
     /* ==========================================================================
-       MODAL GUÍA Y CRITERIOS EXPLICATIVOS
+       VISTA DE PÁGINA COMPLETA: GUÍA Y CRITERIOS EXPLICATIVOS
        ========================================================================== */
+    #modalGuia {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--bg-app);
+      z-index: 2000;
+      overflow-y: auto;
+      display: none;
+      flex-direction: column;
+      padding: 0;
+      margin: 0;
+      backdrop-filter: none;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+
     .modal-guia-card {
-      max-width: 840px;
+      width: 100%;
+      max-width: 1100px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-guia-card .modal-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-modal-header);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    }
+
+    .btn-guia-volver {
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #ffffff;
+      padding: 7px 16px;
+      border-radius: var(--radius-full);
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn-guia-volver:hover {
+      background: rgba(255, 255, 255, 0.32);
+      transform: translateX(-2px);
     }
 
     .guia-tabs-nav {
+      position: sticky;
+      top: 61px;
+      z-index: 90;
       display: flex;
-      gap: 6px;
-      padding: 10px 16px;
+      gap: 8px;
+      padding: 12px 20px;
       background: var(--bg-app);
       border-bottom: 1px solid var(--border-color);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .guia-tab-btn {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       color: var(--text-muted);
-      padding: 7px 14px;
+      padding: 8px 16px;
       border-radius: var(--radius-full);
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
@@ -1775,14 +1842,32 @@
       display: flex;
     }
 
+    .guia-page-body {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .modal-guia-footer {
+      padding: 16px 20px;
+      background: var(--bg-app);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+
     .guia-card-section {
       background: var(--bg-app);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-md);
-      padding: 14px 16px;
+      padding: 16px 18px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
     .guia-section-title {
@@ -2645,16 +2730,16 @@
     </div>
   </div>
 
-  <!-- MODAL GUÍA Y CRITERIOS EXPLICATIVOS -->
-  <div id="modalGuia" class="modal-backdrop" role="dialog" aria-modal="true">
+  <!-- VISTA DE PÁGINA COMPLETA: GUÍA Y CRITERIOS EXPLICATIVOS -->
+  <div id="modalGuia" class="modal-guia-page" role="dialog" aria-modal="true">
     <div class="modal-card modal-guia-card">
       <div class="modal-header">
         <div class="modal-header-titles">
-          <h2 class="modal-title">📖 Guía de Criterios Litúrgicos y Nomenclatura</h2>
+          <h2 class="modal-title">📖 Guía Litúrgica y Vocabulario</h2>
           <span class="modal-subtitle">Camino Neocatecumenal y Vocabulario de Xavier Léon-Dufour</span>
         </div>
-        <button id="btnCerrarGuiaModal" class="btn-close-modal" aria-label="Cerrar guía"
-          title="Cerrar guía">&times;</button>
+        <button id="btnCerrarGuiaModal" class="btn-guia-volver" aria-label="Volver a las Palabras"
+          title="Volver a la pantalla principal">← Volver a las Palabras</button>
       </div>
 
       <!-- Pestañas de Navegación de la Guía -->
@@ -2665,7 +2750,7 @@
         <button class="guia-tab-btn" data-tab="tab-indice-remisiones">📚 Índice de Artículos y Remisiones</button>
       </div>
 
-      <div class="modal-body" style="padding: 16px;">
+      <div class="modal-body guia-page-body">
 
         <!-- PESTAÑA 1: Criterios Litúrgicos del Camino -->
         <div id="tab-liturgia" class="guia-tab-pane active">
@@ -2888,10 +2973,10 @@
 
       </div>
 
-      <div class="modal-footer">
-        <span style="font-size:0.75rem; color:var(--text-muted);">Vocabulario de Teología Bíblica — Xavier
+      <div class="modal-footer modal-guia-footer">
+        <span style="font-size:0.78rem; color:var(--text-muted);">Vocabulario de Teología Bíblica — Xavier
           Léon-Dufour</span>
-        <button id="btnCerrarGuiaModalBottom" class="btn-action" title="Cerrar la guía">Entendido</button>
+        <button id="btnCerrarGuiaModalBottom" class="btn-action" title="Volver a la pantalla principal">← Volver a las Palabras</button>
       </div>
     </div>
   </div>
