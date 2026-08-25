@@ -526,7 +526,7 @@ fetch("palabras.json")
                 contenido: entry.contenido || "",
                 relacionados: entry.relacionados || [],
                 estaOrdenado: true,
-                estaUnido: true,
+                estaUnido: false,
                 cumple4Partes: cumple4Partes,
                 total: totalBase,
                 totalConExtras: totalBase + sal.length + sap.length,
@@ -572,7 +572,7 @@ fetch("palabras.json")
                 contenido: p.contenido || "",
                 relacionados: p.relacionados || [],
                 estaOrdenado: true,
-                estaUnido: true,
+                estaUnido: false,
                 cumple4Partes: cumple4Partes,
                 total: totalBase,
                 totalConExtras: totalBase + sal.length + sap.length,
@@ -606,7 +606,7 @@ fetch("palabras.json")
 function actualizarVista() {
     const soloPentateuco = checkPentateuco ? checkPentateuco.checked : false;
     const mostrarExtras = checkExtras.checked;
-    const unirPericopas = checkPericopas ? checkPericopas.checked : true;
+    const unirPericopas = checkPericopas ? checkPericopas.checked : false;
     const soloCompletas = checkSoloCompletas ? checkSoloCompletas.checked : false;
     const orden = selectOrden.value;
     const busqueda = normalizar(inputBusqueda.value);
@@ -664,7 +664,7 @@ function actualizarVista() {
     });
 
     const badgePentInfo = soloPentateuco ? ` · <span style="color:#059669; font-weight:700;">📜 Solo Pentateuco</span>` : ``;
-    const badgePericopasInfo = !unirPericopas ? ` · <span style="color:#2563eb; font-weight:700;">📄 Citas Sueltas</span>` : ``;
+    const badgePericopasInfo = unirPericopas ? ` · <span style="color:#2563eb; font-weight:700;">🔗 Perícopas Unidas</span>` : ``;
     const badgeCompletasInfo = soloCompletas ? ` · <span style="color:#10b981; font-weight:700;">🌱 4 Criterios</span>` : ``;
 
     if (modoFiltro === "precat") {
@@ -1175,7 +1175,7 @@ function abrirCalculadora(item) {
         calcCheckExtras.checked = checkExtras.checked;
     }
     if (calcCheckUnido) {
-        calcCheckUnido.checked = (typeof item.estaUnido === 'boolean') ? item.estaUnido : (checkPericopas ? checkPericopas.checked : true);
+        calcCheckUnido.checked = (typeof item.estaUnido === 'boolean') ? item.estaUnido : (checkPericopas ? checkPericopas.checked : false);
     }
     renderizarCalculadora();
     modalCalculadora.style.display = "flex";
