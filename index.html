@@ -684,38 +684,58 @@
       background-color: var(--bg-card-hover);
     }
 
-    /* Barra Superior de Metadatos y Acciones Rápidas (Uniforme en todas las tarjetas) */
-    .word-card-top-bar {
+    /* Fila 1: Título de la Palabra con Número al lado (Máximo Protagonismo Arriba a la Izquierda) */
+    .word-title-row {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      align-items: baseline;
       gap: 8px;
       width: 100%;
-    }
-
-    .word-card-meta-left {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
       min-width: 0;
-      flex-wrap: wrap;
-    }
-
-    .word-card-actions-right {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
     }
 
     .word-number {
-      font-size: 0.72rem;
-      font-weight: 700;
+      font-size: 0.76rem;
+      font-weight: 800;
       color: var(--text-light);
       background: var(--bg-app);
-      padding: 2px 6px;
+      padding: 2px 7px;
       border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
       white-space: nowrap;
+      align-self: center;
+    }
+
+    .word-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.3px;
+      line-height: 1.3;
+      display: inline-flex;
+      align-items: baseline;
+      gap: 6px;
+      flex-wrap: wrap;
+      word-break: break-word;
+    }
+
+    .word-subname {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg-app);
+      padding: 1px 6px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+    }
+
+    /* Fila 2: Distintivo de Criterio y Acciones Rápidas (Agrupadas hacia la derecha) */
+    .word-meta-actions-row {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      width: 100%;
     }
 
     .badge-criterio {
@@ -739,47 +759,14 @@
       border: 1px solid var(--border-ev);
     }
 
-    /* Fila del Nombre de la Palabra (Ocupa su propio renglón dedicado e independiente del largo) */
-    .word-name-row {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      width: 100%;
-      min-width: 0;
-      margin: 1px 0;
-    }
-
-    .word-name {
-      font-size: 1.10rem;
-      font-weight: 700;
-      color: var(--text-main);
-      letter-spacing: -0.2px;
-      line-height: 1.35;
-      display: inline-flex;
-      align-items: baseline;
-      gap: 6px;
-      flex-wrap: wrap;
-      word-break: break-word;
-    }
-
-    .word-subname {
-      font-size: 0.76rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      background: var(--bg-app);
-      padding: 1px 6px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border-color);
-    }
-
-    /* Pastillas de Conteo */
+    /* Fila 3: Pastillas de Conteo Bíblico */
     .word-counts-row {
       display: flex;
       flex-wrap: wrap;
       gap: 5px 6px;
       align-items: center;
       width: 100%;
-      margin-top: 2px;
+      margin-top: 1px;
     }
 
     .count-pill {
@@ -2508,7 +2495,7 @@
   <div id="toast" class="toast">Notificación</div>
 
   <!-- Scripts -->
-  <script src="js/app.js?v=3.1"></script>
+  <script src="js/app.js?v=3.2"></script>
 </body>
 
 </html>
