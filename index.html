@@ -684,13 +684,22 @@
       background-color: var(--bg-card-hover);
     }
 
-    /* Fila 1: Título de la Palabra con Número al lado (Máximo Protagonismo Arriba a la Izquierda) */
+    /* Fila 1: Título de la Palabra a la Izquierda y Total de Citas a la Derecha */
     .word-title-row {
       display: flex;
-      align-items: baseline;
+      justify-content: space-between;
+      align-items: center;
       gap: 8px;
       width: 100%;
+    }
+
+    .word-title-left {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 8px;
       min-width: 0;
+      flex: 1;
+      flex-wrap: wrap;
     }
 
     .word-number {
@@ -2495,7 +2504,7 @@
   <div id="toast" class="toast">Notificación</div>
 
   <!-- Scripts -->
-  <script src="js/app.js?v=3.2"></script>
+  <script src="js/app.js?v=3.3"></script>
 </body>
 
 </html>

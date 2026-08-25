@@ -718,24 +718,37 @@ function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
         const diffTotal = totalUnido - totalOriginalBase;
         const cumple4PartesActual = esPalabraCompleta(item, soloPentateuco);
 
+        const tooltipTotal = item.estaUnido 
+            ? `Total actual: ${totalUnido} perícopas. ${diffTotal !== 0 ? `El (${diffTotal}) indica que se han consolidado ${Math.abs(diffTotal)} citas contiguas de las ${totalOriginalBase} originales de Léon-Dufour.` : `Total de citas originales: ${totalOriginalBase}`}`
+            : `Total actual: ${totalOriginalBase} citas individuales sueltas.`;
+
+        const totalPillText = item.estaUnido 
+            ? `${totalUnido} ${diffTotal !== 0 ? `<small class="diff-tag">(${diffTotal})</small>` : ''} perícopas`
+            : `${totalOriginalBase} citas`;
+
         const card = document.createElement("article");
         card.className = `word-card ${cumple4PartesActual ? 'card-cumple' : 'card-incompleta'}`;
         card.id = `card-${item.id}`;
 
-        // --- ENCABEZADO DE LA TARJETA (PALABRA ARRIBA A LA IZQUIERDA, ACCIONES EN 2ª FILA A LA DERECHA) ---
+        // --- ENCABEZADO DE LA TARJETA ---
         const header = document.createElement("div");
         header.className = "word-card-header";
         header.setAttribute("title", "Toca para desplegar las citas bíblicas de esta palabra");
 
-        // 1. Fila Superior: Número y Nombre de la Palabra (Máximo Protagonismo Arriba a la Izquierda)
+        // 1. Fila Superior: Número y Nombre de la Palabra (Izq.) + Total Citas (Der.)
         const titleRow = document.createElement("div");
         titleRow.className = "word-title-row";
         titleRow.innerHTML = `
-            <span class="word-number">#${item.numPrecat || item.id}</span>
-            <h2 class="word-name">
-                ${item.palabra}
-                ${item.subInfo ? `<span class="word-subname" title="Referencia en Léon-Dufour">(${item.subInfo})</span>` : ''}
-            </h2>
+            <div class="word-title-left">
+                <span class="word-number">#${item.numPrecat || item.id}</span>
+                <h2 class="word-name">
+                    ${item.palabra}
+                    ${item.subInfo ? `<span class="word-subname" title="Referencia en Léon-Dufour">(${item.subInfo})</span>` : ''}
+                </h2>
+            </div>
+            <span class="count-pill total-pill" title="${tooltipTotal}">
+                ${totalPillText}
+            </span>
         `;
         header.appendChild(titleRow);
 
@@ -782,7 +795,7 @@ function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
         metaActionsRow.appendChild(btnQuickCalc);
         header.appendChild(metaActionsRow);
 
-        // 3. Fila de resumen de conteos por categoría (Pastillas interactivas)
+        // 3. Fila de resumen de conteos por categoría (Pastillas interactivas compactas)
         const countsRow = document.createElement("div");
         countsRow.className = "word-counts-row";
         
@@ -792,18 +805,7 @@ function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
             ? `Pentateuco / Torá: ${histCount} citas (Históricos posteriores ocultos)` 
             : `Históricos / Torá: ${item.hist} citas`;
 
-        const tooltipTotal = item.estaUnido 
-            ? `Total actual: ${totalUnido} perícopas. ${diffTotal !== 0 ? `El (${diffTotal}) indica que se han consolidado ${Math.abs(diffTotal)} citas contiguas de las ${totalOriginalBase} originales de Léon-Dufour.` : `Total de citas originales: ${totalOriginalBase}`}`
-            : `Total actual: ${totalOriginalBase} citas individuales sueltas.`;
-
-        const totalPillText = item.estaUnido 
-            ? `${totalUnido} ${diffTotal !== 0 ? `<small class="diff-tag">(${diffTotal})</small>` : ''} perícopas`
-            : `${totalOriginalBase} citas`;
-
         countsRow.innerHTML = `
-            <span class="count-pill total-pill" title="${tooltipTotal}">
-              ${totalPillText}
-            </span>
             <span class="count-pill cat-hist ${histCount === 0 ? 'zero' : ''}" title="${histTitle}">${histCount} ${histLabel}</span>
             <span class="count-pill cat-prof ${item.prof === 0 ? 'zero' : ''}" title="Proféticos: ${item.prof} citas">${item.prof} Prof</span>
             <span class="count-pill cat-nt ${item.nt === 0 ? 'zero' : ''}" title="Cartas / Nuevo Testamento: ${item.nt} citas">${item.nt} NT</span>
