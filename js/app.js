@@ -132,6 +132,7 @@ const btnModoTodas = document.getElementById("btnModoTodas");
 const checkPentateuco = document.getElementById("checkPentateuco");
 const checkExtras = document.getElementById("checkExtras");
 const checkPericopas = document.getElementById("checkPericopas");
+const checkSoloCompletas = document.getElementById("checkSoloCompletas");
 const inputExcluir = document.getElementById("inputExcluir");
 const btnAgregarExclusion = document.getElementById("btnAgregarExclusion");
 const countExcluidasHeader = document.getElementById("countExcluidasHeader");
@@ -598,6 +599,7 @@ function actualizarVista() {
     const soloPentateuco = checkPentateuco ? checkPentateuco.checked : false;
     const mostrarExtras = checkExtras.checked;
     const unirPericopas = checkPericopas ? checkPericopas.checked : true;
+    const soloCompletas = checkSoloCompletas ? checkSoloCompletas.checked : false;
     const orden = selectOrden.value;
     const busqueda = normalizar(inputBusqueda.value);
 
@@ -610,6 +612,13 @@ function actualizarVista() {
             return false;
         }
         if (busqueda.length > 0 && !item.palabraNorm.includes(busqueda)) return false;
+
+        if (soloCompletas) {
+            const histCount = soloPentateuco ? item.pent : item.hist;
+            const cumple = (histCount > 0 && item.prof > 0 && item.nt > 0 && item.ev > 0);
+            if (!cumple) return false;
+        }
+
         return true;
     });
 
@@ -650,11 +659,12 @@ function actualizarVista() {
 
     const badgePentInfo = soloPentateuco ? ` · <span style="color:#059669; font-weight:700;">📜 Solo Pentateuco</span>` : ``;
     const badgePericopasInfo = !unirPericopas ? ` · <span style="color:#2563eb; font-weight:700;">📄 Citas Sueltas</span>` : ``;
+    const badgeCompletasInfo = soloCompletas ? ` · <span style="color:#10b981; font-weight:700;">🌱 4 Criterios</span>` : ``;
 
     if (modoFiltro === "precat") {
-        infoStats.innerHTML = `🌱 <strong>Precatecumenado:</strong> Viendo <strong>${lista.length}</strong> de 148 palabras oficiales del documento${badgePentInfo}${badgePericopasInfo}`;
+        infoStats.innerHTML = `🌱 <strong>Precatecumenado:</strong> Viendo <strong>${lista.length}</strong> de 148 palabras oficiales del documento${badgePentInfo}${badgePericopasInfo}${badgeCompletasInfo}`;
     } else {
-        infoStats.innerHTML = `📚 <strong>Vocabulario Completo:</strong> Viendo <strong>${lista.length}</strong> de ${listaTodas.length} palabras de Xavier Léon-Dufour${badgePentInfo}${badgePericopasInfo}`;
+        infoStats.innerHTML = `📚 <strong>Vocabulario Completo:</strong> Viendo <strong>${lista.length}</strong> de ${listaTodas.length} palabras de Xavier Léon-Dufour${badgePentInfo}${badgePericopasInfo}${badgeCompletasInfo}`;
     }
 
     dibujarLista(lista, mostrarExtras, soloPentateuco);
@@ -1874,6 +1884,7 @@ inputBusqueda.addEventListener("input", actualizarVista);
 selectOrden.addEventListener("change", actualizarVista);
 checkExtras.addEventListener("change", actualizarVista);
 if (checkPentateuco) checkPentateuco.addEventListener("change", actualizarVista);
+if (checkSoloCompletas) checkSoloCompletas.addEventListener("change", actualizarVista);
 if (checkPericopas) {
     checkPericopas.addEventListener("change", () => {
         const val = checkPericopas.checked;
