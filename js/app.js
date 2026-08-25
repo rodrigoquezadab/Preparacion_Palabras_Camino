@@ -53,6 +53,12 @@ const esPentateuco = (l) => {
     return LIBROS_PENTATEUCO.has(l.toUpperCase().trim());
 };
 
+const esPalabraCompleta = (item, soloPentateuco = false) => {
+    if (!item) return false;
+    const histCount = soloPentateuco ? (item.pent || 0) : (item.hist || 0);
+    return (histCount > 0 && (item.prof || 0) > 0 && (item.nt || 0) > 0 && (item.ev || 0) > 0);
+};
+
 // --- LISTA PREDETERMINADA DE PALABRAS EXCLUIDAS (YA CELEBRADAS) ---
 const EXCLUSIONES_PREDETERMINADAS = [
     "Escuchar",       // #45
@@ -613,10 +619,8 @@ function actualizarVista() {
         }
         if (busqueda.length > 0 && !item.palabraNorm.includes(busqueda)) return false;
 
-        if (soloCompletas) {
-            const histCount = soloPentateuco ? item.pent : item.hist;
-            const cumple = (histCount > 0 && item.prof > 0 && item.nt > 0 && item.ev > 0);
-            if (!cumple) return false;
+        if (soloCompletas && !esPalabraCompleta(item, soloPentateuco)) {
+            return false;
         }
 
         return true;
@@ -707,7 +711,7 @@ function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
         const totalOriginalBase = (soloPentateuco ? item.pent : item.hist) + item.prof + item.nt + item.ev;
         const totalUnido = lecturasActuales.Hist.length + lecturasActuales.Prof.length + lecturasActuales.NT.length + lecturasActuales.Ev.length;
         const diffTotal = totalUnido - totalOriginalBase;
-        const cumple4PartesActual = (lecturasActuales.Hist.length > 0 && item.prof > 0 && item.nt > 0 && item.ev > 0);
+        const cumple4PartesActual = esPalabraCompleta(item, soloPentateuco);
 
         const card = document.createElement("article");
         card.className = `word-card ${cumple4PartesActual ? 'card-cumple' : 'card-incompleta'}`;
@@ -1863,6 +1867,7 @@ if (btnModoPrecat) {
         if (btnModoTodas) btnModoTodas.classList.remove("active");
         selectOrden.value = "precat";
         if (checkPentateuco) checkPentateuco.checked = true;
+        if (checkSoloCompletas) checkSoloCompletas.checked = true;
         actualizarVista();
     };
 }
@@ -1883,13 +1888,21 @@ if (btnModoTodas) {
 inputBusqueda.addEventListener("input", actualizarVista);
 selectOrden.addEventListener("change", actualizarVista);
 checkExtras.addEventListener("change", actualizarVista);
-if (checkPentateuco) checkPentateuco.addEventListener("change", actualizarVista);
-if (checkSoloCompletas) checkSoloCompletas.addEventListener("change", actualizarVista);
+if (checkPentateuco) {
+    checkPentateuco.addEventListener("change", actualizarVista);
+    checkPentateuco.addEventListener("input", actualizarVista);
+}
+if (checkSoloCompletas) {
+    checkSoloCompletas.addEventListener("change", actualizarVista);
+    checkSoloCompletas.addEventListener("input", actualizarVista);
+}
 if (checkPericopas) {
-    checkPericopas.addEventListener("change", () => {
+    const handlePericopas = () => {
         const val = checkPericopas.checked;
         listaPrecat.forEach(p => p.estaUnido = val);
         listaTodas.forEach(p => p.estaUnido = val);
         actualizarVista();
-    });
+    };
+    checkPericopas.addEventListener("change", handlePericopas);
+    checkPericopas.addEventListener("input", handlePericopas);
 }
