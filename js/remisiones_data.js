@@ -21,7 +21,8 @@ const INDICE_REMISIONES_DATA = {
       "destinos": [
         "Adoración",
         "Hijo",
-        "Oración"
+        "Oración",
+        "Padres y Padre"
       ],
       "referenciasOriginales": "Adoración n 3 — Hijo NT i 1 — Oración rv 2. v 2 d — Padres v 1. vi"
     },
@@ -115,7 +116,8 @@ const INDICE_REMISIONES_DATA = {
       "termino": "Adopción",
       "destinos": [
         "Fecundidad",
-        "Hijo"
+        "Hijo",
+        "Padres y Padre"
       ],
       "referenciasOriginales": "• Fecundidad u 3 — Hijo NT n - Padres vi"
     },
@@ -237,7 +239,8 @@ const INDICE_REMISIONES_DATA = {
       "termino": "Antepasados",
       "destinos": [
         "Adán",
-        "Generación"
+        "Generación",
+        "Padres y Padre"
       ],
       "referenciasOriginales": "Adán i 3 — Generación — Padres i 2"
     },
@@ -388,6 +391,7 @@ const INDICE_REMISIONES_DATA = {
         "Carisma",
         "Iglesia",
         "Obediencia",
+        "Padres y Padre",
         "Pastor - Rebaño",
         "Poder",
         "Rey"
@@ -426,6 +430,7 @@ const INDICE_REMISIONES_DATA = {
         "Esposo",
         "Ídolos",
         "Matrimonio",
+        "Padres y Padre",
         "Señor"
       ],
       "referenciasOriginales": "Esposo AT — ídolos n i Matrimonio AT n 1 — Padres i 1. ni 2 — Señor AT"
@@ -464,7 +469,8 @@ const INDICE_REMISIONES_DATA = {
       "termino": "Benevolencia",
       "destinos": [
         "Gracia",
-        "Misericordia"
+        "Misericordia",
+        "Voluntad de Dios"
       ],
       "referenciasOriginales": "Gracia i — Misericordia — Voluntad de D. AT i 2 c"
     },
@@ -533,7 +539,8 @@ const INDICE_REMISIONES_DATA = {
       "termino": "Boca",
       "destinos": [
         "Labios",
-        "Palabra de Dios"
+        "Palabra de Dios",
+        "Palabra humana"
       ],
       "referenciasOriginales": "Labios — Palabra de D. AT i — Palabra humana 2"
     },
@@ -548,6 +555,13 @@ const INDICE_REMISIONES_DATA = {
       ],
       "referenciasOriginales": "Amor — Bien y mal — Misericordia Bosque - • Árbol 3 — Cruz i 2. n 3"
     },
+    "burlon": {
+      "termino": "Burlón",
+      "destinos": [
+        "Risa"
+      ],
+      "referenciasOriginales": "Reir"
+    },
     "caballo": {
       "termino": "Caballo",
       "destinos": [
@@ -559,7 +573,8 @@ const INDICE_REMISIONES_DATA = {
       "termino": "Cabeza",
       "destinos": [
         "Cuerpo de Cristo",
-        "Cuerpo"
+        "Cuerpo",
+        "Jesús"
       ],
       "referenciasOriginales": "Cuerpo de Cristo ni 2"
     },
@@ -584,7 +599,7 @@ const INDICE_REMISIONES_DATA = {
       "termino": "Calumnia",
       "destinos": [
         "Mentira",
-        "Palabra de Dios",
+        "Palabra humana",
         "Satán"
       ],
       "referenciasOriginales": "Mentira i — Palabra humana — Satán Int."
@@ -935,7 +950,7 @@ const INDICE_REMISIONES_DATA = {
       "termino": "Constancia",
       "destinos": [
         "Prueba - Tentación",
-        "Verdad",
+        "Fidelidad",
         "Paciencia",
         "Piedad"
       ],
@@ -1218,7 +1233,8 @@ const INDICE_REMISIONES_DATA = {
         "Amor",
         "Palabra de Dios",
         "Silencio",
-        "Soledad"
+        "Soledad",
+        "Voluntad de Dios"
       ],
       "referenciasOriginales": "Amor i — Palabra de D. AT i. NT ra 2 - Silencio — Soledad a l - Voluntad de D. Int."
     },
@@ -1260,7 +1276,8 @@ const INDICE_REMISIONES_DATA = {
         "Espíritu",
         "Gustar",
         "Profeta",
-        "Prueba - Tentación"
+        "Prueba - Tentación",
+        "Voluntad de Dios"
       ],
       "referenciasOriginales": "Demonios NT 2 — Espíritu NT 1 - Gustar - Profeta AT m 1 — Prueba NT ni — Voluntad de D. NT n 1"
     },
@@ -1414,7 +1431,9 @@ const INDICE_REMISIONES_DATA = {
         "Carne",
         "Cuerpo",
         "Cuerpo de Cristo",
-        "Hijo"
+        "Jesús",
+        "Hijo",
+        "Padres y Padre"
       ],
       "referenciasOriginales": "• Introd. i: n 3 — Carne i 3 b. n 2 c — Cuerpo n 2 — Cuerpo de Cristo i - Hijo NT i 3 - Padres v 3"
     },
@@ -1642,7 +1661,8 @@ const INDICE_REMISIONES_DATA = {
         "Educación",
         "Hermano",
         "Madre",
-        "Matrimonio"
+        "Matrimonio",
+        "Padres y Padre"
       ],
       "referenciasOriginales": "Casa — Edificar 11 — Educación — Hermano — Madre — Matrimonio — Padres"
     },
@@ -1681,7 +1701,8 @@ const INDICE_REMISIONES_DATA = {
     "filiacion": {
       "termino": "Filiación",
       "destinos": [
-        "Hijo"
+        "Hijo",
+        "Padres y Padre"
       ],
       "referenciasOriginales": "Hijo — Padres v 1. vi"
     },
@@ -1698,6 +1719,7 @@ const INDICE_REMISIONES_DATA = {
       "termino": "Firmeza",
       "destinos": [
         "Fe",
+        "Fidelidad",
         "Verdad"
       ],
       "referenciasOriginales": "Fe Int. — Fidelidad — Verdad"
@@ -1757,7 +1779,8 @@ const INDICE_REMISIONES_DATA = {
       "termino": "Genealogía",
       "destinos": [
         "Fecundidad",
-        "Generación"
+        "Generación",
+        "Padres y Padre"
       ],
       "referenciasOriginales": "• Fecundidad n 3 — Generación — Padres i 2"
     },
@@ -1885,6 +1908,7 @@ const INDICE_REMISIONES_DATA = {
       "destinos": [
         "Nacimiento (nuevo)",
         "Nuevo",
+        "Padres y Padre",
         "Revelación"
       ],
       "referenciasOriginales": "• Nacimiento nuevo — Padres v — Revelación NT i 1 c"
@@ -1997,6 +2021,7 @@ const INDICE_REMISIONES_DATA = {
       "termino": "Imitación",
       "destinos": [
         "Ejemplo",
+        "Padres y Padre",
         "Seguir"
       ],
       "referenciasOriginales": "Ejemplo — Padres rv — Seguir 2 c"
@@ -2130,7 +2155,8 @@ const INDICE_REMISIONES_DATA = {
       "termino": "Jeremías",
       "destinos": [
         "Profeta",
-        "Siervo de Yahveh"
+        "Siervo de Yahveh",
+        "Dios"
       ],
       "referenciasOriginales": "Profeta — Siervo de Yahveh n 2"
     },
@@ -2154,7 +2180,7 @@ const INDICE_REMISIONES_DATA = {
       "destinos": [
         "Alianza",
         "Amén",
-        "Palabra de Dios",
+        "Palabra humana",
         "Promesas"
       ],
       "referenciasOriginales": "Alianza AT 11 — Amén 1 — Palabra humana 1 — Promesas i"
@@ -2346,7 +2372,8 @@ const INDICE_REMISIONES_DATA = {
       "termino": "Lluvia",
       "destinos": [
         "Agua",
-        "Fruto"
+        "Fruto",
+        "Tormenta"
       ],
       "referenciasOriginales": "Agua i — Fruto n — Tempestad 1"
     },
@@ -2381,7 +2408,7 @@ const INDICE_REMISIONES_DATA = {
     "maledicencia": {
       "termino": "Maledicencia",
       "destinos": [
-        "Palabra de Dios"
+        "Palabra humana"
       ],
       "referenciasOriginales": "Palabra humana 1"
     },
@@ -2407,7 +2434,8 @@ const INDICE_REMISIONES_DATA = {
       "termino": "Mandamiento",
       "destinos": [
         "Amor",
-        "Ley"
+        "Ley",
+        "Voluntad de Dios"
       ],
       "referenciasOriginales": "Amor — Ley — Voluntad de D. NT II"
     },
@@ -2519,7 +2547,8 @@ const INDICE_REMISIONES_DATA = {
       "termino": "Miembros",
       "destinos": [
         "Cuerpo de Cristo",
-        "Cuerpo"
+        "Cuerpo",
+        "Jesús"
       ],
       "referenciasOriginales": "• Cuerpo de Cristo ni 1"
     },
@@ -2600,7 +2629,8 @@ const INDICE_REMISIONES_DATA = {
       "termino": "Noé",
       "destinos": [
         "Diluvio",
-        "Vino"
+        "Vino",
+        "Viña"
       ],
       "referenciasOriginales": "Diluvio — Vino i 1 — Viña 1"
     },
@@ -2780,10 +2810,18 @@ const INDICE_REMISIONES_DATA = {
       ],
       "referenciasOriginales": "Cordero — David — Ministerio — S. Pedro 3 c — Puerta"
     },
+    "paternidad": {
+      "termino": "Paternidad",
+      "destinos": [
+        "Padres y Padre"
+      ],
+      "referenciasOriginales": "Padres in. v 2"
+    },
     "patriarcas": {
       "termino": "Patriarcas",
       "destinos": [
-        "Elección"
+        "Elección",
+        "Padres y Padre"
       ],
       "referenciasOriginales": "Elección AT i 3 b — Padres i. u"
     },
@@ -2840,7 +2878,7 @@ const INDICE_REMISIONES_DATA = {
       "termino": "Perseverancia",
       "destinos": [
         "Confianza",
-        "Verdad",
+        "Fidelidad",
         "Paciencia"
       ],
       "referenciasOriginales": "Confianza 3 — Fidelidad NT — Paciencia H 1"
@@ -2921,7 +2959,8 @@ const INDICE_REMISIONES_DATA = {
       "termino": "Posteridad",
       "destinos": [
         "Abraham",
-        "Fecundidad"
+        "Fecundidad",
+        "Padres y Padre"
       ],
       "referenciasOriginales": "Ábraham n — Fecundidad n — Padres i 2. H 1. 2"
     },
@@ -3061,8 +3100,8 @@ const INDICE_REMISIONES_DATA = {
       "termino": "Rahab",
       "destinos": [
         "Bestias",
-        "Fuego",
-        "Tormenta"
+        "Tormenta",
+        "Fuego"
       ],
       "referenciasOriginales": "Bestia 1. 2 Rayo - • Fuego AT i - Tormenta"
     },
@@ -3072,6 +3111,7 @@ const INDICE_REMISIONES_DATA = {
         "Generación",
         "Hermano",
         "Naciones",
+        "Padres y Padre",
         "Pueblo"
       ],
       "referenciasOriginales": "Generación 1 — Hermano Int. — Naciones — Padres i. n — Pueblo A n 1. B n 1. C"
@@ -3173,6 +3213,13 @@ const INDICE_REMISIONES_DATA = {
         "Incredulidad"
       ],
       "referenciasOriginales": "Gozo — Incredulidad"
+    },
+    "relampago": {
+      "termino": "Relámpago",
+      "destinos": [
+        "Tormenta"
+      ],
+      "referenciasOriginales": "Tempestad"
     },
     "religion": {
       "termino": "Religión",
@@ -3577,7 +3624,7 @@ const INDICE_REMISIONES_DATA = {
       "destinos": [
         "Hipócrita",
         "Labios",
-        "Palabra de Dios",
+        "Palabra humana",
         "Sencillo"
       ],
       "referenciasOriginales": "Hipócrita — Labios 1 — Palabra humana 1 — Sencillo"
@@ -3589,7 +3636,8 @@ const INDICE_REMISIONES_DATA = {
         "Madre",
         "María",
         "Montaña",
-        "Siervo de Yahveh"
+        "Siervo de Yahveh",
+        "Dios"
       ],
       "referenciasOriginales": "Jerusalén — Madre n 3 — Maria i — Montaña n — Siervo de Yahveh n 1"
     },
@@ -3641,6 +3689,7 @@ const INDICE_REMISIONES_DATA = {
         "Esperanza",
         "Generación",
         "Hombre",
+        "Padres y Padre",
         "Retribución",
         "Sufrimiento"
       ],
@@ -3831,6 +3880,7 @@ const INDICE_REMISIONES_DATA = {
       "termino": "Tribu",
       "destinos": [
         "Israel",
+        "Padres y Padre",
         "Pueblo",
         "Rey"
       ],
@@ -4087,6 +4137,25 @@ const INDICE_REMISIONES_DATA = {
       "Salmos",
       "Súplica"
     ],
+    "padresypadre": [
+      "Abba",
+      "Adopción",
+      "Antepasados",
+      "AUTORIDAD TERRENAL",
+      "Baal",
+      "Encarnación",
+      "Familia",
+      "Filiación",
+      "Genealogía",
+      "HDO",
+      "Imitación",
+      "Paternidad",
+      "Patriarcas",
+      "Posteridad",
+      "Raza",
+      "Solidaridad",
+      "Tribu"
+    ],
     "agua": [
       "Abismo",
       "Fuente",
@@ -4232,14 +4301,10 @@ const INDICE_REMISIONES_DATA = {
     "palabradedios": [
       "Acogida",
       "Boca",
-      "Calumnia",
       "Diálogo",
       "Inspiración",
-      "Juramento",
       "Logos",
-      "Maledicencia",
       "Mensaje",
-      "Sincero",
       "Verbo"
     ],
     "proceso": [
@@ -4542,9 +4607,11 @@ const INDICE_REMISIONES_DATA = {
       "Caridad",
       "Celos",
       "Elohím",
+      "Jeremías",
       "Mensaje",
       "Nombres de Dios",
       "Primero y último",
+      "Sión",
       "Trinidad",
       "Yahveh"
     ],
@@ -4885,6 +4952,12 @@ const INDICE_REMISIONES_DATA = {
       "Compasión",
       "Ternura"
     ],
+    "voluntaddedios": [
+      "Benevolencia",
+      "Diálogo",
+      "Discernimiento",
+      "Mandamiento"
+    ],
     "animales": [
       "BESTIA Y BESTIAS",
       "Dragón",
@@ -4954,6 +5027,13 @@ const INDICE_REMISIONES_DATA = {
       "Duplicidad",
       "Sincero"
     ],
+    "palabrahumana": [
+      "Boca",
+      "Calumnia",
+      "Juramento",
+      "Maledicencia",
+      "Sincero"
+    ],
     "amor": [
       "Bondad",
       "Caridad",
@@ -4967,6 +5047,9 @@ const INDICE_REMISIONES_DATA = {
     ],
     "arbol": [
       "Bondad"
+    ],
+    "risa": [
+      "Burlón"
     ],
     "autoridad": [
       "Cabeza",
@@ -4985,6 +5068,14 @@ const INDICE_REMISIONES_DATA = {
     "cuerpo": [
       "Cabeza",
       "Encarnación",
+      "Miembros"
+    ],
+    "jesus": [
+      "Cabeza",
+      "Emmanuel",
+      "Encarnación",
+      "Huo DEL HOMBRE",
+      "Maestro",
       "Miembros"
     ],
     "sabado": [
@@ -5272,13 +5363,10 @@ const INDICE_REMISIONES_DATA = {
       "Historia santa",
       "Predestinación"
     ],
-    "verdad": [
+    "fidelidad": [
       "Constancia",
-      "Fábulas",
-      "Falsedad",
       "Firmeza",
-      "Perseverancia",
-      "Si"
+      "Perseverancia"
     ],
     "paciencia": [
       "Constancia",
@@ -5461,11 +5549,6 @@ const INDICE_REMISIONES_DATA = {
       "Marchar",
       "Nómadas"
     ],
-    "jesus": [
-      "Emmanuel",
-      "Huo DEL HOMBRE",
-      "Maestro"
-    ],
     "error": [
       "Engañar",
       "Errar",
@@ -5528,6 +5611,12 @@ const INDICE_REMISIONES_DATA = {
     ],
     "aceite": [
       "Extremaunción"
+    ],
+    "verdad": [
+      "Fábulas",
+      "Falsedad",
+      "Firmeza",
+      "Si"
     ],
     "hermano": [
       "Familia",
@@ -5678,6 +5767,11 @@ const INDICE_REMISIONES_DATA = {
     "blanco": [
       "Luto"
     ],
+    "tormenta": [
+      "Lluvia",
+      "Rahab",
+      "Relámpago"
+    ],
     "piedra": [
       "Memorial"
     ],
@@ -5692,6 +5786,9 @@ const INDICE_REMISIONES_DATA = {
       "Nazireato",
       "Noé",
       "Sobriedad"
+    ],
+    "vina": [
+      "Noé"
     ],
     "extranjero": [
       "Nómadas",
@@ -5740,9 +5837,6 @@ const INDICE_REMISIONES_DATA = {
       "Tabernáculo",
       "Tienda"
     ],
-    "tormenta": [
-      "Rahab"
-    ],
     "exilio": [
       "Retorno"
     ],
@@ -5777,6 +5871,7 @@ const INDICE_REMISIONES_DATA = {
       "Elección",
       "Fe",
       "Herencia",
+      "Padres y Padre",
       "Promesas",
       "Vocación"
     ],
@@ -5846,7 +5941,8 @@ const INDICE_REMISIONES_DATA = {
       "Pueblo",
       "Sacrificio",
       "Sangre",
-      "Siervo de Yahveh"
+      "Siervo de Yahveh",
+      "Dios"
     ],
     "alimento": [
       "Animales",
@@ -6041,7 +6137,8 @@ const INDICE_REMISIONES_DATA = {
       "Ira",
       "Muerte",
       "Prueba - Tentación",
-      "Sufrimiento"
+      "Sufrimiento",
+      "Tormenta"
     ],
     "camino": [
       "Desierto",
@@ -6137,6 +6234,7 @@ const INDICE_REMISIONES_DATA = {
       "Copa",
       "Cuerpo de Cristo",
       "Cuerpo",
+      "Jesús",
       "Culto",
       "Deseo",
       "Eucaristía",
@@ -6194,6 +6292,7 @@ const INDICE_REMISIONES_DATA = {
       "Amor",
       "Conocer",
       "Labios",
+      "Lomos y riñones",
       "Rostro",
       "Puro"
     ],
@@ -6204,7 +6303,8 @@ const INDICE_REMISIONES_DATA = {
       "Pastor - Rebaño",
       "Sacrificio",
       "Sangre",
-      "Siervo de Yahveh"
+      "Siervo de Yahveh",
+      "Dios"
     ],
     "creacion": [
       "Alianza",
@@ -6248,6 +6348,7 @@ const INDICE_REMISIONES_DATA = {
       "Carne",
       "Cuerpo de Cristo",
       "Cuerpo",
+      "Jesús",
       "Hombre",
       "Resurrección"
     ],
@@ -6306,7 +6407,8 @@ const INDICE_REMISIONES_DATA = {
       "Oración",
       "Pastor - Rebaño",
       "Rey",
-      "Siervo de Yahveh"
+      "Siervo de Yahveh",
+      "Dios"
     ],
     "demonios": [
       "Ángeles",
@@ -6343,7 +6445,8 @@ const INDICE_REMISIONES_DATA = {
       "Misterio",
       "Resto",
       "Revelación",
-      "Tiempo"
+      "Tiempo",
+      "Voluntad de Dios"
     ],
     "diadelsenor": [
       "Bestias",
@@ -6381,6 +6484,7 @@ const INDICE_REMISIONES_DATA = {
       "Jesús",
       "Madre",
       "Nombre",
+      "Padres y Padre",
       "Presencia de Dios",
       "Revelación",
       "Santo",
@@ -6428,6 +6532,7 @@ const INDICE_REMISIONES_DATA = {
       "Ejemplo",
       "Madre",
       "Niño",
+      "Padres y Padre",
       "Prueba - Tentación",
       "Sabiduría"
     ],
@@ -6601,6 +6706,7 @@ const INDICE_REMISIONES_DATA = {
       "Comunión",
       "Cuerpo de Cristo",
       "Cuerpo",
+      "Jesús",
       "Culto",
       "Maná",
       "Pan",
@@ -6673,10 +6779,10 @@ const INDICE_REMISIONES_DATA = {
       "Conocer",
       "Esperanza",
       "Fecundidad",
-      "Verdad",
+      "Fidelidad",
       "Hospitalidad",
       "Incredulidad",
-      "Justicia",
+      "Justificación",
       "Ley",
       "Milagro",
       "Obediencia",
@@ -6689,7 +6795,8 @@ const INDICE_REMISIONES_DATA = {
       "Poder",
       "Promesas",
       "Salvación",
-      "Seguir"
+      "Seguir",
+      "Verdad"
     ],
     "fecundidad": [
       "Bendición",
@@ -6700,6 +6807,7 @@ const INDICE_REMISIONES_DATA = {
       "Nacimiento (nuevo)",
       "Nuevo",
       "Obras",
+      "Padres y Padre",
       "Sembrar",
       "Virginidad"
     ],
@@ -6737,7 +6845,7 @@ const INDICE_REMISIONES_DATA = {
       "Obras",
       "Sembrar",
       "Siega",
-      "Vino"
+      "Viña"
     ],
     "fuego": [
       "Celo",
@@ -6746,7 +6854,8 @@ const INDICE_REMISIONES_DATA = {
       "Ira",
       "Luz",
       "Nube",
-      "Pentecostés"
+      "Pentecostés",
+      "Tormenta"
     ],
     "fuerza": [
       "Poder",
@@ -6754,6 +6863,7 @@ const INDICE_REMISIONES_DATA = {
     ],
     "generacion": [
       "Fecundidad",
+      "Padres y Padre",
       "Tiempo"
     ],
     "gloria": [
@@ -6786,6 +6896,7 @@ const INDICE_REMISIONES_DATA = {
       "Tristeza",
       "Unción",
       "Vendimia",
+      "Viña",
       "Vino"
     ],
     "gracia": [
@@ -6876,6 +6987,7 @@ const INDICE_REMISIONES_DATA = {
     "iglesia": [
       "Cuerpo de Cristo",
       "Cuerpo",
+      "Jesús",
       "Esposo",
       "Fecundidad",
       "Israel",
@@ -6905,7 +7017,7 @@ const INDICE_REMISIONES_DATA = {
       "Fe",
       "Judío",
       "Esposo",
-      "Verdad",
+      "Fidelidad",
       "Matrimonio"
     ],
     "infierno": [
@@ -6929,6 +7041,7 @@ const INDICE_REMISIONES_DATA = {
       "Paciencia",
       "Silencio",
       "Temor",
+      "Tormenta",
       "Vendimia",
       "Venganza"
     ],
@@ -6944,7 +7057,7 @@ const INDICE_REMISIONES_DATA = {
       "Pueblo",
       "Reino",
       "Sombra",
-      "Vino"
+      "Viña"
     ],
     "jerusalen": [
       "Esposo",
@@ -6975,6 +7088,7 @@ const INDICE_REMISIONES_DATA = {
       "Salvación",
       "Señor",
       "Siervo de Yahveh",
+      "Dios",
       "Verdad",
       "Vida"
     ],
@@ -7010,7 +7124,7 @@ const INDICE_REMISIONES_DATA = {
     "justicia": [
       "Gracia",
       "Juicio",
-      "Justicia",
+      "Justificación",
       "Ley",
       "Misericordia",
       "Obras",
@@ -7033,7 +7147,7 @@ const INDICE_REMISIONES_DATA = {
       "Confesión",
       "Corazón",
       "Lengua",
-      "Palabra de Dios"
+      "Palabra humana"
     ],
     "lampara": [
       "Luz",
@@ -7047,7 +7161,7 @@ const INDICE_REMISIONES_DATA = {
       "Babel - Babilonia",
       "Carisma",
       "Labios",
-      "Palabra de Dios",
+      "Palabra humana",
       "Pentecostés",
       "Pueblo"
     ],
@@ -7071,7 +7185,8 @@ const INDICE_REMISIONES_DATA = {
       "Palabra de Dios",
       "Profeta",
       "Promesas",
-      "Revelación"
+      "Revelación",
+      "Voluntad de Dios"
     ],
     "liberacionlibertad": [
       "Bien - Mal",
@@ -7085,7 +7200,8 @@ const INDICE_REMISIONES_DATA = {
       "Pecado",
       "Redención",
       "Reposo",
-      "Salvación"
+      "Salvación",
+      "Voluntad de Dios"
     ],
     "libro": [
       "Escritura",
@@ -7197,6 +7313,7 @@ const INDICE_REMISIONES_DATA = {
       "Reino",
       "Sacerdocio",
       "Siervo de Yahveh",
+      "Dios",
       "Unción"
     ],
     "milagro": [
@@ -7256,7 +7373,8 @@ const INDICE_REMISIONES_DATA = {
       "Mediador",
       "Oración",
       "Profeta",
-      "Siervo de Yahveh"
+      "Siervo de Yahveh",
+      "Dios"
     ],
     "montana": [
       "Ascensión"
@@ -7334,6 +7452,7 @@ const INDICE_REMISIONES_DATA = {
       "Gloria",
       "Presencia de Dios",
       "Sombra",
+      "Tormenta",
       "Templo"
     ],
     "nuevo": [
@@ -7349,9 +7468,10 @@ const INDICE_REMISIONES_DATA = {
       "Abraham",
       "Autoridad",
       "Designio de Dios",
-      "Verdad",
+      "Fidelidad",
       "Ley",
-      "Servir"
+      "Servir",
+      "Voluntad de Dios"
     ],
     "obras": [
       "Abraham",
@@ -7485,6 +7605,7 @@ const INDICE_REMISIONES_DATA = {
     "patria": [
       "Cielo",
       "Exilio",
+      "Padres y Padre",
       "Pueblo",
       "Tierra"
     ],
@@ -7511,7 +7632,7 @@ const INDICE_REMISIONES_DATA = {
       "Impío",
       "Incredulidad",
       "Infierno",
-      "Justicia",
+      "Justificación",
       "Lepra",
       "Liberación - Libertad",
       "Muerte",
@@ -7582,7 +7703,7 @@ const INDICE_REMISIONES_DATA = {
     ],
     "piedad": [
       "Creación",
-      "Verdad",
+      "Fidelidad",
       "Misericordia",
       "Oración"
     ],
@@ -7595,6 +7716,7 @@ const INDICE_REMISIONES_DATA = {
     "plenitud": [
       "Cuerpo de Cristo",
       "Cuerpo",
+      "Jesús",
       "Cumplir",
       "Iglesia",
       "Tiempo",
@@ -7651,7 +7773,7 @@ const INDICE_REMISIONES_DATA = {
     ],
     "proceso": [
       "Juicio",
-      "Justicia",
+      "Justificación",
       "Paráclito",
       "Testimonio"
     ],
@@ -7682,7 +7804,7 @@ const INDICE_REMISIONES_DATA = {
       "Cumplir",
       "Esperanza",
       "Fe",
-      "Verdad",
+      "Fidelidad",
       "Herencia",
       "Palabra de Dios",
       "Revelación",
@@ -7710,6 +7832,7 @@ const INDICE_REMISIONES_DATA = {
       "Israel",
       "Judío",
       "Naciones",
+      "Padres y Padre",
       "Patria",
       "Sacerdocio",
       "Santo",
@@ -7767,7 +7890,8 @@ const INDICE_REMISIONES_DATA = {
     "resto": [
       "Elección",
       "Resurrección",
-      "Siervo de Yahveh"
+      "Siervo de Yahveh",
+      "Dios"
     ],
     "resurreccion": [
       "Ascensión",
@@ -7862,7 +7986,8 @@ const INDICE_REMISIONES_DATA = {
       "Pecado",
       "Revelación",
       "Sencillo",
-      "Verdad"
+      "Verdad",
+      "Voluntad de Dios"
     ],
     "sacerdocio": [
       "Culto",
@@ -7888,7 +8013,8 @@ const INDICE_REMISIONES_DATA = {
       "Redención",
       "Sacerdocio",
       "Sangre",
-      "Siervo de Yahveh"
+      "Siervo de Yahveh",
+      "Dios"
     ],
     "salvacion": [
       "Copa",
@@ -7988,7 +8114,8 @@ const INDICE_REMISIONES_DATA = {
       "María",
       "Obediencia",
       "Retribución",
-      "Siervo de Yahveh"
+      "Siervo de Yahveh",
+      "Dios"
     ],
     "siega": [
       "Bendición",
@@ -8012,7 +8139,7 @@ const INDICE_REMISIONES_DATA = {
     ],
     "silencio": [
       "Labios",
-      "Palabra de Dios"
+      "Palabra humana"
     ],
     "soberbia": [
       "Babel - Babilonia",
@@ -8117,9 +8244,11 @@ const INDICE_REMISIONES_DATA = {
       "Comunión",
       "Cuerpo de Cristo",
       "Cuerpo",
+      "Jesús",
       "Esposo",
       "Iglesia",
       "Naciones",
+      "Padres y Padre",
       "Pentecostés"
     ],
     "velar": [
@@ -8131,7 +8260,7 @@ const INDICE_REMISIONES_DATA = {
       "Ira",
       "Juicio",
       "Siega",
-      "Vino"
+      "Viña"
     ],
     "venganza": [
       "Amor",
@@ -8155,7 +8284,7 @@ const INDICE_REMISIONES_DATA = {
       "Conocer",
       "Error",
       "Fe",
-      "Verdad",
+      "Fidelidad",
       "Mentira",
       "Palabra de Dios",
       "Paráclito"
@@ -8196,7 +8325,7 @@ const INDICE_REMISIONES_DATA = {
       "Eucaristía",
       "Gozo",
       "Vendimia",
-      "Vino"
+      "Viña"
     ],
     "vina": [
       "Fruto",
@@ -8271,7 +8400,8 @@ const INDICE_REMISIONES_DATA = {
       "destinos": [
         "Adoración",
         "Hijo",
-        "Oración"
+        "Oración",
+        "Padres y Padre"
       ],
       "referenciasRaw": "Adoración n 3 — Hijo NT i 1 — Oración rv 2. v 2 d — Padres v 1. vi"
     },
@@ -8312,6 +8442,7 @@ const INDICE_REMISIONES_DATA = {
         "Elección",
         "Fe",
         "Herencia",
+        "Padres y Padre",
         "Promesas",
         "Vocación"
       ],
@@ -8473,7 +8604,8 @@ const INDICE_REMISIONES_DATA = {
       "letra": "A",
       "destinos": [
         "Fecundidad",
-        "Hijo"
+        "Hijo",
+        "Padres y Padre"
       ],
       "referenciasRaw": "• Fecundidad u 3 — Hijo NT n - Padres vi"
     },
@@ -8684,7 +8816,8 @@ const INDICE_REMISIONES_DATA = {
         "Pueblo",
         "Sacrificio",
         "Sangre",
-        "Siervo de Yahveh"
+        "Siervo de Yahveh",
+        "Dios"
       ],
       "referenciasRaw": "• Amor — Bendición miCircuncisión AT 2 — Comunión AT 2 - Conocer AT 3 - David 4 - Diluvio — Eucaristía rv 1 — Fe AT i - Herencia AT - Israel AT 1 Ley Bu — Mediador — Nuevo m — Pueblo — Sacrificio NT i — Sangre AT 3 a — Siervo de Yahveh i"
     },
@@ -8868,7 +9001,8 @@ const INDICE_REMISIONES_DATA = {
       "letra": "A",
       "destinos": [
         "Adán",
-        "Generación"
+        "Generación",
+        "Padres y Padre"
       ],
       "referenciasRaw": "Adán i 3 — Generación — Padres i 2"
     },
@@ -9187,6 +9321,7 @@ const INDICE_REMISIONES_DATA = {
         "Carisma",
         "Iglesia",
         "Obediencia",
+        "Padres y Padre",
         "Pastor - Rebaño",
         "Poder",
         "Rey"
@@ -9253,6 +9388,7 @@ const INDICE_REMISIONES_DATA = {
         "Esposo",
         "Ídolos",
         "Matrimonio",
+        "Padres y Padre",
         "Señor"
       ],
       "referenciasRaw": "Esposo AT — ídolos n i Matrimonio AT n 1 — Padres i 1. ni 2 — Señor AT"
@@ -9371,7 +9507,8 @@ const INDICE_REMISIONES_DATA = {
       "letra": "B",
       "destinos": [
         "Gracia",
-        "Misericordia"
+        "Misericordia",
+        "Voluntad de Dios"
       ],
       "referenciasRaw": "Gracia i — Misericordia — Voluntad de D. AT i 2 c"
     },
@@ -9498,7 +9635,8 @@ const INDICE_REMISIONES_DATA = {
       "letra": "B",
       "destinos": [
         "Labios",
-        "Palabra de Dios"
+        "Palabra de Dios",
+        "Palabra humana"
       ],
       "referenciasRaw": "Labios — Palabra de D. AT i — Palabra humana 2"
     },
@@ -9534,7 +9672,9 @@ const INDICE_REMISIONES_DATA = {
       "terminoNorm": "burlon",
       "tipo": "REMISION",
       "letra": "B",
-      "destinos": [],
+      "destinos": [
+        "Risa"
+      ],
       "referenciasRaw": "Reir"
     },
     {
@@ -9573,6 +9713,7 @@ const INDICE_REMISIONES_DATA = {
         "Autoridad",
         "Cuerpo de Cristo",
         "Cuerpo",
+        "Jesús",
         "Iglesia",
         "Pastor - Rebaño"
       ],
@@ -9586,7 +9727,8 @@ const INDICE_REMISIONES_DATA = {
       "letra": "C",
       "destinos": [
         "Cuerpo de Cristo",
-        "Cuerpo"
+        "Cuerpo",
+        "Jesús"
       ],
       "referenciasRaw": "Cuerpo de Cristo ni 2"
     },
@@ -9604,7 +9746,8 @@ const INDICE_REMISIONES_DATA = {
         "Ira",
         "Muerte",
         "Prueba - Tentación",
-        "Sufrimiento"
+        "Sufrimiento",
+        "Tormenta"
       ],
       "referenciasRaw": "Castigos — Diluvio — Enfermedad — Guerra — Ira de D. — Muerte — Prueba — Sufrimiento — Tempestad"
     },
@@ -9641,7 +9784,7 @@ const INDICE_REMISIONES_DATA = {
       "letra": "C",
       "destinos": [
         "Mentira",
-        "Palabra de Dios",
+        "Palabra humana",
         "Satán"
       ],
       "referenciasRaw": "Mentira i — Palabra humana — Satán Int."
@@ -10194,6 +10337,7 @@ const INDICE_REMISIONES_DATA = {
         "Copa",
         "Cuerpo de Cristo",
         "Cuerpo",
+        "Jesús",
         "Culto",
         "Deseo",
         "Eucaristía",
@@ -10397,7 +10541,7 @@ const INDICE_REMISIONES_DATA = {
       "letra": "C",
       "destinos": [
         "Prueba - Tentación",
-        "Verdad",
+        "Fidelidad",
         "Paciencia",
         "Piedad"
       ],
@@ -10488,6 +10632,7 @@ const INDICE_REMISIONES_DATA = {
         "Amor",
         "Conocer",
         "Labios",
+        "Lomos y riñones",
         "Rostro",
         "Puro"
       ],
@@ -10506,7 +10651,8 @@ const INDICE_REMISIONES_DATA = {
         "Pastor - Rebaño",
         "Sacrificio",
         "Sangre",
-        "Siervo de Yahveh"
+        "Siervo de Yahveh",
+        "Dios"
       ],
       "referenciasRaw": "Esposo NT — Éxodo — Pascua — Pastor — Sacrificio NT i — Sangre NT 4 — Siervo de Yahveh"
     },
@@ -10684,6 +10830,7 @@ const INDICE_REMISIONES_DATA = {
         "Carne",
         "Cuerpo de Cristo",
         "Cuerpo",
+        "Jesús",
         "Hombre",
         "Resurrección"
       ],
@@ -10814,7 +10961,8 @@ const INDICE_REMISIONES_DATA = {
         "Oración",
         "Pastor - Rebaño",
         "Rey",
-        "Siervo de Yahveh"
+        "Siervo de Yahveh",
+        "Dios"
       ],
       "referenciasRaw": "Alianza AT n i — Jerusalén — Mesías AT i 1. NT i — Oración — Pastor AT 2 — Rey — Siervo de Yahveh"
     },
@@ -11006,7 +11154,8 @@ const INDICE_REMISIONES_DATA = {
         "Misterio",
         "Resto",
         "Revelación",
-        "Tiempo"
+        "Tiempo",
+        "Voluntad de Dios"
       ],
       "referenciasRaw": "Abraham — Alianza — Día del S. — Misterio — Resto NT — Revelación n i — Tiempo Int. 1 — Voluntad de D."
     },
@@ -11173,7 +11322,8 @@ const INDICE_REMISIONES_DATA = {
         "Amor",
         "Palabra de Dios",
         "Silencio",
-        "Soledad"
+        "Soledad",
+        "Voluntad de Dios"
       ],
       "referenciasRaw": "Amor i — Palabra de D. AT i. NT ra 2 - Silencio — Soledad a l - Voluntad de D. Int."
     },
@@ -11258,6 +11408,7 @@ const INDICE_REMISIONES_DATA = {
         "Jesús",
         "Madre",
         "Nombre",
+        "Padres y Padre",
         "Presencia de Dios",
         "Revelación",
         "Santo",
@@ -11277,7 +11428,8 @@ const INDICE_REMISIONES_DATA = {
         "Espíritu",
         "Gustar",
         "Profeta",
-        "Prueba - Tentación"
+        "Prueba - Tentación",
+        "Voluntad de Dios"
       ],
       "referenciasRaw": "Demonios NT 2 — Espíritu NT 1 - Gustar - Profeta AT m 1 — Prueba NT ni — Voluntad de D. NT n 1"
     },
@@ -11524,6 +11676,7 @@ const INDICE_REMISIONES_DATA = {
         "Ejemplo",
         "Madre",
         "Niño",
+        "Padres y Padre",
         "Prueba - Tentación",
         "Sabiduría"
       ],
@@ -11666,7 +11819,9 @@ const INDICE_REMISIONES_DATA = {
         "Carne",
         "Cuerpo",
         "Cuerpo de Cristo",
-        "Hijo"
+        "Jesús",
+        "Hijo",
+        "Padres y Padre"
       ],
       "referenciasRaw": "• Introd. i: n 3 — Carne i 3 b. n 2 c — Cuerpo n 2 — Cuerpo de Cristo i - Hijo NT i 3 - Padres v 3"
     },
@@ -12145,6 +12300,7 @@ const INDICE_REMISIONES_DATA = {
         "Comunión",
         "Cuerpo de Cristo",
         "Cuerpo",
+        "Jesús",
         "Culto",
         "Maná",
         "Pan",
@@ -12369,7 +12525,8 @@ const INDICE_REMISIONES_DATA = {
         "Educación",
         "Hermano",
         "Madre",
-        "Matrimonio"
+        "Matrimonio",
+        "Padres y Padre"
       ],
       "referenciasRaw": "Casa — Edificar 11 — Educación — Hermano — Madre — Matrimonio — Padres"
     },
@@ -12424,10 +12581,10 @@ const INDICE_REMISIONES_DATA = {
         "Conocer",
         "Esperanza",
         "Fecundidad",
-        "Verdad",
+        "Fidelidad",
         "Hospitalidad",
         "Incredulidad",
-        "Justicia",
+        "Justificación",
         "Ley",
         "Milagro",
         "Obediencia",
@@ -12440,7 +12597,8 @@ const INDICE_REMISIONES_DATA = {
         "Poder",
         "Promesas",
         "Salvación",
-        "Seguir"
+        "Seguir",
+        "Verdad"
       ],
       "referenciasRaw": "Abraham i 2. n 3 — Bautismo m 2 — Confesión — Confianza 1 — Conocer NT 3 — Esperanza — Fecundidad m 2 — Fidelidad — Hospitalidad 2 — Incredulidad — Justificación m — Ley C ni 1 — Milagro i 3. n 3 — Obediencia n - Obras NT n 1. 2 — Oración m 2 — Orgullo NT 2 - Palabra de D. AT in 2 - S. Pedro 3 b — Presencia de D. NT n. ni — Poder v — Promesas i — Salvación NT i — Seguir 2 c — Verdad NT 2 a"
     },
@@ -12459,6 +12617,7 @@ const INDICE_REMISIONES_DATA = {
         "Nacimiento (nuevo)",
         "Nuevo",
         "Obras",
+        "Padres y Padre",
         "Sembrar",
         "Virginidad"
       ],
@@ -12547,7 +12706,8 @@ const INDICE_REMISIONES_DATA = {
       "tipo": "REMISION",
       "letra": "F",
       "destinos": [
-        "Hijo"
+        "Hijo",
+        "Padres y Padre"
       ],
       "referenciasRaw": "Hijo — Padres v 1. vi"
     },
@@ -12581,6 +12741,7 @@ const INDICE_REMISIONES_DATA = {
       "letra": "F",
       "destinos": [
         "Fe",
+        "Fidelidad",
         "Verdad"
       ],
       "referenciasRaw": "Fe Int. — Fidelidad — Verdad"
@@ -12635,7 +12796,7 @@ const INDICE_REMISIONES_DATA = {
         "Obras",
         "Sembrar",
         "Siega",
-        "Vino"
+        "Viña"
       ],
       "referenciasRaw": "Árbol — Crecimiento — Fecundidad — Obras — Sembrar — Siega — Viña"
     },
@@ -12652,7 +12813,8 @@ const INDICE_REMISIONES_DATA = {
         "Ira",
         "Luz",
         "Nube",
-        "Pentecostés"
+        "Pentecostés",
+        "Tormenta"
       ],
       "referenciasRaw": "Celo — Gloria — Infierno — Ira de D. — Luz — Nube 1.2 — Pentecostés — Tempestad"
     },
@@ -12714,7 +12876,8 @@ const INDICE_REMISIONES_DATA = {
       "letra": "G",
       "destinos": [
         "Fecundidad",
-        "Generación"
+        "Generación",
+        "Padres y Padre"
       ],
       "referenciasRaw": "• Fecundidad n 3 — Generación — Padres i 2"
     },
@@ -12726,6 +12889,7 @@ const INDICE_REMISIONES_DATA = {
       "letra": "G",
       "destinos": [
         "Fecundidad",
+        "Padres y Padre",
         "Tiempo"
       ],
       "referenciasRaw": "Fecundidad — Padres — Tiempo"
@@ -12838,6 +13002,7 @@ const INDICE_REMISIONES_DATA = {
         "Tristeza",
         "Unción",
         "Vendimia",
+        "Viña",
         "Vino"
       ],
       "referenciasRaw": "Aceite 2 — Acción de gracias Int. — Bienaventuranza — Blanco — Confianza 3 — Consolación — Esperanza — Fiestas — Persecución n 3 — Risa — Siembra — Tristeza NT 3 — Unción i — Vendimia — Viña 1. 3 - Vino"
@@ -13055,6 +13220,7 @@ const INDICE_REMISIONES_DATA = {
       "destinos": [
         "Nacimiento (nuevo)",
         "Nuevo",
+        "Padres y Padre",
         "Revelación"
       ],
       "referenciasRaw": "• Nacimiento nuevo — Padres v — Revelación NT i 1 c"
@@ -13313,6 +13479,7 @@ const INDICE_REMISIONES_DATA = {
       "destinos": [
         "Cuerpo de Cristo",
         "Cuerpo",
+        "Jesús",
         "Esposo",
         "Fecundidad",
         "Israel",
@@ -13351,6 +13518,7 @@ const INDICE_REMISIONES_DATA = {
       "letra": "I",
       "destinos": [
         "Ejemplo",
+        "Padres y Padre",
         "Seguir"
       ],
       "referenciasRaw": "Ejemplo — Padres rv — Seguir 2 c"
@@ -13414,7 +13582,7 @@ const INDICE_REMISIONES_DATA = {
         "Fe",
         "Judío",
         "Esposo",
-        "Verdad",
+        "Fidelidad",
         "Matrimonio"
       ],
       "referenciasRaw": "Confianza — Fe — Judío n Infidelidad - • Esposo AT i — Fidelidad — Matrimonio AT n 3"
@@ -13569,6 +13737,7 @@ const INDICE_REMISIONES_DATA = {
         "Paciencia",
         "Silencio",
         "Temor",
+        "Tormenta",
         "Vendimia",
         "Venganza"
       ],
@@ -13612,7 +13781,7 @@ const INDICE_REMISIONES_DATA = {
         "Pueblo",
         "Reino",
         "Sombra",
-        "Vino"
+        "Viña"
       ],
       "referenciasRaw": "Alianza — Designio de D. NT ni 2 — Elección — Hebreo — Hijo AT i — Iglesia n 2 — Judio — Pecado n — Pueblo — Reino AT i. n — Sombra n 3 — Viña 2"
     },
@@ -13647,7 +13816,8 @@ const INDICE_REMISIONES_DATA = {
       "letra": "J",
       "destinos": [
         "Profeta",
-        "Siervo de Yahveh"
+        "Siervo de Yahveh",
+        "Dios"
       ],
       "referenciasRaw": "Profeta — Siervo de Yahveh n 2"
     },
@@ -13694,6 +13864,7 @@ const INDICE_REMISIONES_DATA = {
         "Salvación",
         "Señor",
         "Siervo de Yahveh",
+        "Dios",
         "Verdad",
         "Vida"
       ],
@@ -13784,7 +13955,7 @@ const INDICE_REMISIONES_DATA = {
       "destinos": [
         "Alianza",
         "Amén",
-        "Palabra de Dios",
+        "Palabra humana",
         "Promesas"
       ],
       "referenciasRaw": "Alianza AT 11 — Amén 1 — Palabra humana 1 — Promesas i"
@@ -13798,7 +13969,7 @@ const INDICE_REMISIONES_DATA = {
       "destinos": [
         "Gracia",
         "Juicio",
-        "Justicia",
+        "Justificación",
         "Ley",
         "Misericordia",
         "Obras",
@@ -13858,7 +14029,7 @@ const INDICE_REMISIONES_DATA = {
         "Confesión",
         "Corazón",
         "Lengua",
-        "Palabra de Dios"
+        "Palabra humana"
       ],
       "referenciasRaw": "Confesión — Corazón — Lengua — Palabra humana"
     },
@@ -13950,7 +14121,7 @@ const INDICE_REMISIONES_DATA = {
         "Babel - Babilonia",
         "Carisma",
         "Labios",
-        "Palabra de Dios",
+        "Palabra humana",
         "Pentecostés",
         "Pueblo"
       ],
@@ -14062,7 +14233,8 @@ const INDICE_REMISIONES_DATA = {
         "Palabra de Dios",
         "Profeta",
         "Promesas",
-        "Revelación"
+        "Revelación",
+        "Voluntad de Dios"
       ],
       "referenciasRaw": "Alianza AT i 2 — Camino a 2 — Carne n 2 a — Cautividad n — Enseñar — Hombre i 1 a — Liberación n 2 c — Mediador — Moisés — Muerte NT i 2 — Obediencia — Obras - Palabra de D. AT n 1 Profeta AT m 1 — Promesas n 2 — Revelación AT n 1 — Voluntad de D."
     },
@@ -14084,7 +14256,8 @@ const INDICE_REMISIONES_DATA = {
         "Pecado",
         "Redención",
         "Reposo",
-        "Salvación"
+        "Salvación",
+        "Voluntad de Dios"
       ],
       "referenciasRaw": "Bien y mal i 3 — Calamidad 2 — Cautividad — Camino i — Esclavo — Éxodo — Moisés 2 — Muerte AT m — Pecado — Redención — Reposo i 1 — Salvación — Voluntad de D."
     },
@@ -14286,7 +14459,8 @@ const INDICE_REMISIONES_DATA = {
       "letra": "L",
       "destinos": [
         "Agua",
-        "Fruto"
+        "Fruto",
+        "Tormenta"
       ],
       "referenciasRaw": "Agua i — Fruto n — Tempestad 1"
     },
@@ -14367,7 +14541,7 @@ const INDICE_REMISIONES_DATA = {
       "tipo": "REMISION",
       "letra": "M",
       "destinos": [
-        "Palabra de Dios"
+        "Palabra humana"
       ],
       "referenciasRaw": "Palabra humana 1"
     },
@@ -14419,7 +14593,8 @@ const INDICE_REMISIONES_DATA = {
       "letra": "M",
       "destinos": [
         "Amor",
-        "Ley"
+        "Ley",
+        "Voluntad de Dios"
       ],
       "referenciasRaw": "Amor — Ley — Voluntad de D. NT II"
     },
@@ -14664,6 +14839,7 @@ const INDICE_REMISIONES_DATA = {
         "Reino",
         "Sacerdocio",
         "Siervo de Yahveh",
+        "Dios",
         "Unción"
       ],
       "referenciasRaw": "David 4 — Hijo del hombre — Jesús - Pobres NT i - Rey NT i — Reino AT m — Sacerdocio AT ni 2 — Siervo de Yahveh — Unción m 2. 5"
@@ -14719,7 +14895,8 @@ const INDICE_REMISIONES_DATA = {
       "letra": "M",
       "destinos": [
         "Cuerpo de Cristo",
-        "Cuerpo"
+        "Cuerpo",
+        "Jesús"
       ],
       "referenciasRaw": "• Cuerpo de Cristo ni 1"
     },
@@ -14881,7 +15058,8 @@ const INDICE_REMISIONES_DATA = {
         "Mediador",
         "Oración",
         "Profeta",
-        "Siervo de Yahveh"
+        "Siervo de Yahveh",
+        "Dios"
       ],
       "referenciasRaw": "Alianza — Ley — Mediador • — Oración i 1 — Profeta — Siervo de Yahveh"
     },
@@ -15077,7 +15255,8 @@ const INDICE_REMISIONES_DATA = {
       "letra": "N",
       "destinos": [
         "Diluvio",
-        "Vino"
+        "Vino",
+        "Viña"
       ],
       "referenciasRaw": "Diluvio — Vino i 1 — Viña 1"
     },
@@ -15134,6 +15313,7 @@ const INDICE_REMISIONES_DATA = {
         "Gloria",
         "Presencia de Dios",
         "Sombra",
+        "Tormenta",
         "Templo"
       ],
       "referenciasRaw": "Fuego — Gloria — Presencia de D. — Sombra — Tempestad — Templo"
@@ -15186,9 +15366,10 @@ const INDICE_REMISIONES_DATA = {
         "Abraham",
         "Autoridad",
         "Designio de Dios",
-        "Verdad",
+        "Fidelidad",
         "Ley",
-        "Servir"
+        "Servir",
+        "Voluntad de Dios"
       ],
       "referenciasRaw": "Abraham i 2 — Autoridad — Designio de D. — Fidelidad — Ley — Servir ii 2 — Voluntad de D."
     },
@@ -15648,7 +15829,9 @@ const INDICE_REMISIONES_DATA = {
       "terminoNorm": "paternidad",
       "tipo": "REMISION",
       "letra": "P",
-      "destinos": [],
+      "destinos": [
+        "Padres y Padre"
+      ],
       "referenciasRaw": "Padres in. v 2"
     },
     {
@@ -15660,6 +15843,7 @@ const INDICE_REMISIONES_DATA = {
       "destinos": [
         "Cielo",
         "Exilio",
+        "Padres y Padre",
         "Pueblo",
         "Tierra"
       ],
@@ -15672,7 +15856,8 @@ const INDICE_REMISIONES_DATA = {
       "tipo": "REMISION",
       "letra": "P",
       "destinos": [
-        "Elección"
+        "Elección",
+        "Padres y Padre"
       ],
       "referenciasRaw": "Elección AT i 3 b — Padres i. u"
     },
@@ -15713,7 +15898,7 @@ const INDICE_REMISIONES_DATA = {
         "Impío",
         "Incredulidad",
         "Infierno",
-        "Justicia",
+        "Justificación",
         "Lepra",
         "Liberación - Libertad",
         "Muerte",
@@ -15913,7 +16098,7 @@ const INDICE_REMISIONES_DATA = {
       "letra": "P",
       "destinos": [
         "Confianza",
-        "Verdad",
+        "Fidelidad",
         "Paciencia"
       ],
       "referenciasRaw": "Confianza 3 — Fidelidad NT — Paciencia H 1"
@@ -15971,7 +16156,7 @@ const INDICE_REMISIONES_DATA = {
       "letra": "P",
       "destinos": [
         "Creación",
-        "Verdad",
+        "Fidelidad",
         "Misericordia",
         "Oración"
       ],
@@ -16027,6 +16212,7 @@ const INDICE_REMISIONES_DATA = {
       "destinos": [
         "Cuerpo de Cristo",
         "Cuerpo",
+        "Jesús",
         "Cumplir",
         "Iglesia",
         "Tiempo",
@@ -16127,7 +16313,8 @@ const INDICE_REMISIONES_DATA = {
       "letra": "P",
       "destinos": [
         "Abraham",
-        "Fecundidad"
+        "Fecundidad",
+        "Padres y Padre"
       ],
       "referenciasRaw": "Ábraham n — Fecundidad n — Padres i 2. H 1. 2"
     },
@@ -16275,7 +16462,7 @@ const INDICE_REMISIONES_DATA = {
       "letra": "P",
       "destinos": [
         "Juicio",
-        "Justicia",
+        "Justificación",
         "Paráclito",
         "Testimonio"
       ],
@@ -16378,7 +16565,7 @@ const INDICE_REMISIONES_DATA = {
         "Cumplir",
         "Esperanza",
         "Fe",
-        "Verdad",
+        "Fidelidad",
         "Herencia",
         "Palabra de Dios",
         "Revelación",
@@ -16491,6 +16678,7 @@ const INDICE_REMISIONES_DATA = {
         "Israel",
         "Judío",
         "Naciones",
+        "Padres y Padre",
         "Patria",
         "Sacerdocio",
         "Santo",
@@ -16561,8 +16749,8 @@ const INDICE_REMISIONES_DATA = {
       "letra": "R",
       "destinos": [
         "Bestias",
-        "Fuego",
-        "Tormenta"
+        "Tormenta",
+        "Fuego"
       ],
       "referenciasRaw": "Bestia 1. 2 Rayo - • Fuego AT i - Tormenta"
     },
@@ -16576,6 +16764,7 @@ const INDICE_REMISIONES_DATA = {
         "Generación",
         "Hermano",
         "Naciones",
+        "Padres y Padre",
         "Pueblo"
       ],
       "referenciasRaw": "Generación 1 — Hermano Int. — Naciones — Padres i. n — Pueblo A n 1. B n 1. C"
@@ -16772,7 +16961,9 @@ const INDICE_REMISIONES_DATA = {
       "terminoNorm": "relampago",
       "tipo": "REMISION",
       "letra": "R",
-      "destinos": [],
+      "destinos": [
+        "Tormenta"
+      ],
       "referenciasRaw": "Tempestad"
     },
     {
@@ -16897,7 +17088,8 @@ const INDICE_REMISIONES_DATA = {
       "destinos": [
         "Elección",
         "Resurrección",
-        "Siervo de Yahveh"
+        "Siervo de Yahveh",
+        "Dios"
       ],
       "referenciasRaw": "Elección — Resurrección AT n — Siervo de Yahveh n 2"
     },
@@ -17213,7 +17405,8 @@ const INDICE_REMISIONES_DATA = {
         "Pecado",
         "Revelación",
         "Sencillo",
-        "Verdad"
+        "Verdad",
+        "Voluntad de Dios"
       ],
       "referenciasRaw": "Conocer AT 4 — Creación AT n 3 — Educación — Enseñar — Fe — Gustar — Leche — Ley B m 4 — Locura — Madre n 1 — Misterio — Obras AT i 3 — Palabra de D. — Paraíso 2 c — Pecado iv 3 d — Revelación AT i 3 — Sencillo — Temer — Verdad AT 3 — Voluntad de D. AT i 2 b"
     },
@@ -17289,7 +17482,8 @@ const INDICE_REMISIONES_DATA = {
         "Redención",
         "Sacerdocio",
         "Sangre",
-        "Siervo de Yahveh"
+        "Siervo de Yahveh",
+        "Dios"
       ],
       "referenciasRaw": "Abraham i 2 — Alianza — Altar 2. 3 — Comida n — Comunión AT i — Cordero — Culto — Eucaristía rv 2. v 1 — Muerte —Paz i 3 — Redención — Sacerdocio — Sangre — Siervo de Yahveh"
     },
@@ -17705,7 +17899,8 @@ const INDICE_REMISIONES_DATA = {
         "María",
         "Obediencia",
         "Retribución",
-        "Siervo de Yahveh"
+        "Siervo de Yahveh",
+        "Dios"
       ],
       "referenciasRaw": "Autoridad NT i l . n l — Culto — Esclavo — Liberación — Maria m 1 — Obediencia — Retribución i — Siervo de Yahveh"
     },
@@ -17815,7 +18010,7 @@ const INDICE_REMISIONES_DATA = {
       "letra": "S",
       "destinos": [
         "Labios",
-        "Palabra de Dios"
+        "Palabra humana"
       ],
       "referenciasRaw": "Labios — Palabra humana"
     },
@@ -17857,7 +18052,7 @@ const INDICE_REMISIONES_DATA = {
       "destinos": [
         "Hipócrita",
         "Labios",
-        "Palabra de Dios",
+        "Palabra humana",
         "Sencillo"
       ],
       "referenciasRaw": "Hipócrita — Labios 1 — Palabra humana 1 — Sencillo"
@@ -17882,7 +18077,8 @@ const INDICE_REMISIONES_DATA = {
         "Madre",
         "María",
         "Montaña",
-        "Siervo de Yahveh"
+        "Siervo de Yahveh",
+        "Dios"
       ],
       "referenciasRaw": "Jerusalén — Madre n 3 — Maria i — Montaña n — Siervo de Yahveh n 1"
     },
@@ -17985,6 +18181,7 @@ const INDICE_REMISIONES_DATA = {
         "Esperanza",
         "Generación",
         "Hombre",
+        "Padres y Padre",
         "Retribución",
         "Sufrimiento"
       ],
@@ -18412,6 +18609,7 @@ const INDICE_REMISIONES_DATA = {
       "letra": "T",
       "destinos": [
         "Israel",
+        "Padres y Padre",
         "Pueblo",
         "Rey"
       ],
@@ -18509,9 +18707,11 @@ const INDICE_REMISIONES_DATA = {
         "Comunión",
         "Cuerpo de Cristo",
         "Cuerpo",
+        "Jesús",
         "Esposo",
         "Iglesia",
         "Naciones",
+        "Padres y Padre",
         "Pentecostés"
       ],
       "referenciasRaw": "Introd. i: i 1 — Amor — Comunión — Cuerpo de Cristo — Esposo — Iglesia vi — Naciones AT i 1 — Padres — Pentecostés"
@@ -18604,7 +18804,7 @@ const INDICE_REMISIONES_DATA = {
         "Ira",
         "Juicio",
         "Siega",
-        "Vino"
+        "Viña"
       ],
       "referenciasRaw": "Ira de D. — Juicio — Siega — Viña"
     },
@@ -18676,7 +18876,7 @@ const INDICE_REMISIONES_DATA = {
         "Conocer",
         "Error",
         "Fe",
-        "Verdad",
+        "Fidelidad",
         "Mentira",
         "Palabra de Dios",
         "Paráclito"
@@ -18817,7 +19017,7 @@ const INDICE_REMISIONES_DATA = {
         "Eucaristía",
         "Gozo",
         "Vendimia",
-        "Vino"
+        "Viña"
       ],
       "referenciasRaw": "Embriaguez — Eucaristía — Gozo — Vendimia — Viña"
     },
