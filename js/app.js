@@ -147,6 +147,9 @@ const btnRestaurarExclusiones = document.getElementById("btnRestaurarExclusiones
 const contenedorTags = document.getElementById("contenedorTags");
 const seccionBusqueda = document.getElementById("seccionBusqueda") || document.querySelector(".search-section");
 const btnToggleSearch = document.getElementById("btnToggleSearch");
+const btnToggleTema = document.getElementById("btnToggleTema");
+const themeIcon = document.getElementById("themeIcon");
+const themeText = document.getElementById("themeText");
 const panelFiltros = document.getElementById("panelFiltros");
 const btnToggleFiltros = document.getElementById("btnToggleFiltros");
 const badgeExcluidas = document.getElementById("badgeExcluidas");
@@ -1850,6 +1853,35 @@ window.addEventListener("click", (e) => {
         cerrarGuia();
     }
 });
+
+// --- GESTOR DE TEMA (MODO OSCURO POR DEFECTO / MODO CLARO) ---
+function aplicarTema(tema) {
+    if (tema === "light") {
+        document.documentElement.setAttribute("data-theme", "light");
+        if (themeIcon) themeIcon.textContent = "🌙";
+        if (themeText) themeText.textContent = " Oscuro";
+        if (btnToggleTema) btnToggleTema.setAttribute("title", "Cambiar a modo oscuro");
+    } else {
+        document.documentElement.setAttribute("data-theme", "dark");
+        if (themeIcon) themeIcon.textContent = "☀️";
+        if (themeText) themeText.textContent = " Claro";
+        if (btnToggleTema) btnToggleTema.setAttribute("title", "Cambiar a modo claro");
+    }
+    localStorage.setItem("tema_preferido", tema);
+}
+
+// Inicializar tema (por defecto 'dark')
+const temaGuardado = localStorage.getItem("tema_preferido") || "dark";
+aplicarTema(temaGuardado);
+
+if (btnToggleTema) {
+    btnToggleTema.onclick = () => {
+        const actual = document.documentElement.getAttribute("data-theme") || "dark";
+        const nuevo = actual === "dark" ? "light" : "dark";
+        aplicarTema(nuevo);
+        mostrarToast(nuevo === "dark" ? "🌙 Modo Oscuro activado" : "☀️ Modo Claro activado", 1800);
+    };
+}
 
 // --- TOGGLE SECCIÓN DE BÚSQUEDA Y FILTROS RÁPIDOS ---
 if (btnToggleSearch && seccionBusqueda) {

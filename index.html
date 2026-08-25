@@ -27,14 +27,85 @@
     /* ==========================================================================
        VARIABLES Y SISTEMA DE DISEÑO (LITÚRGICO & MODERNO)
        ========================================================================== */
-    :root {
+    /* ==========================================================================
+       VARIABLES Y SISTEMA DE DISEÑO (MODO OSCURO POR DEFECTO / MODO CLARO)
+       ========================================================================== */
+    :root,
+    [data-theme="dark"] {
       --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-serif: 'Cinzel', Georgia, serif;
 
-      /* Paleta Principal */
+      /* Paleta Principal Modo Oscuro (Predeterminado) */
+      --bg-app: #090d16;
+      --bg-card: #131b2e;
+      --bg-card-hover: #1c2740;
+      --bg-input: #090d16;
+      --bg-modal: #111827;
+      --bg-modal-header: linear-gradient(135deg, #090d16 0%, #1e3a8a 100%);
+      --border-color: #233047;
+      --border-dark: #334360;
+
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-light: #64748b;
+
+      --primary: #3b82f6;
+      --primary-hover: #60a5fa;
+      --primary-light: rgba(59, 130, 246, 0.18);
+
+      --gold-accent: #fbbf24;
+      --gold-light: rgba(245, 158, 11, 0.18);
+
+      /* Colores Litúrgicos de las 4 Partes Bíblicas */
+      --color-hist: #34d399;
+      /* Verde Torá */
+      --bg-hist-light: rgba(16, 185, 129, 0.16);
+      --border-hist: rgba(16, 185, 129, 0.35);
+
+      --color-prof: #f87171;
+      /* Rojo Profético */
+      --bg-prof-light: rgba(239, 68, 68, 0.16);
+      --border-prof: rgba(239, 68, 68, 0.35);
+
+      --color-nt: #c084fc;
+      /* Púrpura Apostólico / Cartas */
+      --bg-nt-light: rgba(168, 85, 247, 0.16);
+      --border-nt: rgba(168, 85, 247, 0.35);
+
+      --color-ev: #fbbf24;
+      /* Dorado / Evangelio */
+      --bg-ev-light: rgba(245, 158, 11, 0.16);
+      --border-ev: rgba(245, 158, 11, 0.35);
+
+      --color-sal: #38bdf8;
+      /* Azul Salmos */
+      --bg-sal-light: rgba(56, 189, 248, 0.16);
+      --border-sal: rgba(56, 189, 248, 0.35);
+
+      --color-sap: #94a3b8;
+      /* Pizarra Sapiencial */
+      --bg-sap-light: rgba(148, 163, 184, 0.16);
+      --border-sap: rgba(148, 163, 184, 0.3);
+
+      /* Sombras */
+      --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -4px rgba(0, 0, 0, 0.5);
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-full: 9999px;
+    }
+
+    [data-theme="light"] {
+      /* Paleta Modo Claro */
       --bg-app: #f8fafc;
       --bg-card: #ffffff;
       --bg-card-hover: #f1f5f9;
+      --bg-input: #ffffff;
+      --bg-modal: #ffffff;
+      --bg-modal-header: linear-gradient(135deg, #1e293b 0%, #1e3a8a 100%);
       --border-color: #e2e8f0;
       --border-dark: #cbd5e1;
 
@@ -49,46 +120,33 @@
       --gold-accent: #b45309;
       --gold-light: #fef3c7;
 
-      /* Colores Litúrgicos de las 4 Partes Bíblicas */
       --color-hist: #059669;
-      /* Verde Torá / Alianza */
       --bg-hist-light: #ecfdf5;
       --border-hist: #a7f3d0;
 
       --color-prof: #dc2626;
-      /* Rojo Fuego Profético */
       --bg-prof-light: #fef2f2;
       --border-prof: #fecaca;
 
       --color-nt: #7c3aed;
-      /* Púrpura Apostólico / Cartas */
       --bg-nt-light: #f5f3ff;
       --border-nt: #ddd6fe;
 
       --color-ev: #d97706;
-      /* Dorado / Luz de Cristo */
       --bg-ev-light: #fffbeb;
       --border-ev: #fde68a;
 
       --color-sal: #0284c7;
-      /* Azul Salmos */
       --bg-sal-light: #f0f9ff;
       --border-sal: #bae6fd;
 
       --color-sap: #475569;
-      /* Pizarra Sapiencial */
       --bg-sap-light: #f8fafc;
       --border-sap: #e2e8f0;
 
-      /* Sombras */
       --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
       --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
       --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
-
-      --radius-sm: 6px;
-      --radius-md: 10px;
-      --radius-lg: 14px;
-      --radius-full: 9999px;
     }
 
     /* ==========================================================================
@@ -233,7 +291,7 @@
        PANEL DE BÚSQUEDA Y FILTROS RÁPIDOS
        ========================================================================== */
     .search-section {
-      background: #ffffff;
+      background: var(--bg-card);
       border-bottom: 1px solid var(--border-color);
       padding: 10px 16px;
       position: sticky;
@@ -297,7 +355,7 @@
     .input-search:focus {
       outline: none;
       border-color: var(--primary);
-      background-color: #ffffff;
+      background-color: var(--bg-card);
       box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
     }
 
@@ -392,7 +450,7 @@
       font-weight: 600;
       border: 1px solid var(--border-color);
       border-radius: var(--radius-sm);
-      background-color: #ffffff;
+      background-color: var(--bg-card);
       color: var(--text-main);
       cursor: pointer;
     }
@@ -406,7 +464,7 @@
        PANEL COLAPSABLE DE FILTROS AVANZADOS Y EXCLUSIONES
        ========================================================================== */
     .advanced-panel {
-      background: #ffffff;
+      background: var(--bg-card);
       border-bottom: 1px solid var(--border-dark);
       padding: 16px;
       max-height: 500px;
@@ -520,7 +578,7 @@
     }
 
     .btn-exclusion-action {
-      background: #ffffff;
+      background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-sm);
       padding: 4px 10px;
@@ -787,7 +845,7 @@
        ========================================================================== */
     .word-card-body {
       border-top: 1px solid var(--border-color);
-      background: #ffffff;
+      background: var(--bg-card);
       padding: 12px;
       animation: fadeIn 0.2s ease-in-out;
     }
@@ -816,7 +874,7 @@
     }
 
     .btn-action {
-      background: #ffffff;
+      background: var(--bg-card);
       border: 1px solid var(--border-dark);
       color: var(--text-main);
       padding: 6px 12px;
@@ -1016,7 +1074,7 @@
     }
 
     .btn-citation {
-      background: #ffffff;
+      background: var(--bg-card);
       border: 1px solid var(--border-color);
       color: var(--text-main);
       padding: 6px 10px;
@@ -1091,7 +1149,7 @@
     }
 
     .modal-card {
-      background: #ffffff;
+      background: var(--bg-modal);
       width: 100%;
       max-width: 650px;
       max-height: 90vh;
@@ -1103,7 +1161,7 @@
     }
 
     .modal-header {
-      background: linear-gradient(135deg, #1e293b 0%, #1e3a8a 100%);
+      background: var(--bg-modal-header);
       color: #ffffff;
       padding: 14px 18px;
       display: flex;
@@ -1155,7 +1213,7 @@
       flex: 1;
       font-size: 0.95rem;
       line-height: 1.7;
-      color: #334155;
+      color: var(--text-main);
     }
 
     .modal-footer {
@@ -1168,12 +1226,12 @@
     }
 
     .highlighted-verse {
-      background: #fef08a;
-      color: #854d0e;
+      background: var(--gold-light);
+      color: var(--gold-accent);
       padding: 3px 6px;
       border-radius: 4px;
-      font-weight: 500;
-      border-left: 3px solid #eab308;
+      font-weight: 600;
+      border-left: 3px solid var(--gold-accent);
       scroll-margin-top: 50px;
       scroll-margin-bottom: 50px;
       display: inline;
@@ -1233,7 +1291,7 @@
       height: 32px;
       border-radius: var(--radius-sm);
       border: 1px solid var(--border-dark);
-      background: #ffffff;
+      background: var(--bg-card);
       color: var(--text-main);
       font-size: 1.1rem;
       font-weight: bold;
@@ -1268,7 +1326,7 @@
       font-size: 0.75rem;
       font-weight: 700;
       border: 1px solid var(--border-color);
-      background: #ffffff;
+      background: var(--bg-card);
       border-radius: var(--radius-sm);
       cursor: pointer;
       transition: all 0.15s;
@@ -1300,7 +1358,7 @@
       font-weight: 600;
       border: 1.5px solid var(--border-color);
       border-radius: var(--radius-sm);
-      background: #ffffff;
+      background: var(--bg-card);
       color: var(--text-main);
       cursor: pointer;
       transition: border-color 0.15s ease;
@@ -1333,7 +1391,7 @@
     }
 
     .hermano-card {
-      background: #ffffff;
+      background: var(--bg-card);
       border: 1.5px solid var(--border-color);
       border-radius: var(--radius-md);
       overflow: hidden;
@@ -1423,7 +1481,7 @@
     }
 
     .btn-copiar-hermano {
-      background: #ffffff;
+      background: var(--bg-card);
       border: 1px solid var(--border-color);
       padding: 4px 8px;
       border-radius: var(--radius-sm);
@@ -1469,7 +1527,7 @@
     }
 
     .guia-tab-btn {
-      background: #ffffff;
+      background: var(--bg-card);
       border: 1px solid var(--border-color);
       color: var(--text-muted);
       padding: 7px 14px;
@@ -1528,7 +1586,7 @@
 
     .guia-text {
       font-size: 0.88rem;
-      color: #334155;
+      color: var(--text-main);
       line-height: 1.6;
     }
 
@@ -1546,7 +1604,7 @@
     }
 
     .guia-part-box {
-      background: #ffffff;
+      background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-sm);
       padding: 10px 12px;
@@ -1586,7 +1644,7 @@
       overflow-x: auto;
       border: 1px solid var(--border-color);
       border-radius: var(--radius-md);
-      background: #ffffff;
+      background: var(--bg-card);
     }
 
     .nomenclatura-table {
@@ -1597,7 +1655,7 @@
     }
 
     .nomenclatura-table th {
-      background: #f1f5f9;
+      background: var(--bg-app);
       color: var(--text-main);
       padding: 10px 12px;
       font-weight: 700;
@@ -1607,7 +1665,7 @@
     .nomenclatura-table td {
       padding: 10px 12px;
       border-bottom: 1px solid var(--border-color);
-      color: #334155;
+      color: var(--text-main);
       vertical-align: middle;
     }
 
@@ -1617,14 +1675,14 @@
 
     .symbol-chip {
       display: inline-block;
-      background: #e2e8f0;
-      color: #0f172a;
+      background: var(--bg-app);
+      color: var(--text-main);
       font-family: monospace;
       font-size: 0.95rem;
       font-weight: bold;
       padding: 2px 8px;
       border-radius: var(--radius-sm);
-      border: 1px solid #cbd5e1;
+      border: 1px solid var(--border-dark);
     }
 
     .example-chip {
@@ -1677,8 +1735,8 @@
       font-family: 'Merriweather', Georgia, 'Times New Roman', serif;
       font-size: 1.02rem;
       line-height: 1.8;
-      color: #1e293b;
-      background: #fafaf9;
+      color: var(--text-main);
+      background: var(--bg-card);
       padding: 24px;
       overflow-y: auto;
     }
@@ -1783,9 +1841,9 @@
     }
 
     .chip-relacionado {
-      background: #ffffff;
-      border: 1px solid #cbd5e1;
-      color: #334155;
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      color: var(--text-main);
       padding: 4px 10px;
       border-radius: var(--radius-full);
       font-size: 0.8rem;
@@ -1930,6 +1988,10 @@
         </div>
       </a>
       <div class="header-actions">
+        <button id="btnToggleTema" class="btn-toggle-filters"
+          title="Cambiar entre modo oscuro y modo claro">
+          <span id="themeIcon">☀️</span><span class="btn-text-full" id="themeText"> Claro</span>
+        </button>
         <button id="btnToggleSearch" class="btn-toggle-filters active"
           title="Toca para ocultar o mostrar el buscador y los filtros rápidos">
           <span>🔍</span><span class="btn-text-full"> Buscar</span>
@@ -2425,7 +2487,7 @@
   <div id="toast" class="toast">Notificación</div>
 
   <!-- Scripts -->
-  <script src="js/app.js?v=2.7"></script>
+  <script src="js/app.js?v=3.0"></script>
 </body>
 
 </html>
