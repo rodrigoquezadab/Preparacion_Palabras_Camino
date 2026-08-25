@@ -651,6 +651,13 @@
       color: #ffffff;
     }
 
+    .acciones-edicion-grupo {
+      display: none;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
     .btn-exclusion-action {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -667,24 +674,43 @@
     }
 
     .btn-exclusion-action.btn-edit-mode {
-      border-color: var(--primary);
+      border: 1.5px solid var(--primary);
       color: var(--primary);
+      background: var(--bg-card);
     }
 
     .btn-exclusion-action.btn-edit-mode:hover {
       background: var(--primary-light);
     }
 
+    /* Estado ACTIVO: Verde intenso con texto blanco, muy visible */
     .btn-exclusion-action.btn-edit-mode.active {
-      background: #10b981;
-      border-color: #059669;
-      color: #ffffff;
+      background: #059669 !important;
+      border-color: #047857 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.4);
     }
 
     .btn-exclusion-action.btn-edit-mode.active:hover {
-      background: #059669;
-      border-color: #047857;
-      color: #ffffff;
+      background: #047857 !important;
+      border-color: #065f46 !important;
+    }
+
+    [data-theme="dark"] .btn-exclusion-action.btn-edit-mode {
+      background: #1e293b;
+      border-color: #3b82f6;
+      color: #93c5fd;
+    }
+
+    [data-theme="dark"] .btn-exclusion-action.btn-edit-mode:hover {
+      background: rgba(59, 130, 246, 0.18);
+    }
+
+    [data-theme="dark"] .btn-exclusion-action.btn-edit-mode.active {
+      background: #10b981 !important;
+      border-color: #34d399 !important;
+      color: #090d16 !important;
+      box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.4);
     }
 
     .btn-exclusion-action.btn-reload:hover {
@@ -2221,19 +2247,21 @@
       <div>
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
           <div class="panel-section-title">Exclusiones activas (<span id="countExcluidasHeader">0</span>):</div>
-          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
             <button id="btnModoEditarExclusiones" class="btn-exclusion-action btn-edit-mode"
-              title="Activar o desactivar el modo de edición para quitar palabras de la lista de exclusiones">
-              ✏️ Quitar Palabras
+              title="Activar o desactivar el modo de edición para modificar o quitar palabras excluidas">
+              ✏️ Editar Palabras
             </button>
-            <button id="btnRestaurarExclusiones" class="btn-exclusion-action btn-reload"
-              title="Volver a cargar las 25 palabras excluidas por defecto (temas ya preparados en la comunidad)">
-              🔄 Predeterminadas
-            </button>
-            <button id="btnBorrarTodasExclusiones" class="btn-exclusion-action btn-clear"
-              title="Borrar todas las palabras excluidas para ver el temario completo">
-              🗑️ Borrar Todas
-            </button>
+            <div id="grupoAccionesEdicion" class="acciones-edicion-grupo" style="display:none; gap:6px; flex-wrap:wrap;">
+              <button id="btnRestaurarExclusiones" class="btn-exclusion-action btn-reload"
+                title="Volver a cargar las 25 palabras excluidas por defecto (temas ya preparados en la comunidad)">
+                🔄 Cargar Predeterminadas
+              </button>
+              <button id="btnBorrarTodasExclusiones" class="btn-exclusion-action btn-clear"
+                title="Borrar todas las palabras excluidas para ver el temario completo">
+                🗑️ Borrar Todas
+              </button>
+            </div>
           </div>
         </div>
         <div id="contenedorTags" class="tags-container"></div>

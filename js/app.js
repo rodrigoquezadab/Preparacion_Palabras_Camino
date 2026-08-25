@@ -143,6 +143,7 @@ const inputExcluir = document.getElementById("inputExcluir");
 const btnAgregarExclusion = document.getElementById("btnAgregarExclusion");
 const countExcluidasHeader = document.getElementById("countExcluidasHeader");
 const btnModoEditarExclusiones = document.getElementById("btnModoEditarExclusiones");
+const grupoAccionesEdicion = document.getElementById("grupoAccionesEdicion");
 const btnBorrarTodasExclusiones = document.getElementById("btnBorrarTodasExclusiones");
 const btnRestaurarExclusiones = document.getElementById("btnRestaurarExclusiones");
 const contenedorTags = document.getElementById("contenedorTags");
@@ -1693,16 +1694,12 @@ function guardarLocalStorage() {
 }
 
 function toggleModoEdicionExclusiones() {
-    if (setExcluidos.size === 0) {
-        mostrarToast("ℹ️ No hay palabras excluidas para quitar");
-        return;
-    }
     modoEdicionExclusiones = !modoEdicionExclusiones;
     actualizarEstadoModoEdicion();
     if (modoEdicionExclusiones) {
-        mostrarToast("✏️ Modo edición activado: toca la '×' en las palabras que desees quitar");
+        mostrarToast("✏️ Modo edición activado: ya puedes quitar palabras, cargar predeterminadas o borrar todas");
     } else {
-        mostrarToast("🔒 Lista protegida contra toques accidentales");
+        mostrarToast("🔒 Modo edición desactivado: lista protegida contra toques accidentales");
     }
 }
 
@@ -1710,24 +1707,25 @@ function actualizarEstadoModoEdicion() {
     if (contenedorTags) {
         contenedorTags.classList.toggle("modo-edicion", modoEdicionExclusiones);
     }
+    if (grupoAccionesEdicion) {
+        grupoAccionesEdicion.style.display = modoEdicionExclusiones ? "inline-flex" : "none";
+    }
     if (btnModoEditarExclusiones) {
         btnModoEditarExclusiones.classList.toggle("active", modoEdicionExclusiones);
         btnModoEditarExclusiones.innerHTML = modoEdicionExclusiones 
-            ? `🔒 Listo / Bloquear` 
-            : `✏️ Quitar Palabras`;
+            ? `✅ Terminar Edición` 
+            : `✏️ Editar Palabras`;
         btnModoEditarExclusiones.setAttribute("title", modoEdicionExclusiones 
             ? "Toca para finalizar la edición y proteger la lista contra toques accidentales" 
-            : "Toca para activar el modo de eliminación y quitar palabras de la lista");
-        btnModoEditarExclusiones.style.display = setExcluidos.size > 0 ? "inline-flex" : "none";
+            : "Toca para activar el modo de edición y poder quitar palabras, cargar predeterminadas o borrarlas");
     }
 }
 
 function renderizarTags() {
     contenedorTags.innerHTML = "";
     if (setExcluidos.size === 0) {
-        contenedorTags.innerHTML = `<span class="sin-exclusiones">Sin palabras excluidas. Toca "🔄 Predeterminadas" para cargar la lista de temas ya celebrados.</span>`;
+        contenedorTags.innerHTML = `<span class="sin-exclusiones">Sin palabras excluidas. Toca "✏️ Editar Palabras" para cargar las 25 predeterminadas o añade palabras arriba.</span>`;
         if (countExcluidasHeader) countExcluidasHeader.textContent = "0";
-        modoEdicionExclusiones = false;
         actualizarEstadoModoEdicion();
         return;
     }
