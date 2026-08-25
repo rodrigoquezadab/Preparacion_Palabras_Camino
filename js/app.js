@@ -145,6 +145,8 @@ const countExcluidasHeader = document.getElementById("countExcluidasHeader");
 const btnBorrarTodasExclusiones = document.getElementById("btnBorrarTodasExclusiones");
 const btnRestaurarExclusiones = document.getElementById("btnRestaurarExclusiones");
 const contenedorTags = document.getElementById("contenedorTags");
+const seccionBusqueda = document.getElementById("seccionBusqueda") || document.querySelector(".search-section");
+const btnToggleSearch = document.getElementById("btnToggleSearch");
 const panelFiltros = document.getElementById("panelFiltros");
 const btnToggleFiltros = document.getElementById("btnToggleFiltros");
 const badgeExcluidas = document.getElementById("badgeExcluidas");
@@ -1848,6 +1850,19 @@ window.addEventListener("click", (e) => {
         cerrarGuia();
     }
 });
+
+// --- TOGGLE SECCIÓN DE BÚSQUEDA Y FILTROS RÁPIDOS ---
+if (btnToggleSearch && seccionBusqueda) {
+    btnToggleSearch.onclick = () => {
+        seccionBusqueda.classList.toggle("collapsed");
+        const abierto = !seccionBusqueda.classList.contains("collapsed");
+        btnToggleSearch.classList.toggle("active", abierto);
+        btnToggleSearch.setAttribute("title", abierto ? "Toca para ocultar el buscador y los filtros rápidos" : "Toca para mostrar el buscador y los filtros rápidos");
+        if (abierto && inputBusqueda) {
+            inputBusqueda.focus();
+        }
+    };
+}
 
 // --- TOGGLE PANEL DE FILTROS ---
 if (btnToggleFiltros) {

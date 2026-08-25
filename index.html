@@ -224,6 +224,19 @@
       top: 59px;
       z-index: 90;
       box-shadow: var(--shadow-sm);
+      max-height: 400px;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .search-section.collapsed {
+      max-height: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+      opacity: 0;
+      pointer-events: none;
+      box-shadow: none;
     }
 
     .search-container {
@@ -1818,7 +1831,11 @@
           <span class="header-subtitle">Vocabulario de Teología Bíblica — Xavier Léon-Dufour</span>
         </div>
       </a>
-      <div style="display:flex; gap:6px;">
+      <div style="display:flex; gap:6px; align-items:center;">
+        <button id="btnToggleSearch" class="btn-toggle-filters active"
+          title="Toca para ocultar o mostrar el buscador y los filtros rápidos">
+          <span>🔍 Buscar</span>
+        </button>
         <button id="btnAbrirGuia" class="btn-toggle-filters"
           title="Guía y Criterios: Consulta los 4 grupos litúrgicos del Camino, nomenclatura bíblica (s, ss, p, puntuación) y cómo usar la aplicación">
           <span>📖 Guía</span>
@@ -1834,7 +1851,7 @@
   </header>
 
   <!-- 2. BARRA DE BÚSQUEDA Y FILTROS RÁPIDOS (STICKY) -->
-  <section class="search-section">
+  <section id="seccionBusqueda" class="search-section">
     <div class="search-container">
       <div class="search-input-wrapper">
         <span class="search-icon">🔍</span>
@@ -2310,7 +2327,7 @@
   <div id="toast" class="toast">Notificación</div>
 
   <!-- Scripts -->
-  <script src="js/app.js?v=2.3"></script>
+  <script src="js/app.js?v=2.4"></script>
 </body>
 
 </html>
