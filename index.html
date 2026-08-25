@@ -2016,6 +2016,43 @@
       line-height: 1.5;
     }
 
+    /* Grid de Siglas de Libros Bíblicos (Pág. 13) */
+    .siglas-libros-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 8px;
+    }
+
+    .sigla-libro-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+    }
+
+    .sigla-badge {
+      display: inline-block;
+      font-family: monospace;
+      font-weight: 800;
+      font-size: 0.82rem;
+      background: #eff6ff;
+      color: #1e40af;
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      border: 1px solid #bfdbfe;
+      min-width: 44px;
+      text-align: center;
+    }
+
+    .sigla-nombre {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
     /* Estilos para el Índice de Artículos y Remisiones dentro de la Guía */
     .indice-guia-search-box {
       display: flex;
@@ -2829,7 +2866,7 @@
       <!-- Pestañas de Navegación de la Guía -->
       <div class="guia-tabs-nav">
         <button class="guia-tab-btn active" data-tab="tab-liturgia">🕊️ Criterios del Camino (4 Partes)</button>
-        <button class="guia-tab-btn" data-tab="tab-nomenclatura">✍️ Nomenclatura Bíblica (s, ss, p)</button>
+        <button class="guia-tab-btn" data-tab="tab-nomenclatura">✍️ Siglas y Abreviaturas (Pág. 13)</button>
         <button class="guia-tab-btn" data-tab="tab-herramientas">🛠️ Uso de la Aplicación</button>
         <button class="guia-tab-btn" data-tab="tab-indice-remisiones">📚 Índice de Artículos y Remisiones</button>
       </div>
@@ -2896,87 +2933,244 @@
           </div>
         </div>
 
-        <!-- PESTAÑA 2: Nomenclatura Bíblica y Léon-Dufour -->
+        <!-- PESTAÑA 2: Siglas, Abreviaturas y Nomenclatura (Léon-Dufour, Págs. 13-14) -->
         <div id="tab-nomenclatura" class="guia-tab-pane">
+
+          <!-- 1. Abreviaturas Corrientes -->
           <div class="guia-card-section">
-            <h3 class="guia-section-title">✍️ Sistema de Puntuación y Símbolos en las Citas Bíblicas</h3>
+            <h3 class="guia-section-title">📌 Abreviaturas Corrientes y Símbolos (Página 13)</h3>
             <p class="guia-text">
-              El <em>Vocabulario de Teología Bíblica de Xavier Léon-Dufour</em> y la <em>Biblia de Jerusalén</em>
-              emplean una nomenclatura precisa para indicar capítulos, versículos, continuidades y paralelos:
+              Abreviaturas habituales empleadas a lo largo de los 289 artículos del <em>Vocabulario de Teología Bíblica</em>:
             </p>
 
             <div class="nomenclatura-table-wrapper">
               <table class="nomenclatura-table">
                 <thead>
                   <tr>
-                    <th style="width:18%;">Símbolo</th>
-                    <th style="width:27%;">Significado</th>
-                    <th style="width:25%;">Ejemplo</th>
-                    <th style="width:30%;">Interpretación</th>
+                    <th style="width:16%;">Abreviatura</th>
+                    <th style="width:34%;">Significado Oficial</th>
+                    <th style="width:20%;">Ejemplo</th>
+                    <th style="width:30%;">Descripción</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="symbol-chip">s</span></td>
-                    <td><strong>Versículo siguiente</strong></td>
-                    <td><span class="example-chip">Gen 12,1s</span></td>
-                    <td>Se leen los versículos <strong>1 y 2</strong> de Génesis 12.</td>
+                    <td><span class="symbol-chip">AT</span></td>
+                    <td><strong>Antiguo Testamento</strong></td>
+                    <td><span class="example-chip">Dios AT II 2</span></td>
+                    <td>Sección o perícopas correspondientes a la Antigua Alianza.</td>
                   </tr>
                   <tr>
-                    <td><span class="symbol-chip">ss</span></td>
-                    <td><strong>Versículos siguientes</strong> (hasta fin de perícopa)</td>
-                    <td><span class="example-chip">Gen 13,15ss</span></td>
-                    <td>Se lee desde el versículo <strong>15 hasta el final</strong> de la perícopa o sección.</td>
+                    <td><span class="symbol-chip">NT</span></td>
+                    <td><strong>Nuevo Testamento</strong></td>
+                    <td><span class="example-chip">Hijo NT I 1</span></td>
+                    <td>Sección o perícopas correspondientes al Nuevo Testamento.</td>
                   </tr>
                   <tr>
-                    <td><span class="symbol-chip">p</span></td>
-                    <td><strong>Pasaje paralelo</strong></td>
-                    <td><span class="example-chip">Mt 6,25 p</span></td>
-                    <td>Texto de Mateo 6,25 y su relato paralelo en los otros Evangelios sinópticos (ej. Lc 12,22).</td>
+                    <td><span class="symbol-chip">LXX</span></td>
+                    <td><strong>Los Setenta (Septuaginta)</strong></td>
+                    <td><span class="example-chip">LXX Is 7,14</span></td>
+                    <td>Versión canónica en lengua griega del Antiguo Testamento.</td>
                   </tr>
                   <tr>
-                    <td><span class="symbol-chip">,</span> (coma)</td>
-                    <td><strong>Separa capítulo de versículo</strong></td>
-                    <td><span class="example-chip">Jn 3,16</span></td>
-                    <td>Evangelio de Juan, <strong>Capítulo 3</strong>, <strong>Versículo 16</strong>.</td>
+                    <td><span class="symbol-chip">Vulg.</span></td>
+                    <td><strong>Vulgata</strong></td>
+                    <td><span class="example-chip">Vulg. Sal 22</span></td>
+                    <td>Traducción oficial en latín realizada por San Jerónimo.</td>
                   </tr>
                   <tr>
-                    <td><span class="symbol-chip">-</span> (guion)</td>
-                    <td><strong>Rango continuo de versículos</strong></td>
-                    <td><span class="example-chip">Gen 12,1-9</span></td>
-                    <td>Se leen todos los versículos <strong>del 1 al 9 de corrido</strong>.</td>
+                    <td><span class="symbol-chip">heb.</span></td>
+                    <td><strong>Hebreo</strong></td>
+                    <td><span class="example-chip">heb. qâdôsh</span></td>
+                    <td>Voz o término original en lengua hebrea bíblica.</td>
                   </tr>
                   <tr>
-                    <td><span class="symbol-chip">-</span> (entre cap.)</td>
-                    <td><strong>Rango continuo entre capítulos</strong></td>
-                    <td><span class="example-chip">Gen 11,27-12,4</span></td>
-                    <td>Desde Génesis 11, versículo 27, hasta Génesis 12, versículo 4.</td>
+                    <td><span class="symbol-chip">gr.</span></td>
+                    <td><strong>Griego</strong></td>
+                    <td><span class="example-chip">gr. pneuma</span></td>
+                    <td>Voz o término original en lengua griega neotestamentaria.</td>
                   </tr>
                   <tr>
-                    <td><span class="symbol-chip">.</span> (punto)</td>
-                    <td><strong>Separa versículos no contiguos</strong></td>
-                    <td><span class="example-chip">Gen 4,1.25</span></td>
-                    <td>Se leen exclusivamente el <strong>versículo 1 y el versículo 25</strong> (salteando los
-                      versículos intermedios).</td>
+                    <td><span class="symbol-chip">cf.</span></td>
+                    <td><strong>Confróntese / Véase</strong> (del latín <em>confer</em>)</td>
+                    <td><span class="example-chip">cf. Rom 8,14</span></td>
+                    <td>Invita a comparar con otro pasaje o teología afín.</td>
                   </tr>
                   <tr>
-                    <td><span class="symbol-chip">;</span> (punto y coma)</td>
-                    <td><strong>Separa citas o libros distintos</strong></td>
-                    <td><span class="example-chip">Ex 3,1-6; 12,1-14</span></td>
-                    <td>Dos lecturas independientes dentro del libro del Éxodo.</td>
+                    <td><span class="symbol-chip">p.e.</span></td>
+                    <td><strong>Por ejemplo</strong></td>
+                    <td><span class="example-chip">p.e. Mt 5,3</span></td>
+                    <td>Cita ejemplar entre otras posibles del mismo tema.</td>
                   </tr>
                   <tr>
-                    <td><span class="symbol-chip">a, b, c</span></td>
-                    <td><strong>Frases o cláusulas de un versículo</strong></td>
-                    <td><span class="example-chip">Sal 1,1c</span></td>
-                    <td>En versículos largos o poesía con varias frases: <strong>a</strong> = 1ª frase,
-                      <strong>b</strong> = 2ª frase, <strong>c</strong> = 3ª frase. (Ej. <em>Sal 1,1c</em> es la 3ª
-                      frase: <em>«ni en el banco de los burlones se sienta»</em>).</td>
+                    <td><span class="symbol-chip">=</span></td>
+                    <td><strong>Cita textual idéntica</strong></td>
+                    <td><span class="example-chip">Sal 55,23 = 1Pe 5,7</span></td>
+                    <td>Indica que en el segundo texto se cita literalmente el primero.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="symbol-chip">➔ / *</span></td>
+                    <td><strong>Remisión a otro artículo</strong></td>
+                    <td><span class="example-chip">➔ Sacerdocio</span></td>
+                    <td>Remite al artículo o artículos indicados en el Vocabulario.</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
+
+          <!-- 2. Sistema de Citas y Puntuación -->
+          <div class="guia-card-section">
+            <h3 class="guia-section-title">✍️ Ejemplos de Referencias y Puntuación Bíblica (Págs. 13-14)</h3>
+            <p class="guia-text">
+              Sistema estandarizado de la <em>Biblia de Jerusalén</em> y Léon-Dufour para la lectura continua y litúrgica:
+            </p>
+
+            <div class="nomenclatura-table-wrapper">
+              <table class="nomenclatura-table">
+                <thead>
+                  <tr>
+                    <th style="width:20%;">Referencia</th>
+                    <th style="width:30%;">Interpretación Oficial</th>
+                    <th style="width:50%;">Cómo se lee en la preparación</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="example-chip">1Cor 2,7</span></td>
+                    <td><strong>Capítulo y versículo único</strong></td>
+                    <td>1.ª a los Corintios, <strong>Capítulo 2, versículo 7</strong>.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="example-chip">1Cor 2,7s</span></td>
+                    <td><strong>Versículo siguiente</strong></td>
+                    <td>Se leen los versículos <strong>7 y 8</strong> de corrido.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="example-chip">1Cor 2,7ss</span></td>
+                    <td><strong>Versículos siguientes</strong></td>
+                    <td>Se leen los versículos <strong>7, 8 y 9</strong> (o hasta el fin del párrafo/perícopa).</td>
+                  </tr>
+                  <tr>
+                    <td><span class="example-chip">1Cor 2,7-10</span></td>
+                    <td><strong>Rango continuo de versículos</strong></td>
+                    <td>Se lee de corrido <strong>desde el versículo 7 al 10 inclusive</strong>.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="example-chip">1Cor 2,7-3,4</span></td>
+                    <td><strong>Rango continuo entre capítulos</strong></td>
+                    <td>Desde el <strong>capítulo 2, v. 7</strong> hasta el <strong>capítulo 3, v. 4 inclusive</strong>.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="example-chip">1Cor 2,7.15</span></td>
+                    <td><strong>Versículos no contiguos</strong></td>
+                    <td>Se leen <strong>únicamente el versículo 7 y el versículo 15</strong> (sin los versículos intermedios).</td>
+                  </tr>
+                  <tr>
+                    <td><span class="example-chip">1Cor 2,7; 4,6</span></td>
+                    <td><strong>Punto y coma: citas separadas</strong></td>
+                    <td>Dos lecturas independientes: cap. 2, v. 7 y cap. 4, v. 6.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="example-chip">Mt 6,25 p</span></td>
+                    <td><strong>Pasaje paralelo sinóptico</strong></td>
+                    <td>Texto de Mateo 6,25 y su paralelo en los otros Evangelios (ej. Lc 12,22).</td>
+                  </tr>
+                  <tr>
+                    <td><span class="example-chip">Sal 1,1c</span></td>
+                    <td><strong>Frase o cláusula (a, b, c)</strong></td>
+                    <td>En poesía bíblica: <strong>a</strong> = 1.ª frase, <strong>b</strong> = 2.ª frase, <strong>c</strong> = 3.ª frase.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 3. Siglas Oficiales de los Libros de la Biblia (Pág. 13) -->
+          <div class="guia-card-section">
+            <h3 class="guia-section-title">📖 Siglas de los Libros de la Biblia (Léon-Dufour, Pág. 13)</h3>
+            <p class="guia-text">
+              Nómina oficial de abreviaturas de los libros sagrados empleadas en el <em>Vocabulario de Teología Bíblica</em>:
+            </p>
+
+            <div class="siglas-libros-grid">
+              <div class="sigla-libro-item"><span class="sigla-badge">Abd</span> <span class="sigla-nombre">Abdías</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Act</span> <span class="sigla-nombre">Actos / Hechos</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Ag</span> <span class="sigla-nombre">Ageo</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Am</span> <span class="sigla-nombre">Amós</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Ap</span> <span class="sigla-nombre">Apocalipsis</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Bar</span> <span class="sigla-nombre">Baruc</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Cant</span> <span class="sigla-nombre">Cantar</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Col</span> <span class="sigla-nombre">Colosenses</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Cor</span> <span class="sigla-nombre">1 y 2 Corintios</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Dan</span> <span class="sigla-nombre">Daniel</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Dt</span> <span class="sigla-nombre">Deuteronomio</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Ecl</span> <span class="sigla-nombre">Eclesiastés (Qohélet)</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Eclo</span> <span class="sigla-nombre">Eclesiástico (Sirácida)</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Ef</span> <span class="sigla-nombre">Efesios</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Esd</span> <span class="sigla-nombre">Esdras</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Est</span> <span class="sigla-nombre">Ester</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Éx</span> <span class="sigla-nombre">Éxodo</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Ez</span> <span class="sigla-nombre">Ezequiel</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Flm</span> <span class="sigla-nombre">Filemón</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Flp</span> <span class="sigla-nombre">Filipenses</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Gal</span> <span class="sigla-nombre">Gálatas</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Gen</span> <span class="sigla-nombre">Génesis</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Hab</span> <span class="sigla-nombre">Habacuc</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Heb</span> <span class="sigla-nombre">Hebreos</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Is</span> <span class="sigla-nombre">Isaías</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Jds</span> <span class="sigla-nombre">Judas</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Jdt</span> <span class="sigla-nombre">Judit</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Jer</span> <span class="sigla-nombre">Jeremías</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Jl</span> <span class="sigla-nombre">Joel</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Jn</span> <span class="sigla-nombre">Juan</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Job</span> <span class="sigla-nombre">Job</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Jon</span> <span class="sigla-nombre">Jonás</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Jos</span> <span class="sigla-nombre">Josué</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Jue</span> <span class="sigla-nombre">Jueces</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Lam</span> <span class="sigla-nombre">Lamentaciones</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Lc</span> <span class="sigla-nombre">Lucas</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Lev</span> <span class="sigla-nombre">Levítico</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Mac</span> <span class="sigla-nombre">1 y 2 Macabeos</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Mal</span> <span class="sigla-nombre">Malaquías</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Mc</span> <span class="sigla-nombre">Marcos</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Miq</span> <span class="sigla-nombre">Miqueas</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Mt</span> <span class="sigla-nombre">Mateo</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Nah</span> <span class="sigla-nombre">Nahúm</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Neh</span> <span class="sigla-nombre">Nehemías</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Núm</span> <span class="sigla-nombre">Números</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Os</span> <span class="sigla-nombre">Oseas</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Par</span> <span class="sigla-nombre">Paralipómenos (Crónicas)</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Pe</span> <span class="sigla-nombre">1 y 2 Pedro</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Prov</span> <span class="sigla-nombre">Proverbios</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Re</span> <span class="sigla-nombre">1 y 2 Reyes</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Rom</span> <span class="sigla-nombre">Romanos</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Rut</span> <span class="sigla-nombre">Rut</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Sa</span> <span class="sigla-nombre">1 y 2 Samuel</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Sab</span> <span class="sigla-nombre">Sabiduría</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Sal</span> <span class="sigla-nombre">Salmos</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Sant</span> <span class="sigla-nombre">Santiago</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Sof</span> <span class="sigla-nombre">Sofonías</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Tes</span> <span class="sigla-nombre">1 y 2 Tesalonicenses</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Tim</span> <span class="sigla-nombre">1 y 2 Timoteo</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Tit</span> <span class="sigla-nombre">Tito</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Tob</span> <span class="sigla-nombre">Tobías</span></div>
+              <div class="sigla-libro-item"><span class="sigla-badge">Zac</span> <span class="sigla-nombre">Zacarías</span></div>
+            </div>
+          </div>
+
+          <!-- 4. Obras Extrabíblicas y Alfabeto Hebreo -->
+          <div class="guia-card-section">
+            <h3 class="guia-section-title">📜 Obras Extrabíblicas y Alfabeto Hebreo (Página 14)</h3>
+            <p class="guia-text">
+              <strong>Obras citadas en notas históricas:</strong> <em>Enoc, Jubileos, Salmos de Salomón, Midrasim</em> (comentarios rabínicos homiléticos antiguos), <em>Targumes</em> (paráfrasis explicativas en lengua aramea de la Biblia hebrea).
+            </p>
+            <p class="guia-text" style="margin-top: 4px; font-size: 0.82rem; color: var(--text-muted);">
+              <strong>Transcripción del alfabeto hebreo en el Vocabulario:</strong>
+              <code>', b, g, d, h, w, z, ḥ, ṭ, y, k, l, m, n, s, ', p/f, ṣ, q, r, ś, š, t</code>.
+            </p>
+          </div>
+
         </div>
 
         <!-- PESTAÑA 3: Herramientas de la Aplicación -->
