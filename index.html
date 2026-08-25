@@ -126,7 +126,7 @@
     .header-bar {
       background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
       color: #ffffff;
-      padding: 14px 16px;
+      padding: 10px 16px;
       position: sticky;
       top: 0;
       z-index: 100;
@@ -139,7 +139,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .header-title-link {
@@ -147,7 +147,8 @@
       color: inherit;
       display: inline-flex;
       align-items: center;
-      transition: opacity 0.15s ease, transform 0.15s ease;
+      min-width: 0;
+      flex-shrink: 1;
       cursor: pointer;
     }
 
@@ -163,39 +164,54 @@
     .header-title-box {
       display: flex;
       flex-direction: column;
+      min-width: 0;
     }
 
     .header-title {
       font-family: var(--font-serif);
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 700;
       letter-spacing: 0.5px;
       color: #ffffff;
       display: flex;
       align-items: center;
       gap: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .header-subtitle {
-      font-size: 0.72rem;
+      font-size: 0.70rem;
       color: #93c5fd;
       font-weight: 400;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-shrink: 0;
     }
 
     .btn-toggle-filters {
       background: rgba(255, 255, 255, 0.12);
       border: 1px solid rgba(255, 255, 255, 0.25);
       color: #ffffff;
-      padding: 7px 12px;
+      padding: 6px 10px;
       border-radius: var(--radius-full);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       transition: all 0.2s ease;
       white-space: nowrap;
+      user-select: none;
     }
 
     .btn-toggle-filters:hover,
@@ -219,24 +235,28 @@
     .search-section {
       background: #ffffff;
       border-bottom: 1px solid var(--border-color);
-      padding: 12px 16px;
+      padding: 10px 16px;
       position: sticky;
-      top: 59px;
+      top: 50px;
       z-index: 90;
       box-shadow: var(--shadow-sm);
-      max-height: 400px;
-      overflow: hidden;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      max-height: 800px;
+      overflow: visible;
+      transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                  opacity 0.25s ease,
+                  padding 0.3s ease,
+                  border-color 0.3s ease;
     }
 
     .search-section.collapsed {
-      max-height: 0;
-      padding-top: 0;
-      padding-bottom: 0;
-      border-bottom: none;
-      opacity: 0;
-      pointer-events: none;
-      box-shadow: none;
+      max-height: 0 !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      border-bottom: none !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      box-shadow: none !important;
+      overflow: hidden !important;
     }
 
     .search-container {
@@ -1817,6 +1837,84 @@
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
+
+    /* ==========================================================================
+       MEDIA QUERIES RESPONSIVAS (MÓVIL Y TABLET)
+       ========================================================================== */
+    @media (max-width: 640px) {
+      .header-bar {
+        padding: 8px 10px;
+      }
+
+      .header-title {
+        font-size: 0.92rem;
+      }
+
+      .header-subtitle {
+        display: none;
+      }
+
+      .header-actions {
+        gap: 4px;
+      }
+
+      .btn-toggle-filters {
+        padding: 5px 8px;
+        font-size: 0.72rem;
+        gap: 3px;
+      }
+
+      .search-section {
+        padding: 8px 10px;
+        top: 45px;
+      }
+
+      .filter-mode-pills {
+        gap: 4px;
+      }
+
+      .btn-mode-pill {
+        padding: 6px 8px;
+        font-size: 0.74rem;
+      }
+
+      .quick-toggles-row {
+        gap: 6px;
+      }
+
+      .toggle-label {
+        padding: 3px 6px;
+        font-size: 0.74rem;
+        gap: 4px;
+      }
+
+      .sort-wrapper {
+        width: 100%;
+        justify-content: flex-start;
+        margin-top: 2px;
+      }
+
+      .select-custom {
+        flex: 1;
+        font-size: 0.76rem;
+        padding: 5px 8px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .header-title {
+        font-size: 0.84rem;
+      }
+
+      .btn-toggle-filters {
+        padding: 4px 6px;
+        font-size: 0.68rem;
+      }
+
+      .btn-toggle-filters .btn-text-full {
+        display: none;
+      }
+    }
   </style>
 </head>
 
@@ -1831,18 +1929,18 @@
           <span class="header-subtitle">Vocabulario de Teología Bíblica — Xavier Léon-Dufour</span>
         </div>
       </a>
-      <div style="display:flex; gap:6px; align-items:center;">
+      <div class="header-actions">
         <button id="btnToggleSearch" class="btn-toggle-filters active"
           title="Toca para ocultar o mostrar el buscador y los filtros rápidos">
-          <span>🔍 Buscar</span>
+          <span>🔍</span><span class="btn-text-full"> Buscar</span>
         </button>
         <button id="btnAbrirGuia" class="btn-toggle-filters"
           title="Guía y Criterios: Consulta los 4 grupos litúrgicos del Camino, nomenclatura bíblica (s, ss, p, puntuación) y cómo usar la aplicación">
-          <span>📖 Guía</span>
+          <span>📖</span><span class="btn-text-full"> Guía</span>
         </button>
         <button id="btnToggleFiltros" class="btn-toggle-filters"
           title="Toca para desplegar u ocultar los filtros avanzados y la gestión de exclusiones">
-          <span>⚙️ Filtros</span>
+          <span>⚙️</span><span class="btn-text-full"> Filtros</span>
           <span id="badgeExcluidas" class="badge-count" style="display:none;"
             title="Cantidad de palabras excluidas">0</span>
         </button>
@@ -2327,7 +2425,7 @@
   <div id="toast" class="toast">Notificación</div>
 
   <!-- Scripts -->
-  <script src="js/app.js?v=2.4"></script>
+  <script src="js/app.js?v=2.5"></script>
 </body>
 
 </html>
