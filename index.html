@@ -375,7 +375,7 @@
       font-weight: 700;
       border-radius: var(--radius-full);
       border: 1.5px solid var(--border-color);
-      background: #f8fafc;
+      background: var(--bg-card);
       color: var(--text-muted);
       cursor: pointer;
       display: inline-flex;
@@ -386,16 +386,42 @@
     }
 
     .btn-mode-pill:hover {
-      background: #f1f5f9;
+      background: var(--bg-card-hover);
       color: var(--text-main);
-      border-color: #cbd5e1;
+      border-color: var(--border-dark);
     }
 
     .btn-mode-pill.active {
       background: #059669;
       color: #ffffff;
-      border-color: #059669;
-      box-shadow: 0 2px 5px rgba(5, 150, 105, 0.25);
+      border-color: #047857;
+      box-shadow: 0 2px 5px rgba(5, 150, 105, 0.35);
+    }
+
+    [data-theme="dark"] .btn-mode-pill.active {
+      background: #10b981;
+      color: #090d16;
+      border-color: #34d399;
+      box-shadow: 0 2px 5px rgba(16, 185, 129, 0.35);
+    }
+
+    [data-theme="light"] .btn-mode-pill {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+      color: #334155;
+    }
+
+    [data-theme="light"] .btn-mode-pill:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+      border-color: #94a3b8;
+    }
+
+    [data-theme="light"] .btn-mode-pill.active {
+      background: #1e3a8a;
+      color: #ffffff;
+      border-color: #1e3a8a;
+      box-shadow: 0 2px 5px rgba(30, 58, 138, 0.3);
     }
 
     .quick-toggles-row {
@@ -1098,10 +1124,11 @@
       transition: all 0.15s ease;
     }
 
+    /* Botones de acción rápida en cabecera de tarjeta */
     .btn-quick-calc {
-      background: #eff6ff;
-      color: #1e40af;
-      border: 1.5px solid #bfdbfe;
+      background: rgba(59, 130, 246, 0.18);
+      color: #93c5fd;
+      border: 1.5px solid rgba(59, 130, 246, 0.45);
       padding: 3px 8px;
       border-radius: var(--radius-sm);
       font-size: 0.75rem;
@@ -1115,16 +1142,28 @@
     }
 
     .btn-quick-calc:hover {
-      background: #3b82f6;
+      background: #2563eb;
       color: #ffffff;
       border-color: #3b82f6;
-      box-shadow: 0 2px 4px rgba(59, 130, 246, 0.25);
+      box-shadow: 0 2px 5px rgba(37, 99, 235, 0.3);
+    }
+
+    [data-theme="light"] .btn-quick-calc {
+      background: #eff6ff;
+      color: #1e40af;
+      border-color: #93c5fd;
+    }
+
+    [data-theme="light"] .btn-quick-calc:hover {
+      background: #1e40af;
+      color: #ffffff;
+      border-color: #1e3a8a;
     }
 
     .btn-quick-art {
-      background: #fef3c7;
-      color: #92400e;
-      border: 1.5px solid #fde68a;
+      background: rgba(245, 158, 11, 0.18);
+      color: #fde68a;
+      border: 1.5px solid rgba(245, 158, 11, 0.45);
       padding: 3px 8px;
       border-radius: var(--radius-sm);
       font-size: 0.75rem;
@@ -1140,55 +1179,149 @@
     .btn-quick-art:hover {
       background: #d97706;
       color: #ffffff;
-      border-color: #d97706;
-      box-shadow: 0 2px 4px rgba(217, 119, 6, 0.25);
+      border-color: #f59e0b;
+      box-shadow: 0 2px 5px rgba(217, 119, 6, 0.3);
+    }
+
+    [data-theme="light"] .btn-quick-art {
+      background: #fffbeb;
+      color: #92400e;
+      border-color: #fde68a;
+    }
+
+    [data-theme="light"] .btn-quick-art:hover {
+      background: #b45309;
+      color: #ffffff;
+      border-color: #92400e;
+    }
+
+    .btn-action {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-dark);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: var(--radius-md);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
     }
 
     .btn-action:hover {
       background: var(--bg-card-hover);
       border-color: var(--primary);
-      color: var(--primary);
+      color: var(--primary-hover);
     }
 
     .btn-action.active {
-      background: #dbeafe;
+      background: rgba(59, 130, 246, 0.25);
       border-color: #3b82f6;
+      color: #93c5fd;
+    }
+
+    [data-theme="light"] .btn-action.active {
+      background: #dbeafe;
+      border-color: #2563eb;
       color: #1e3a8a;
     }
 
     .btn-articulo {
+      background: rgba(245, 158, 11, 0.16);
+      border-color: rgba(245, 158, 11, 0.4);
+      color: #fde68a;
+    }
+
+    .btn-articulo:hover {
+      background: rgba(245, 158, 11, 0.28);
+      border-color: #fbbf24;
+      color: #ffffff;
+    }
+
+    [data-theme="light"] .btn-articulo {
       background: #fffbeb;
       border-color: #fde68a;
       color: #92400e;
     }
 
-    .btn-articulo:hover {
+    [data-theme="light"] .btn-articulo:hover {
       background: #fef3c7;
       border-color: #d97706;
       color: #78350f;
     }
 
+    .btn-calc {
+      background: rgba(59, 130, 246, 0.16);
+      border-color: rgba(59, 130, 246, 0.4);
+      color: #93c5fd;
+    }
+
+    .btn-calc:hover {
+      background: rgba(59, 130, 246, 0.28);
+      border-color: #60a5fa;
+      color: #ffffff;
+    }
+
+    [data-theme="light"] .btn-calc {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: #1e40af;
+    }
+
+    [data-theme="light"] .btn-calc:hover {
+      background: #dbeafe;
+      border-color: #3b82f6;
+      color: #1e3a8a;
+    }
+
     .btn-copiar {
-      border-color: #cbd5e1;
-      color: #334155;
+      border-color: var(--border-dark);
+      color: var(--text-main);
     }
 
     .btn-copiar:hover {
-      background: #f8fafc;
+      background: rgba(16, 185, 129, 0.16);
+      border-color: #34d399;
+      color: #6ee7b7;
+    }
+
+    [data-theme="light"] .btn-copiar {
+      border-color: #cbd5e1;
+      color: #1e293b;
+    }
+
+    [data-theme="light"] .btn-copiar:hover {
+      background: #ecfdf5;
       border-color: #059669;
-      color: #059669;
+      color: #065f46;
     }
 
     .btn-excluir {
       margin-left: auto;
-      border-color: #fecaca;
-      color: #b91c1c;
-      background: #fff5f5;
+      background: rgba(239, 68, 68, 0.14);
+      border-color: rgba(239, 68, 68, 0.35);
+      color: #fca5a5;
     }
 
     .btn-excluir:hover {
+      background: rgba(239, 68, 68, 0.25);
+      border-color: #f87171;
+      color: #ffffff;
+    }
+
+    [data-theme="light"] .btn-excluir {
+      margin-left: auto;
+      background: #fff5f5;
+      border-color: #fecaca;
+      color: #991b1b;
+    }
+
+    [data-theme="light"] .btn-excluir:hover {
       background: #fee2e2;
       border-color: #ef4444;
+      color: #7f1d1d;
     }
 
     /* Grid de Categorías Bíblicas */
@@ -1535,8 +1668,9 @@
       padding: 4px 8px;
       font-size: 0.75rem;
       font-weight: 700;
-      border: 1px solid var(--border-color);
+      border: 1.5px solid var(--border-dark);
       background: var(--bg-card);
+      color: var(--text-main);
       border-radius: var(--radius-sm);
       cursor: pointer;
       transition: all 0.15s;
@@ -1549,16 +1683,35 @@
       border-color: var(--primary);
     }
 
+    [data-theme="light"] .chip-num {
+      background: #ffffff;
+      border-color: #cbd5e1;
+      color: #0f172a;
+    }
+
+    [data-theme="light"] .chip-num.active {
+      background: #1e3a8a;
+      border-color: #1e3a8a;
+      color: #ffffff;
+    }
+
     .calc-summary-banner {
-      background: #eff6ff;
+      background: rgba(59, 130, 246, 0.15);
       border-left: 4px solid #3b82f6;
       padding: 8px 12px;
       border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
       font-size: 0.8rem;
-      color: #1e3a8a;
+      color: #bfdbfe;
       display: flex;
       align-items: center;
       gap: 6px;
+      font-weight: 600;
+    }
+
+    [data-theme="light"] .calc-summary-banner {
+      background: #eff6ff;
+      border-left-color: #1e40af;
+      color: #1e3a8a;
     }
 
     .calc-select-criterio {
@@ -1581,9 +1734,9 @@
     }
 
     .calc-balance-badge {
-      background: #ecfdf5;
-      color: #065f46;
-      border: 1px solid #a7f3d0;
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.5);
       padding: 2px 8px;
       border-radius: var(--radius-full);
       font-size: 0.72rem;
@@ -1592,6 +1745,12 @@
       align-items: center;
       gap: 4px;
       white-space: nowrap;
+    }
+
+    [data-theme="light"] .calc-balance-badge {
+      background: #ecfdf5;
+      color: #065f46;
+      border-color: #059669;
     }
 
     .hermanos-grid {
@@ -1610,11 +1769,11 @@
     }
 
     .hermano-card:hover {
-      border-color: #94a3b8;
+      border-color: var(--border-dark);
     }
 
     .hermano-header {
-      background: #f8fafc;
+      background: var(--bg-app);
       padding: 10px 14px;
       border-bottom: 1px solid var(--border-color);
       display: flex;
@@ -1622,6 +1781,10 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 8px;
+    }
+
+    [data-theme="light"] .hermano-header {
+      background: #f8fafc;
     }
 
     .hermano-title-box {
@@ -1664,41 +1827,60 @@
       gap: 3px;
       font-size: 0.74rem;
       font-weight: 700;
-      color: #334155;
-      background: #f1f5f9;
+      color: var(--text-main);
+      background: var(--bg-card);
       padding: 1px 7px;
       border-radius: var(--radius-full);
-      border: 1px solid #cbd5e1;
+      border: 1px solid var(--border-color);
+    }
+
+    [data-theme="light"] .hermano-char-badge {
+      color: #0f172a;
+      background: #f1f5f9;
+      border-color: #cbd5e1;
     }
 
     .hermano-pct-badge {
       font-size: 0.70rem;
       font-weight: 800;
-      color: #059669;
-      background: #ecfdf5;
+      color: #6ee7b7;
+      background: rgba(16, 185, 129, 0.2);
       padding: 1px 6px;
       border-radius: var(--radius-full);
-      border: 1px solid #a7f3d0;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    [data-theme="light"] .hermano-pct-badge {
+      color: #065f46;
+      background: #ecfdf5;
+      border-color: #a7f3d0;
     }
 
     .hermano-rango {
       font-size: 0.78rem;
-      color: #0369a1;
-      background: #e0f2fe;
+      color: #93c5fd;
+      background: rgba(59, 130, 246, 0.2);
       padding: 2px 8px;
       border-radius: var(--radius-full);
-      font-weight: 600;
+      font-weight: 700;
+      border: 1px solid rgba(59, 130, 246, 0.35);
+    }
+
+    [data-theme="light"] .hermano-rango {
+      color: #1e40af;
+      background: #e0f2fe;
+      border-color: #bae6fd;
     }
 
     .btn-copiar-hermano {
       background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      padding: 4px 8px;
+      border: 1.5px solid var(--border-dark);
+      color: var(--text-main);
+      padding: 4px 10px;
       border-radius: var(--radius-sm);
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       font-weight: 700;
       cursor: pointer;
-      color: var(--text-main);
       display: inline-flex;
       align-items: center;
       gap: 4px;
@@ -1706,9 +1888,21 @@
     }
 
     .btn-copiar-hermano:hover {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: #3b82f6;
+      color: #93c5fd;
+    }
+
+    [data-theme="light"] .btn-copiar-hermano {
+      background: #ffffff;
+      border-color: #cbd5e1;
+      color: #0f172a;
+    }
+
+    [data-theme="light"] .btn-copiar-hermano:hover {
       background: #f1f5f9;
-      border-color: var(--primary);
-      color: var(--primary);
+      border-color: #1e3a8a;
+      color: #1e3a8a;
     }
 
     .hermano-body {
@@ -2170,15 +2364,29 @@
     }
 
     .badge-tipo-articulo {
-      background: rgba(16, 185, 129, 0.15);
-      color: #059669;
-      border: 1px solid rgba(16, 185, 129, 0.3);
+      background: rgba(16, 185, 129, 0.22);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.5);
+      font-weight: 800;
+    }
+
+    [data-theme="light"] .badge-tipo-articulo {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #059669;
     }
 
     .badge-tipo-remision {
-      background: rgba(245, 158, 11, 0.15);
-      color: #d97706;
-      border: 1px solid rgba(245, 158, 11, 0.3);
+      background: rgba(245, 158, 11, 0.22);
+      color: #fde68a;
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      font-weight: 800;
+    }
+
+    [data-theme="light"] .badge-tipo-remision {
+      background: #fffbeb;
+      color: #78350f;
+      border: 1px solid #d97706;
     }
 
     .indice-item-destinos {
@@ -2212,8 +2420,8 @@
 
     .chip-destino-guia {
       font-size: 0.74rem;
-      font-weight: 600;
-      padding: 3px 9px;
+      font-weight: 700;
+      padding: 4px 10px;
       border-radius: var(--radius-full);
       cursor: pointer;
       transition: all 0.15s ease;
@@ -2225,64 +2433,95 @@
 
     /* 1. Disponible en Precatecumenado (148 palabras) */
     .chip-destino-guia.chip-disponible-precat {
-      background: #f0fdf4;
-      border: 1.5px solid #86efac;
-      color: #166534;
+      background: rgba(16, 185, 129, 0.2);
+      border: 1.5px solid rgba(16, 185, 129, 0.55);
+      color: #6ee7b7;
     }
     .chip-destino-guia.chip-disponible-precat:hover {
-      background: #dcfce7;
-      border-color: #22c55e;
-      color: #14532d;
+      background: rgba(16, 185, 129, 0.35);
+      border-color: #34d399;
+      color: #ffffff;
       transform: translateY(-1px);
-      box-shadow: 0 2px 5px rgba(34, 197, 94, 0.2);
+      box-shadow: 0 2px 5px rgba(34, 197, 94, 0.25);
     }
     .chip-num-badge {
-      background: #16a34a;
+      background: #059669;
       color: #ffffff;
       font-size: 0.65rem;
       font-weight: 800;
-      padding: 1px 5px;
+      padding: 1px 6px;
       border-radius: var(--radius-full);
       margin-left: 2px;
+    }
+
+    [data-theme="light"] .chip-destino-guia.chip-disponible-precat {
+      background: #ecfdf5;
+      border: 1.5px solid #059669;
+      color: #065f46;
+    }
+    [data-theme="light"] .chip-destino-guia.chip-disponible-precat:hover {
+      background: #d1fae5;
+      color: #022c22;
     }
 
     /* 2. Disponible en Vocabulario Completo (289 palabras) */
     .chip-destino-guia.chip-disponible-todas {
-      background: #eff6ff;
-      border: 1.5px solid #93c5fd;
-      color: #1e40af;
+      background: rgba(59, 130, 246, 0.2);
+      border: 1.5px solid rgba(59, 130, 246, 0.55);
+      color: #93c5fd;
     }
     .chip-destino-guia.chip-disponible-todas:hover {
-      background: #dbeafe;
-      border-color: #3b82f6;
-      color: #1e3a8a;
+      background: rgba(59, 130, 246, 0.35);
+      border-color: #60a5fa;
+      color: #ffffff;
       transform: translateY(-1px);
-      box-shadow: 0 2px 5px rgba(59, 130, 246, 0.2);
+      box-shadow: 0 2px 5px rgba(59, 130, 246, 0.25);
+    }
+
+    [data-theme="light"] .chip-destino-guia.chip-disponible-todas {
+      background: #eff6ff;
+      border: 1.5px solid #2563eb;
+      color: #1e3a8a;
+    }
+    [data-theme="light"] .chip-destino-guia.chip-disponible-todas:hover {
+      background: #dbeafe;
+      color: #172554;
     }
 
     /* 3. Sin ficha directa en la lista de preparación */
     .chip-destino-guia.chip-sin-referencia {
-      background: #f8fafc;
-      border: 1.5px dashed #cbd5e1;
-      color: #94a3b8;
+      background: #131b2e;
+      border: 1.5px dashed #475569;
+      color: #cbd5e1;
       cursor: help;
-      opacity: 0.85;
     }
     .chip-destino-guia.chip-sin-referencia:hover {
-      background: #f1f5f9;
-      border-color: #94a3b8;
-      color: #64748b;
-      transform: none;
-      box-shadow: none;
+      background: #1e293b;
+      border-color: #64748b;
+      color: #ffffff;
     }
     .chip-sin-badge {
-      background: #e2e8f0;
-      color: #64748b;
+      background: #334155;
+      color: #f8fafc;
       font-size: 0.63rem;
-      font-weight: 700;
-      padding: 1px 5px;
+      font-weight: 800;
+      padding: 1px 6px;
       border-radius: var(--radius-full);
       margin-left: 2px;
+    }
+
+    [data-theme="light"] .chip-destino-guia.chip-sin-referencia {
+      background: #f1f5f9;
+      border: 1.5px dashed #64748b;
+      color: #1e293b;
+    }
+    [data-theme="light"] .chip-destino-guia.chip-sin-referencia:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+    [data-theme="light"] .chip-sin-badge {
+      background: #cbd5e1;
+      color: #0f172a;
     }
 
     .indice-item-raw {
@@ -2357,11 +2596,11 @@
       font-family: var(--font-sans);
       font-size: 0.85rem;
       font-weight: 700;
-      background: #e0e7ff;
-      color: #3730a3;
+      background: rgba(99, 102, 241, 0.2);
+      color: #c7d2fe;
       padding: 2px 6px;
       border-radius: var(--radius-sm);
-      border: 1px solid #c7d2fe;
+      border: 1px solid rgba(99, 102, 241, 0.4);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -2371,10 +2610,22 @@
     }
 
     .modal-body-articulo cite:hover {
-      background: #4338ca;
+      background: #4f46e5;
       color: #ffffff;
-      border-color: #4338ca;
-      box-shadow: 0 2px 4px rgba(67, 56, 202, 0.3);
+      border-color: #6366f1;
+      box-shadow: 0 2px 5px rgba(79, 70, 229, 0.4);
+    }
+
+    [data-theme="light"] .modal-body-articulo cite {
+      background: #e0e7ff;
+      color: #312e81;
+      border-color: #a5b4fc;
+    }
+
+    [data-theme="light"] .modal-body-articulo cite:hover {
+      background: #3730a3;
+      color: #ffffff;
+      border-color: #312e81;
     }
 
     .modal-body-articulo cite::after {

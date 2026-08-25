@@ -895,10 +895,7 @@ function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
 
         // Botón Calculadora / Repartir entre Hermanos
         const btnCalc = document.createElement("button");
-        btnCalc.className = "btn-action";
-        btnCalc.style.borderColor = "#3b82f6";
-        btnCalc.style.color = "#1e3a8a";
-        btnCalc.style.background = "#eff6ff";
+        btnCalc.className = "btn-action btn-calc";
         btnCalc.setAttribute("title", "Abre la calculadora de preparación para distribuir todas las lecturas de forma equilibrada entre los participantes, en orden bíblico continuo y sin saltos.");
         btnCalc.innerHTML = `👥 Repartir Lecturas`;
         btnCalc.onclick = (e) => {
