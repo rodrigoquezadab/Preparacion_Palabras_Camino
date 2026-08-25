@@ -521,6 +521,15 @@ fetch("palabras.json")
             setPalabrasExistentes.add(normalizar(item.nombre));
             setPalabrasExistentes.add(normalizar(item.vocabKey));
 
+            const normKey = normalizar(item.vocabKey);
+            const normName = normalizar(item.nombre);
+            const remisionesAlias = (typeof INDICE_REMISIONES_DATA !== 'undefined' && INDICE_REMISIONES_DATA.mapaAliasPorPalabra)
+                ? (INDICE_REMISIONES_DATA.mapaAliasPorPalabra[normKey] || INDICE_REMISIONES_DATA.mapaAliasPorPalabra[normName] || [])
+                : [];
+            const temasConexos = (typeof INDICE_REMISIONES_DATA !== 'undefined' && INDICE_REMISIONES_DATA.mapaTemasConexos)
+                ? (INDICE_REMISIONES_DATA.mapaTemasConexos[normKey] || INDICE_REMISIONES_DATA.mapaTemasConexos[normName] || [])
+                : [];
+
             return {
                 id: item.num,
                 numPrecat: item.num,
@@ -528,6 +537,8 @@ fetch("palabras.json")
                 subInfo: item.subInfo || "",
                 vocabKey: item.vocabKey,
                 palabraNorm: pNorm,
+                aliasRemisiones: remisionesAlias,
+                temasConexos: temasConexos,
                 lecturas: l,
                 contenido: entry.contenido || "",
                 relacionados: entry.relacionados || [],
@@ -567,6 +578,13 @@ fetch("palabras.json")
             const cumple4Partes = (hist.length > 0 && prof.length > 0 && nt.length > 0 && ev.length > 0);
             const numPrecat = precatMap.get(p.palabra.toLowerCase()) || null;
 
+            const remisionesAlias = (typeof INDICE_REMISIONES_DATA !== 'undefined' && INDICE_REMISIONES_DATA.mapaAliasPorPalabra)
+                ? (INDICE_REMISIONES_DATA.mapaAliasPorPalabra[pNorm] || [])
+                : [];
+            const temasConexos = (typeof INDICE_REMISIONES_DATA !== 'undefined' && INDICE_REMISIONES_DATA.mapaTemasConexos)
+                ? (INDICE_REMISIONES_DATA.mapaTemasConexos[pNorm] || [])
+                : [];
+
             return {
                 id: index + 1,
                 numPrecat: numPrecat,
@@ -574,6 +592,8 @@ fetch("palabras.json")
                 subInfo: numPrecat ? `Precat. #${numPrecat}` : "",
                 vocabKey: p.palabra,
                 palabraNorm: pNorm,
+                aliasRemisiones: remisionesAlias,
+                temasConexos: temasConexos,
                 lecturas: l,
                 contenido: p.contenido || "",
                 relacionados: p.relacionados || [],
@@ -625,7 +645,41 @@ function actualizarVista() {
         if (setExcluidos.has(item.palabraNorm) || setExcluidos.has(pNormPalabra) || (pNormVocab && setExcluidos.has(pNormVocab))) {
             return false;
         }
-        if (busqueda.length > 0 && !item.palabraNorm.includes(busqueda)) return false;
+
+        if (busqueda.length > 0) {
+            const coincideDirecto = item.palabraNorm.includes(busqueda);
+            
+            // Buscar en alias y remisiones oficiales del Léon-Dufour
+            let coincideAlias = false;
+            let aliasEncontrado = null;
+
+            if (item.aliasRemisiones && item.aliasRemisiones.length > 0) {
+                for (const alias of item.aliasRemisiones) {
+                    if (normalizar(alias).includes(busqueda)) {
+                        coincideAlias = true;
+                        aliasEncontrado = alias;
+                        break;
+                    }
+                }
+            }
+
+            // O si la búsqueda exacta/parcial coincide con un término del índice de remisiones
+            if (!coincideAlias && typeof INDICE_REMISIONES_DATA !== 'undefined' && INDICE_REMISIONES_DATA.mapaRemisiones) {
+                const rem = INDICE_REMISIONES_DATA.mapaRemisiones[busqueda];
+                if (rem && rem.destinos) {
+                    if (rem.destinos.some(d => normalizar(d) === pNormPalabra || normalizar(d) === pNormVocab)) {
+                        coincideAlias = true;
+                        aliasEncontrado = rem.termino;
+                    }
+                }
+            }
+
+            if (!coincideDirecto && !coincideAlias) return false;
+
+            item.coincidenciaRemision = coincideAlias ? aliasEncontrado : null;
+        } else {
+            item.coincidenciaRemision = null;
+        }
 
         if (soloCompletas && !esPalabraCompleta(item, soloPentateuco)) {
             return false;
@@ -748,6 +802,7 @@ function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
                     ${item.palabra}
                     ${item.subInfo ? `<span class="word-subname" title="Referencia en Léon-Dufour">(${item.subInfo})</span>` : ''}
                 </h2>
+                ${item.coincidenciaRemision ? `<div class="badge-remision-match" title="Esta palabra aparece por coincidencia en el índice de remisiones oficial de Xavier Léon-Dufour">💡 Remisión: "<strong>${item.coincidenciaRemision}</strong>" ➔ ${item.palabra}</div>` : ''}
             </div>
             <span class="count-pill total-pill" title="${tooltipTotal}">
                 ${totalPillText}
@@ -910,6 +965,37 @@ function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
         }
 
         body.appendChild(categoriesContainer);
+
+        // Bloque de Temas Conexos y Remisiones Oficiales de Xavier Léon-Dufour
+        const tieneTemas = item.temasConexos && item.temasConexos.length > 0;
+        const tieneAlias = item.aliasRemisiones && item.aliasRemisiones.length > 0;
+
+        if (tieneTemas || tieneAlias) {
+            const conexosBox = document.createElement("div");
+            conexosBox.className = "temas-conexos-container";
+
+            let htmlConexos = ``;
+            if (tieneAlias) {
+                htmlConexos += `
+                    <div class="temas-conexos-title">🔄 También se prepara aquí (Remisiones / Sinónimos):</div>
+                    <div class="temas-conexos-chips">
+                        ${item.aliasRemisiones.map(a => `<span class="chip-conexo" title="Toca para buscar '${a}'" onclick="event.stopPropagation(); buscarTermino('${a}');">🔍 ${a}</span>`).join('')}
+                    </div>
+                `;
+            }
+
+            if (tieneTemas) {
+                htmlConexos += `
+                    <div class="temas-conexos-title" style="${tieneAlias ? 'margin-top: 4px;' : ''}">🔗 Temas conexos según Léon-Dufour:</div>
+                    <div class="temas-conexos-chips">
+                        ${item.temasConexos.map(t => `<span class="chip-conexo" title="Toca para buscar '${t}'" onclick="event.stopPropagation(); buscarTermino('${t}');">📖 ${t}</span>`).join('')}
+                    </div>
+                `;
+            }
+
+            conexosBox.innerHTML = htmlConexos;
+            body.appendChild(conexosBox);
+        }
 
         // Evento abrir/cerrar acordeón
         header.onclick = () => {
@@ -1770,11 +1856,19 @@ function renderizarTags() {
     });
 }
 
+function buscarTermino(termino) {
+    if (!inputBusqueda) return;
+    inputBusqueda.value = termino;
+    actualizarVista();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function agregarExclusiones() {
     const texto = inputExcluir.value;
     if (!texto) return;
     const nuevas = texto.split(',').map(t => normalizar(t)).filter(t => t.length > 0);
     let invalidas = [];
+    let avisosRemision = [];
     let cambios = false;
 
     nuevas.forEach(pNorm => {
@@ -1783,13 +1877,28 @@ function agregarExclusiones() {
                 setExcluidos.add(pNorm);
                 cambios = true;
             }
+        } else if (typeof INDICE_REMISIONES_DATA !== 'undefined' && INDICE_REMISIONES_DATA.mapaRemisiones && INDICE_REMISIONES_DATA.mapaRemisiones[pNorm]) {
+            // Es una remisión oficial que apunta a una palabra del vocabulario
+            const rem = INDICE_REMISIONES_DATA.mapaRemisiones[pNorm];
+            rem.destinos.forEach(dest => {
+                const normDest = normalizar(dest);
+                if (setPalabrasExistentes.has(normDest) && !setExcluidos.has(normDest)) {
+                    setExcluidos.add(normDest);
+                    cambios = true;
+                }
+            });
+            avisosRemision.push(`"${rem.termino}" (remitido a: ${rem.destinos.join(', ')})`);
         } else {
             invalidas.push(pNorm);
         }
     });
 
+    if (avisosRemision.length > 0) {
+        alert(`💡 Se aplicaron exclusiones por remisión oficial:\n- ${avisosRemision.join("\n- ")}`);
+    }
+
     if (invalidas.length > 0) {
-        alert(`No existen en el Vocabulario:\n- ${invalidas.join("\n- ")}`);
+        alert(`No existen en el Vocabulario ni en el índice de remisiones:\n- ${invalidas.join("\n- ")}`);
     }
 
     inputExcluir.value = "";

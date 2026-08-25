@@ -796,6 +796,72 @@
       border-left: 5px solid #f59e0b;
     }
 
+    .badge-remision-match {
+      font-size: 0.72rem;
+      background: rgba(245, 158, 11, 0.16);
+      color: var(--color-ev);
+      border: 1px solid var(--border-ev);
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+      margin-top: 2px;
+      width: fit-content;
+    }
+
+    .temas-conexos-container {
+      margin-top: 10px;
+      padding: 10px;
+      background: var(--bg-app);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .temas-conexos-title {
+      font-size: 0.73rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .temas-conexos-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .chip-conexo {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      user-select: none;
+    }
+
+    .chip-conexo:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-1px);
+    }
+
     /* Encabezado de la Tarjeta */
     .word-card-header {
       padding: 12px 14px;
@@ -2637,7 +2703,8 @@
   <div id="toast" class="toast">Notificación</div>
 
   <!-- Scripts -->
-  <script src="js/app.js?v=3.3"></script>
+  <script src="js/remisiones_data.js"></script>
+  <script src="js/app.js?v=3.4"></script>
 </body>
 
 </html>
