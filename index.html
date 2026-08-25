@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-  
+
   <!-- SEO & Metadatos -->
   <title>Preparación de la Palabra — Camino Neocatecumenal</title>
-  <meta name="description" content="Herramienta mobile-first para la preparación de la Liturgia de la Palabra del Camino Neocatecumenal basada en el Vocabulario de Teología Bíblica de Xavier Léon-Dufour.">
+  <meta name="description"
+    content="Herramienta mobile-first para la preparación de la Liturgia de la Palabra del Camino Neocatecumenal basada en el Vocabulario de Teología Bíblica de Xavier Léon-Dufour.">
   <meta name="theme-color" content="#1e3a8a">
-  
+
   <!-- Google Fonts: Plus Jakarta Sans & Cinzel -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+    rel="stylesheet">
 
   <style>
     /* ==========================================================================
@@ -36,32 +40,38 @@
       --primary: #1e3a8a;
       --primary-hover: #1e40af;
       --primary-light: #dbeafe;
-      
+
       --gold-accent: #b45309;
       --gold-light: #fef3c7;
-      
+
       /* Colores Litúrgicos de las 4 Partes Bíblicas */
-      --color-hist: #059669; /* Verde Torá / Alianza */
+      --color-hist: #059669;
+      /* Verde Torá / Alianza */
       --bg-hist-light: #ecfdf5;
       --border-hist: #a7f3d0;
 
-      --color-prof: #dc2626; /* Rojo Fuego Profético */
+      --color-prof: #dc2626;
+      /* Rojo Fuego Profético */
       --bg-prof-light: #fef2f2;
       --border-prof: #fecaca;
 
-      --color-nt: #7c3aed; /* Púrpura Apostólico / Cartas */
+      --color-nt: #7c3aed;
+      /* Púrpura Apostólico / Cartas */
       --bg-nt-light: #f5f3ff;
       --border-nt: #ddd6fe;
 
-      --color-ev: #d97706; /* Dorado / Luz de Cristo */
+      --color-ev: #d97706;
+      /* Dorado / Luz de Cristo */
       --bg-ev-light: #fffbeb;
       --border-ev: #fde68a;
 
-      --color-sal: #0284c7; /* Azul Salmos */
+      --color-sal: #0284c7;
+      /* Azul Salmos */
       --bg-sal-light: #f0f9ff;
       --border-sal: #bae6fd;
 
-      --color-sap: #475569; /* Pizarra Sapiencial */
+      --color-sap: #475569;
+      /* Pizarra Sapiencial */
       --bg-sap-light: #f8fafc;
       --border-sap: #e2e8f0;
 
@@ -86,7 +96,8 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    html, body {
+    html,
+    body {
       font-family: var(--font-sans);
       background-color: var(--bg-app);
       color: var(--text-main);
@@ -164,7 +175,8 @@
       white-space: nowrap;
     }
 
-    .btn-toggle-filters:hover, .btn-toggle-filters.active {
+    .btn-toggle-filters:hover,
+    .btn-toggle-filters.active {
       background: rgba(255, 255, 255, 0.25);
       border-color: #ffffff;
     }
@@ -344,7 +356,7 @@
       max-height: 500px;
       overflow: hidden;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
     }
 
     .advanced-panel.collapsed {
@@ -632,12 +644,41 @@
       font-weight: 800;
     }
 
-    .count-pill.cat-hist { background: var(--bg-hist-light); color: var(--color-hist); border-color: var(--border-hist); }
-    .count-pill.cat-prof { background: var(--bg-prof-light); color: var(--color-prof); border-color: var(--border-prof); }
-    .count-pill.cat-nt { background: var(--bg-nt-light); color: var(--color-nt); border-color: var(--border-nt); }
-    .count-pill.cat-ev { background: var(--bg-ev-light); color: var(--color-ev); border-color: var(--border-ev); }
-    .count-pill.cat-sal { background: var(--bg-sal-light); color: var(--color-sal); border-color: var(--border-sal); }
-    .count-pill.cat-sap { background: var(--bg-sap-light); color: var(--color-sap); border-color: var(--border-sap); }
+    .count-pill.cat-hist {
+      background: var(--bg-hist-light);
+      color: var(--color-hist);
+      border-color: var(--border-hist);
+    }
+
+    .count-pill.cat-prof {
+      background: var(--bg-prof-light);
+      color: var(--color-prof);
+      border-color: var(--border-prof);
+    }
+
+    .count-pill.cat-nt {
+      background: var(--bg-nt-light);
+      color: var(--color-nt);
+      border-color: var(--border-nt);
+    }
+
+    .count-pill.cat-ev {
+      background: var(--bg-ev-light);
+      color: var(--color-ev);
+      border-color: var(--border-ev);
+    }
+
+    .count-pill.cat-sal {
+      background: var(--bg-sal-light);
+      color: var(--color-sal);
+      border-color: var(--border-sal);
+    }
+
+    .count-pill.cat-sap {
+      background: var(--bg-sap-light);
+      color: var(--color-sap);
+      border-color: var(--border-sap);
+    }
 
     .count-pill.zero {
       opacity: 0.45;
@@ -669,8 +710,15 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-4px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .card-actions-bar {
@@ -830,12 +878,41 @@
       border-bottom: 1px solid var(--border-color);
     }
 
-    .category-box.cat-hist .category-header { background: var(--bg-hist-light); color: var(--color-hist); border-bottom-color: var(--border-hist); }
-    .category-box.cat-prof .category-header { background: var(--bg-prof-light); color: var(--color-prof); border-bottom-color: var(--border-prof); }
-    .category-box.cat-nt .category-header { background: var(--bg-nt-light); color: var(--color-nt); border-bottom-color: var(--border-nt); }
-    .category-box.cat-ev .category-header { background: var(--bg-ev-light); color: var(--color-ev); border-bottom-color: var(--border-ev); }
-    .category-box.cat-sal .category-header { background: var(--bg-sal-light); color: var(--color-sal); border-bottom-color: var(--border-sal); }
-    .category-box.cat-sap .category-header { background: var(--bg-sap-light); color: var(--color-sap); border-bottom-color: var(--border-sap); }
+    .category-box.cat-hist .category-header {
+      background: var(--bg-hist-light);
+      color: var(--color-hist);
+      border-bottom-color: var(--border-hist);
+    }
+
+    .category-box.cat-prof .category-header {
+      background: var(--bg-prof-light);
+      color: var(--color-prof);
+      border-bottom-color: var(--border-prof);
+    }
+
+    .category-box.cat-nt .category-header {
+      background: var(--bg-nt-light);
+      color: var(--color-nt);
+      border-bottom-color: var(--border-nt);
+    }
+
+    .category-box.cat-ev .category-header {
+      background: var(--bg-ev-light);
+      color: var(--color-ev);
+      border-bottom-color: var(--border-ev);
+    }
+
+    .category-box.cat-sal .category-header {
+      background: var(--bg-sal-light);
+      color: var(--color-sal);
+      border-bottom-color: var(--border-sal);
+    }
+
+    .category-box.cat-sap .category-header {
+      background: var(--bg-sap-light);
+      color: var(--color-sap);
+      border-bottom-color: var(--border-sap);
+    }
 
     .cat-badge {
       background: rgba(0, 0, 0, 0.08);
@@ -1029,6 +1106,7 @@
         background: #fde047;
         box-shadow: 0 0 0 6px rgba(234, 179, 8, 0.45);
       }
+
       100% {
         background: #fef08a;
         box-shadow: 0 0 0 0 rgba(234, 179, 8, 0);
@@ -1113,7 +1191,8 @@
       transition: all 0.15s;
     }
 
-    .chip-num:hover, .chip-num.active {
+    .chip-num:hover,
+    .chip-num.active {
       background: var(--primary);
       color: #ffffff;
       border-color: var(--primary);
@@ -1360,10 +1439,21 @@
       gap: 4px;
     }
 
-    .guia-part-box.hist { border-left: 4px solid var(--color-hist); }
-    .guia-part-box.prof { border-left: 4px solid var(--color-prof); }
-    .guia-part-box.nt { border-left: 4px solid var(--color-nt); }
-    .guia-part-box.ev { border-left: 4px solid var(--color-ev); }
+    .guia-part-box.hist {
+      border-left: 4px solid var(--color-hist);
+    }
+
+    .guia-part-box.prof {
+      border-left: 4px solid var(--color-prof);
+    }
+
+    .guia-part-box.nt {
+      border-left: 4px solid var(--color-nt);
+    }
+
+    .guia-part-box.ev {
+      border-left: 4px solid var(--color-ev);
+    }
 
     .guia-part-name {
       font-weight: 700;
@@ -1633,6 +1723,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- 1. HEADER LITÚRGICO -->
@@ -1643,12 +1734,15 @@
         <span class="header-subtitle">Vocabulario de Teología Bíblica — Xavier Léon-Dufour</span>
       </div>
       <div style="display:flex; gap:6px;">
-        <button id="btnAbrirGuia" class="btn-toggle-filters" title="Guía y Criterios: Consulta los 4 grupos litúrgicos del Camino, nomenclatura bíblica (s, ss, p, puntuación) y cómo usar la aplicación">
+        <button id="btnAbrirGuia" class="btn-toggle-filters"
+          title="Guía y Criterios: Consulta los 4 grupos litúrgicos del Camino, nomenclatura bíblica (s, ss, p, puntuación) y cómo usar la aplicación">
           <span>📖 Guía</span>
         </button>
-        <button id="btnToggleFiltros" class="btn-toggle-filters" title="Toca para desplegar u ocultar los filtros avanzados y la gestión de exclusiones">
+        <button id="btnToggleFiltros" class="btn-toggle-filters"
+          title="Toca para desplegar u ocultar los filtros avanzados y la gestión de exclusiones">
           <span>⚙️ Filtros</span>
-          <span id="badgeExcluidas" class="badge-count" style="display:none;" title="Cantidad de palabras excluidas">0</span>
+          <span id="badgeExcluidas" class="badge-count" style="display:none;"
+            title="Cantidad de palabras excluidas">0</span>
         </button>
       </div>
     </div>
@@ -1659,22 +1753,32 @@
     <div class="search-container">
       <div class="search-input-wrapper">
         <span class="search-icon">🔍</span>
-        <input type="search" id="inputBusqueda" class="input-search" placeholder="Buscar palabra (ej. Abraham, Alianza, Fe...)" title="Escribe aquí cualquier término para filtrar instantáneamente el vocabulario">
+        <input type="search" id="inputBusqueda" class="input-search"
+          placeholder="Buscar palabra (ej. Abraham, Alianza, Fe...)"
+          title="Escribe aquí cualquier término para filtrar instantáneamente el vocabulario">
       </div>
 
       <!-- Selector de Modo / Alcance de Palabras (Precatecumenado por defecto) -->
       <div class="filter-mode-pills">
-        <button id="btnModoPrecat" class="btn-mode-pill active" title="Filtro Precatecumenado (Activado por defecto): Muestra las 148 palabras oficiales del documento de preparación del Precatecumenado con su orden y numeración original">
+        <button id="btnModoPrecat" class="btn-mode-pill active"
+          title="Filtro Precatecumenado (Activado por defecto): Muestra las 148 palabras oficiales del documento de preparación del Precatecumenado con su orden y numeración original">
           <span>🌱 Precatecumenado (148 Palabras)</span>
         </button>
-        <button id="btnModoTodas" class="btn-mode-pill" title="Vocabulario Completo: Muestra todas las 289 palabras del Vocabulario de Teología Bíblica de Xavier Léon-Dufour">
+        <button id="btnModoTodas" class="btn-mode-pill"
+          title="Vocabulario Completo: Muestra todas las 289 palabras del Vocabulario de Teología Bíblica de Xavier Léon-Dufour">
           <span>📚 Todas las Palabras (289)</span>
         </button>
       </div>
 
       <div class="quick-toggles-row">
         <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-          <label class="toggle-label" title="Incluye en las tarjetas las citas complementarias de Salmos y Libros Sapienciales (ideales para cantos y salmo responsorial)">
+          <label class="toggle-label"
+            title="Filtra la 1ª Lectura para mostrar exclusivamente libros del Pentateuco (Torá / Ley: Génesis, Éxodo, Levítico, Números, Deuteronomio) y ocultar las citas de los demás libros históricos (Josué a Macabeos)">
+            <input type="checkbox" id="checkPentateuco" checked>
+            <span>📜 Solo Pentateuco (Torá)</span>
+          </label>
+          <label class="toggle-label"
+            title="Incluye en las tarjetas las citas complementarias de Salmos y Libros Sapienciales (ideales para cantos y salmo responsorial)">
             <input type="checkbox" id="checkExtras">
             <span>Salmos / Sap.</span>
           </label>
@@ -1683,10 +1787,14 @@
         <div class="sort-wrapper">
           <label for="selectOrden" class="sort-label">Ordenar:</label>
           <select id="selectOrden" class="select-custom" title="Selecciona el criterio de ordenación de las palabras">
-            <option value="precat" id="optOrdenPrecat" title="Ordenar por la numeración oficial del documento del Precatecumenado (#1 a #148)">#️⃣ Orden Precatecumenado (1-148)</option>
+            <option value="precat" id="optOrdenPrecat"
+              title="Ordenar por la numeración oficial del documento del Precatecumenado (#1 a #148)">#️⃣ Orden
+              Precatecumenado (1-148)</option>
             <option value="alpha" title="Ordenar de la A a la Z">Alfabético (A-Z)</option>
-            <option value="desc" title="Mostrar primero las palabras con mayor cantidad de citas">Mayor Cantidad de Citas</option>
-            <option value="asc" title="Mostrar primero las palabras con menor cantidad de citas">Menor Cantidad de Citas</option>
+            <option value="desc" title="Mostrar primero las palabras con mayor cantidad de citas">Mayor Cantidad de
+              Citas</option>
+            <option value="asc" title="Mostrar primero las palabras con menor cantidad de citas">Menor Cantidad de Citas
+            </option>
             <option value="hist" title="Ordenar por cantidad de citas en Históricos">Más en Históricos</option>
             <option value="prof" title="Ordenar por cantidad de citas en Proféticos">Más en Proféticos</option>
             <option value="nt" title="Ordenar por cantidad de citas en Cartas / NT">Más en Cartas / NT</option>
@@ -1703,11 +1811,14 @@
       <div>
         <h3 class="panel-section-title">Palabras Excluidas (Ya preparadas en la comunidad)</h3>
         <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:8px;">
-          Añade palabras que ya hayan sido celebradas recientemente para que no aparezcan en la lista. Se guardan en tu dispositivo.
+          Añade palabras que ya hayan sido celebradas recientemente para que no aparezcan en la lista. Se guardan en tu
+          dispositivo.
         </p>
         <div class="exclusion-form">
-          <input type="text" id="inputExcluir" class="input-text" placeholder="Ej: Bautismo, Cruz (separar por coma)" title="Escribe una o varias palabras para excluirlas">
-          <button id="btnAgregarExclusion" class="btn-submit" title="Pulsa para añadir a la lista de exclusiones">Añadir Exclusión</button>
+          <input type="text" id="inputExcluir" class="input-text" placeholder="Ej: Bautismo, Cruz (separar por coma)"
+            title="Escribe una o varias palabras para excluirlas">
+          <button id="btnAgregarExclusion" class="btn-submit" title="Pulsa para añadir a la lista de exclusiones">Añadir
+            Exclusión</button>
         </div>
       </div>
 
@@ -1734,12 +1845,14 @@
           <h2 id="modalTitulo" class="modal-title">Cita Bíblica</h2>
           <span id="modalSubtitulo" class="modal-subtitle">Libro y capítulo</span>
         </div>
-        <button id="btnCerrarModal" class="btn-close-modal" aria-label="Cerrar modal" title="Cerrar ventana de lectura">&times;</button>
+        <button id="btnCerrarModal" class="btn-close-modal" aria-label="Cerrar modal"
+          title="Cerrar ventana de lectura">&times;</button>
       </div>
       <div id="modalTextoCuerpo" class="modal-body"></div>
       <div class="modal-footer">
         <span style="font-size:0.75rem; color:var(--text-muted);">Texto Bíblico (Capítulo completo)</span>
-        <button id="btnCopiarModal" class="btn-action" title="Copia el texto bíblico al portapapeles para notas o WhatsApp">📋 Copiar Lectura</button>
+        <button id="btnCopiarModal" class="btn-action"
+          title="Copia el texto bíblico al portapapeles para notas o WhatsApp">📋 Copiar Lectura</button>
       </div>
     </div>
   </div>
@@ -1752,7 +1865,8 @@
           <h2 id="calcModalTitulo" class="modal-title">👥 Calculadora de Preparación</h2>
           <span id="calcModalSubtitulo" class="modal-subtitle">Distribución lineal optimizada en orden bíblico</span>
         </div>
-        <button id="btnCerrarCalcModal" class="btn-close-modal" aria-label="Cerrar modal" title="Cerrar calculadora">&times;</button>
+        <button id="btnCerrarCalcModal" class="btn-close-modal" aria-label="Cerrar modal"
+          title="Cerrar calculadora">&times;</button>
       </div>
 
       <div class="modal-body">
@@ -1760,12 +1874,13 @@
         <div class="calc-controls-box">
           <div class="calc-row-flex">
             <div style="display:flex; flex-direction:column; gap:4px;">
-              <span style="font-size:0.8rem; font-weight:700; color:var(--text-main);">Participantes en la preparación:</span>
+              <span style="font-size:0.8rem; font-weight:700; color:var(--text-main);">Participantes en la
+                preparación:</span>
               <div class="participant-counter-wrapper">
                 <button id="btnDecPart" class="btn-counter" title="Reducir un participante">-</button>
                 <span id="numPartDisplay" class="num-participants-display">4</span>
                 <button id="btnIncPart" class="btn-counter" title="Aumentar un participante">+</button>
-                
+
                 <div class="quick-chips-group" style="margin-left: 8px;">
                   <button class="chip-num" data-num="2" title="Repartir entre 2 hermanos">2</button>
                   <button class="chip-num" data-num="3" title="Repartir entre 3 hermanos">3</button>
@@ -1777,9 +1892,15 @@
             </div>
 
             <div style="display:flex; flex-direction:column; gap:4px; align-items:flex-start;">
-              <label class="toggle-label" title="Distribuye las perícopas consolidadas (contiguas unidas) o las citas sueltas">
+              <label class="toggle-label"
+                title="Distribuye las perícopas consolidadas (contiguas unidas) o las citas sueltas">
                 <input type="checkbox" id="calcCheckUnido" checked>
                 <span>Usar perícopas unidas</span>
+              </label>
+              <label class="toggle-label"
+                title="Filtra la 1ª Lectura para incluir exclusivamente citas del Pentateuco (Génesis a Deuteronomio)">
+                <input type="checkbox" id="calcCheckPentateuco">
+                <span>Solo Pentateuco (Torá)</span>
               </label>
               <label class="toggle-label" title="Incluir u omitir Salmos y Sapienciales en el reparto">
                 <input type="checkbox" id="calcCheckExtras">
@@ -1790,7 +1911,8 @@
 
           <div class="calc-summary-banner">
             <span>✨</span>
-            <span id="calcSummaryText">Distribución continua garantizada: cada hermano avanza hacia adelante en su Biblia sin retroceder.</span>
+            <span id="calcSummaryText">Distribución continua garantizada: cada hermano avanza hacia adelante en su
+              Biblia sin retroceder.</span>
           </div>
         </div>
 
@@ -1799,7 +1921,9 @@
       </div>
 
       <div class="modal-footer">
-        <button id="btnCopiarRepartoCompleto" class="btn-action btn-copiar" style="background:#059669; color:#fff; border-color:#059669;" title="Copia el reparto de todos los participantes listo para enviar al grupo de WhatsApp de la preparación">
+        <button id="btnCopiarRepartoCompleto" class="btn-action btn-copiar"
+          style="background:#059669; color:#fff; border-color:#059669;"
+          title="Copia el reparto de todos los participantes listo para enviar al grupo de WhatsApp de la preparación">
           📋 Copiar Reparto Completo
         </button>
         <button id="btnCerrarCalcModalBottom" class="btn-action" title="Cerrar la calculadora">Cerrar</button>
@@ -1818,13 +1942,15 @@
           </div>
           <span id="articuloModalSubtitulo" class="modal-subtitle">Vocabulario de Teología Bíblica</span>
         </div>
-        <button id="btnCerrarArticuloModal" class="btn-close-modal" aria-label="Cerrar modal" title="Cerrar artículo">&times;</button>
+        <button id="btnCerrarArticuloModal" class="btn-close-modal" aria-label="Cerrar modal"
+          title="Cerrar artículo">&times;</button>
       </div>
 
       <div class="modal-body modal-body-articulo" id="articuloModalCuerpo"></div>
 
       <div class="modal-footer">
-        <button id="btnCopiarArticulo" class="btn-action btn-copiar" title="Copiar texto íntegro del artículo para apuntes o estudio">
+        <button id="btnCopiarArticulo" class="btn-action btn-copiar"
+          title="Copiar texto íntegro del artículo para apuntes o estudio">
           📋 Copiar Artículo
         </button>
         <button id="btnCerrarArticuloModalBottom" class="btn-action" title="Cerrar artículo">Cerrar</button>
@@ -1840,7 +1966,8 @@
           <h2 class="modal-title">📖 Guía de Criterios Litúrgicos y Nomenclatura</h2>
           <span class="modal-subtitle">Camino Neocatecumenal y Vocabulario de Xavier Léon-Dufour</span>
         </div>
-        <button id="btnCerrarGuiaModal" class="btn-close-modal" aria-label="Cerrar guía" title="Cerrar guía">&times;</button>
+        <button id="btnCerrarGuiaModal" class="btn-close-modal" aria-label="Cerrar guía"
+          title="Cerrar guía">&times;</button>
       </div>
 
       <!-- Pestañas de Navegación de la Guía -->
@@ -1851,21 +1978,26 @@
       </div>
 
       <div class="modal-body" style="padding: 16px;">
-        
+
         <!-- PESTAÑA 1: Criterios Litúrgicos del Camino -->
         <div id="tab-liturgia" class="guia-tab-pane active">
           <div class="guia-card-section">
             <h3 class="guia-section-title">🕊️ Las 4 Partes de la Escritura en la Liturgia de la Palabra</h3>
             <p class="guia-text">
-              En el Camino Neocatecumenal, la Liturgia de la Palabra es una proclamación integral de la <strong>Historia de la Salvación</strong>. Toda celebración estructurada en torno a una palabra o tema teológico debe contener lecturas que representen las 4 partes fundamentales de la Biblia:
+              En el Camino Neocatecumenal, la Liturgia de la Palabra es una proclamación integral de la <strong>Historia
+                de la Salvación</strong>. Toda celebración estructurada en torno a una palabra o tema teológico debe
+              contener lecturas que representen las 4 partes fundamentales de la Biblia:
             </p>
 
             <div class="guia-parts-grid">
               <div class="guia-part-box hist">
                 <div class="guia-part-name" style="color:var(--color-hist);">1. Históricos / Torá (Ley)</div>
                 <div class="guia-part-desc">
-                  <strong>Libros:</strong> Pentateuco (Génesis a Deuteronomio) y Libros Históricos (Josué a 2 Macabeos).<br>
-                  <strong>Sentido:</strong> Revela la acción concreta y las maravillas que Dios ha realizado en la historia de los Patriarcas y del Pueblo de Israel.
+                  <strong>Libros:</strong> Pentateuco (Génesis a Deuteronomio) y Libros Históricos (Josué a 2
+                  Macabeos).<br>
+                  <strong>Sentido:</strong> Revela la acción concreta y las maravillas que Dios ha realizado en la
+                  historia de los Patriarcas y del Pueblo de Israel.<br>
+                  <small style="color:var(--color-hist); font-weight:600;">💡 Usa el filtro "📜 Solo Pentateuco" para ceñir la 1ª lectura a la Torá y ocultar los demás históricos.</small>
                 </div>
               </div>
 
@@ -1873,15 +2005,18 @@
                 <div class="guia-part-name" style="color:var(--color-prof);">2. Proféticos</div>
                 <div class="guia-part-desc">
                   <strong>Libros:</strong> Isaías, Jeremías, Ezequiel, Daniel y los 12 Profetas Menores.<br>
-                  <strong>Sentido:</strong> La Palabra viva que juzga el pecado, llama a la conversión, consuela al pueblo en el destierro y anuncia la promesa del Mesías.
+                  <strong>Sentido:</strong> La Palabra viva que juzga el pecado, llama a la conversión, consuela al
+                  pueblo en el destierro y anuncia la promesa del Mesías.
                 </div>
               </div>
 
               <div class="guia-part-box nt">
                 <div class="guia-part-name" style="color:var(--color-nt);">3. Cartas / Nuevo Testamento</div>
                 <div class="guia-part-desc">
-                  <strong>Libros:</strong> Hechos de los Apóstoles, Epístolas Paulinas, Cartas Católicas y Apocalipsis.<br>
-                  <strong>Sentido:</strong> La vida de la Iglesia apostólica, el misterio de la Gracia, la fe en la Resurrección, la comunión fraterna y la escatología.
+                  <strong>Libros:</strong> Hechos de los Apóstoles, Epístolas Paulinas, Cartas Católicas y
+                  Apocalipsis.<br>
+                  <strong>Sentido:</strong> La vida de la Iglesia apostólica, el misterio de la Gracia, la fe en la
+                  Resurrección, la comunión fraterna y la escatología.
                 </div>
               </div>
 
@@ -1889,7 +2024,8 @@
                 <div class="guia-part-name" style="color:var(--color-ev);">4. Evangelio (Culminación)</div>
                 <div class="guia-part-desc">
                   <strong>Libros:</strong> Mateo, Marcos, Lucas y Juan.<br>
-                  <strong>Sentido:</strong> La plenitud y cumplimiento de todas las Escrituras y promesas en la Persona, Pasión, Muerte y Resurrección de Jesucristo.
+                  <strong>Sentido:</strong> La plenitud y cumplimiento de todas las Escrituras y promesas en la Persona,
+                  Pasión, Muerte y Resurrección de Jesucristo.
                 </div>
               </div>
             </div>
@@ -1897,7 +2033,9 @@
 
           <div class="callout-liturgico">
             <strong>💡 Clave para la Preparación:</strong>
-            El equipo de preparación busca que las lecturas elegidas mantengan un <em>hilo conductor común</em> en torno a la palabra teológica. Entre las lecturas se intercala el canto de los <strong>Salmos</strong> correspondientes.
+            El equipo de preparación busca que las lecturas elegidas mantengan un <em>hilo conductor común</em> en torno
+            a la palabra teológica. Entre las lecturas se intercala el canto de los <strong>Salmos</strong>
+            correspondientes.
           </div>
         </div>
 
@@ -1906,7 +2044,8 @@
           <div class="guia-card-section">
             <h3 class="guia-section-title">✍️ Sistema de Puntuación y Símbolos en las Citas Bíblicas</h3>
             <p class="guia-text">
-              El <em>Vocabulario de Teología Bíblica de Xavier Léon-Dufour</em> y la <em>Biblia de Jerusalén</em> emplean una nomenclatura precisa para indicar capítulos, versículos, continuidades y paralelos:
+              El <em>Vocabulario de Teología Bíblica de Xavier Léon-Dufour</em> y la <em>Biblia de Jerusalén</em>
+              emplean una nomenclatura precisa para indicar capítulos, versículos, continuidades y paralelos:
             </p>
 
             <div class="nomenclatura-table-wrapper">
@@ -1960,7 +2099,8 @@
                     <td><span class="symbol-chip">.</span> (punto)</td>
                     <td><strong>Separa versículos no contiguos</strong></td>
                     <td><span class="example-chip">Gen 4,1.25</span></td>
-                    <td>Se leen exclusivamente el <strong>versículo 1 y el versículo 25</strong> (salteando los versículos intermedios).</td>
+                    <td>Se leen exclusivamente el <strong>versículo 1 y el versículo 25</strong> (salteando los
+                      versículos intermedios).</td>
                   </tr>
                   <tr>
                     <td><span class="symbol-chip">;</span> (punto y coma)</td>
@@ -1972,7 +2112,9 @@
                     <td><span class="symbol-chip">a, b, c</span></td>
                     <td><strong>Frases o cláusulas de un versículo</strong></td>
                     <td><span class="example-chip">Sal 1,1c</span></td>
-                    <td>En versículos largos o poesía con varias frases: <strong>a</strong> = 1ª frase, <strong>b</strong> = 2ª frase, <strong>c</strong> = 3ª frase. (Ej. <em>Sal 1,1c</em> es la 3ª frase: <em>«ni en el banco de los burlones se sienta»</em>).</td>
+                    <td>En versículos largos o poesía con varias frases: <strong>a</strong> = 1ª frase,
+                      <strong>b</strong> = 2ª frase, <strong>c</strong> = 3ª frase. (Ej. <em>Sal 1,1c</em> es la 3ª
+                      frase: <em>«ni en el banco de los burlones se sienta»</em>).</td>
                   </tr>
                 </tbody>
               </table>
@@ -1984,28 +2126,44 @@
         <div id="tab-herramientas" class="guia-tab-pane">
           <div class="guia-card-section">
             <h3 class="guia-section-title">🛠️ Funcionalidades Especiales de la Aplicación</h3>
-            
+
             <div style="display:flex; flex-direction:column; gap:12px; margin-top:4px;">
+              <div>
+                <strong>📜 Filtro Solo Pentateuco (Torá / Ley):</strong>
+                <p class="guia-text">
+                  Permite filtrar la 1ª Lectura para mostrar <strong>exclusivamente los 5 libros de la Torá</strong> (Génesis, Éxodo, Levítico, Números, Deuteronomio) y ocultar automáticamente las citas de los demás libros históricos (Josué a Macabeos). Al activarlo, el conteo y la verificación de las 4 partes se ajustan en tiempo real para asegurar que la celebración cuente con una lectura de la Ley.
+                </p>
+              </div>
+
               <div>
                 <strong>🔗 Perícopas Unidas vs. Citas Sueltas:</strong>
                 <p class="guia-text">
-                  Por defecto, la aplicación aplica una <em>unión matemática de intervalos</em> en citas contiguas dentro del mismo capítulo (ej. si Léon-Dufour lista <code>Gen 12,1-4</code> y <code>Gen 12,5-9</code>, se unen en <code>Gen 12,1-9</code>). Esto evita lecturas fragmentadas y deja perícopas completas listas para proclamar en la liturgia.
+                  Por defecto, la aplicación aplica una <em>unión matemática de intervalos</em> en citas contiguas
+                  dentro del mismo capítulo (ej. si Léon-Dufour lista <code>Gen 12,1-4</code> y <code>Gen 12,5-9</code>,
+                  se unen en <code>Gen 12,1-9</code>). Esto evita lecturas fragmentadas y deja perícopas completas
+                  listas para proclamar en la liturgia.
                 </p>
               </div>
 
               <div>
                 <strong>👥 Calculadora de Participantes y Balance en Caracteres:</strong>
                 <p class="guia-text">
-                  Permite distribuir las lecturas entre los hermanos que preparan (ej. 2, 3, 4, 5, 6 hermanos). Para garantizar un reparto 100% transparente y equitativo:
-                  <br>• <strong>Búsqueda lineal sin saltos:</strong> Las citas se ordenan de $Génesis \rightarrow Apocalipsis$, de modo que cada hermano avanza siempre hacia adelante en su Biblia.
-                  <br>• <strong>Conteo de caracteres real:</strong> Se calcula la extensión de texto de cada pasaje en la Biblia de Jerusalén. Por eso un hermano con pasajes cortos puede recibir más lecturas (ej. 16) y otro con capítulos extensos menos (ej. 6), manteniendo ambos una carga de lectura similar (~3.200 caracteres).
+                  Permite distribuir las lecturas entre los hermanos que preparan (ej. 2, 3, 4, 5, 6 hermanos). Para
+                  garantizar un reparto 100% transparente y equitativo:
+                  <br>• <strong>Búsqueda lineal sin saltos:</strong> Las citas se ordenan de $Génesis \rightarrow
+                  Apocalipsis$, de modo que cada hermano avanza siempre hacia adelante en su Biblia.
+                  <br>• <strong>Conteo de caracteres real:</strong> Se calcula la extensión de texto de cada pasaje en
+                  la Biblia de Jerusalén. Por eso un hermano con pasajes cortos puede recibir más lecturas (ej. 16) y
+                  otro con capítulos extensos menos (ej. 6), manteniendo ambos una carga de lectura similar (~3.200
+                  caracteres).
                 </p>
               </div>
 
               <div>
                 <strong>🚫 Gestor de Palabras Excluidas:</strong>
                 <p class="guia-text">
-                  Permite ocultar las palabras que ya han sido preparadas en tu comunidad durante el curso. Se guardan localmente en tu teléfono o navegador para no repetir temas.
+                  Permite ocultar las palabras que ya han sido preparadas en tu comunidad durante el curso. Se guardan
+                  localmente en tu teléfono o navegador para no repetir temas.
                 </p>
               </div>
             </div>
@@ -2015,7 +2173,8 @@
       </div>
 
       <div class="modal-footer">
-        <span style="font-size:0.75rem; color:var(--text-muted);">Vocabulario de Teología Bíblica — Xavier Léon-Dufour</span>
+        <span style="font-size:0.75rem; color:var(--text-muted);">Vocabulario de Teología Bíblica — Xavier
+          Léon-Dufour</span>
         <button id="btnCerrarGuiaModalBottom" class="btn-action" title="Cerrar la guía">Entendido</button>
       </div>
     </div>
@@ -2027,4 +2186,5 @@
   <!-- Scripts -->
   <script src="js/app.js"></script>
 </body>
+
 </html>

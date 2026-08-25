@@ -40,6 +40,13 @@ const NOMBRES_LIBROS = {
     "1JN": "1 Juan", "2JN": "2 Juan", "3JN": "3 Juan", JUDAS: "Judas", AP: "Apocalipsis"
 };
 
+// --- LIBROS DEL PENTATEUCO (Torá / Ley: 5 libros) ---
+const LIBROS_PENTATEUCO = new Set(["GEN", "EX", "LEV", "NUM", "DT"]);
+const esPentateuco = (l) => {
+    if (!l) return false;
+    return LIBROS_PENTATEUCO.has(l.toUpperCase().trim());
+};
+
 // --- VARIABLES GLOBALES DE ESTADO ---
 let dataGlobalRef = null;
 let listaGlobal = [];
@@ -65,6 +72,7 @@ const inputBusqueda = document.getElementById("inputBusqueda");
 const selectOrden = document.getElementById("selectOrden");
 const btnModoPrecat = document.getElementById("btnModoPrecat");
 const btnModoTodas = document.getElementById("btnModoTodas");
+const checkPentateuco = document.getElementById("checkPentateuco");
 const checkExtras = document.getElementById("checkExtras");
 const inputExcluir = document.getElementById("inputExcluir");
 const btnAgregarExclusion = document.getElementById("btnAgregarExclusion");
@@ -93,6 +101,7 @@ const btnIncPart = document.getElementById("btnIncPart");
 const numPartDisplay = document.getElementById("numPartDisplay");
 const chipNums = document.querySelectorAll(".chip-num");
 const calcCheckUnido = document.getElementById("calcCheckUnido");
+const calcCheckPentateuco = document.getElementById("calcCheckPentateuco");
 const calcCheckExtras = document.getElementById("calcCheckExtras");
 const calcSummaryText = document.getElementById("calcSummaryText");
 const contenedorHermanos = document.getElementById("contenedorHermanos");
@@ -423,6 +432,7 @@ fetch("palabras.json")
             const entry = rawVocab[item.vocabKey] || { palabra: item.nombre, lecturas: {} };
             const l = entry.lecturas || {};
             const hist = l.Historicos || [];
+            const pent = hist.filter(c => esPentateuco(c.libro));
             const prof = l.Profeticos || [];
             const nt = l["Nuevo Testamento"] || [];
             const ev = l.Evangelio || [];
@@ -452,6 +462,7 @@ fetch("palabras.json")
                 total: totalBase,
                 totalConExtras: totalBase + sal.length + sap.length,
                 hist: hist.length,
+                pent: pent.length,
                 prof: prof.length,
                 nt: nt.length,
                 ev: ev.length,
@@ -470,6 +481,7 @@ fetch("palabras.json")
             const l = p.lecturas || {};
             
             const hist = l.Historicos || [];
+            const pent = hist.filter(c => esPentateuco(c.libro));
             const prof = l.Profeticos || [];
             const nt = l["Nuevo Testamento"] || [];
             const ev = l.Evangelio || [];
@@ -496,6 +508,7 @@ fetch("palabras.json")
                 total: totalBase,
                 totalConExtras: totalBase + sal.length + sap.length,
                 hist: hist.length,
+                pent: pent.length,
                 prof: prof.length,
                 nt: nt.length,
                 ev: ev.length,
@@ -522,6 +535,7 @@ fetch("palabras.json")
 // --- RENDERIZADO DE LA INTERFAZ (MOBILE FIRST & RESPONSIVE) ---
 
 function actualizarVista() {
+    const soloPentateuco = checkPentateuco ? checkPentateuco.checked : false;
     const mostrarExtras = checkExtras.checked;
     const orden = selectOrden.value;
     const busqueda = normalizar(inputBusqueda.value);
@@ -534,6 +548,12 @@ function actualizarVista() {
         return true;
     });
 
+    // Actualizar dinámicamente texto de opción de ordenamiento en Históricos / Pentateuco
+    const optHist = selectOrden ? selectOrden.querySelector('option[value="hist"]') : null;
+    if (optHist) {
+        optHist.textContent = soloPentateuco ? "Más en Pentateuco" : "Más en Históricos";
+    }
+
     lista.sort((a, b) => {
         if (orden === 'precat') {
             if (a.numPrecat && b.numPrecat) return a.numPrecat - b.numPrecat;
@@ -542,25 +562,39 @@ function actualizarVista() {
             return a.id - b.id;
         }
         if (orden === 'alpha') return a.palabra.localeCompare(b.palabra, 'es');
-        if (orden === 'asc') return a.total - b.total;
-        if (orden === 'desc') return b.total - a.total;
-        if (orden === 'hist') return b.hist - a.hist;
+        if (orden === 'asc') {
+            const totA = soloPentateuco ? (a.pent + a.prof + a.nt + a.ev) : a.total;
+            const totB = soloPentateuco ? (b.pent + b.prof + b.nt + b.ev) : b.total;
+            return totA - totB;
+        }
+        if (orden === 'desc') {
+            const totA = soloPentateuco ? (a.pent + a.prof + a.nt + a.ev) : a.total;
+            const totB = soloPentateuco ? (b.pent + b.prof + b.nt + b.ev) : b.total;
+            return totB - totA;
+        }
+        if (orden === 'hist') {
+            const countA = soloPentateuco ? a.pent : a.hist;
+            const countB = soloPentateuco ? b.pent : b.hist;
+            return countB - countA;
+        }
         if (orden === 'prof') return b.prof - a.prof;
         if (orden === 'nt') return b.nt - a.nt;
         if (orden === 'ev') return b.ev - a.ev;
         return 0;
     });
 
+    const badgePentInfo = soloPentateuco ? ` · <span style="color:#059669; font-weight:700;">📜 Solo Pentateuco</span>` : ``;
+
     if (modoFiltro === "precat") {
-        infoStats.innerHTML = `🌱 <strong>Precatecumenado:</strong> Viendo <strong>${lista.length}</strong> de 148 palabras oficiales del documento`;
+        infoStats.innerHTML = `🌱 <strong>Precatecumenado:</strong> Viendo <strong>${lista.length}</strong> de 148 palabras oficiales del documento${badgePentInfo}`;
     } else {
-        infoStats.innerHTML = `📚 <strong>Vocabulario Completo:</strong> Viendo <strong>${lista.length}</strong> de ${listaTodas.length} palabras de Xavier Léon-Dufour`;
+        infoStats.innerHTML = `📚 <strong>Vocabulario Completo:</strong> Viendo <strong>${lista.length}</strong> de ${listaTodas.length} palabras de Xavier Léon-Dufour${badgePentInfo}`;
     }
 
-    dibujarLista(lista, mostrarExtras);
+    dibujarLista(lista, mostrarExtras, soloPentateuco);
 }
 
-function dibujarLista(lista, mostrarExtras) {
+function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
     contenedorLista.innerHTML = "";
 
     if (lista.length === 0) {
@@ -575,10 +609,6 @@ function dibujarLista(lista, mostrarExtras) {
     }
 
     lista.forEach(item => {
-        const card = document.createElement("article");
-        card.className = `word-card ${item.cumple4Partes ? 'card-cumple' : 'card-incompleta'}`;
-        card.id = `card-${item.id}`;
-
         const procesar = (citas) => {
             let res = citas ? [...citas] : [];
             if (item.estaUnido) res = unirSegmentosContiguos(res);
@@ -586,8 +616,11 @@ function dibujarLista(lista, mostrarExtras) {
             return res;
         };
 
+        const citasHistBase = item.lecturas.Historicos || [];
+        const citasHistFiltradas = soloPentateuco ? citasHistBase.filter(c => esPentateuco(c.libro)) : citasHistBase;
+
         const lecturasActuales = {
-            Hist: procesar(item.lecturas.Historicos),
+            Hist: procesar(citasHistFiltradas),
             Prof: procesar(item.lecturas.Profeticos),
             NT: procesar(item.lecturas["Nuevo Testamento"]),
             Ev: procesar(item.lecturas.Evangelio),
@@ -595,8 +628,14 @@ function dibujarLista(lista, mostrarExtras) {
             Sap: procesar(item.lecturas.Sapienciales)
         };
 
+        const totalOriginalBase = (soloPentateuco ? item.pent : item.hist) + item.prof + item.nt + item.ev;
         const totalUnido = lecturasActuales.Hist.length + lecturasActuales.Prof.length + lecturasActuales.NT.length + lecturasActuales.Ev.length;
-        const diffTotal = totalUnido - item.total;
+        const diffTotal = totalUnido - totalOriginalBase;
+        const cumple4PartesActual = (lecturasActuales.Hist.length > 0 && item.prof > 0 && item.nt > 0 && item.ev > 0);
+
+        const card = document.createElement("article");
+        card.className = `word-card ${cumple4PartesActual ? 'card-cumple' : 'card-incompleta'}`;
+        card.id = `card-${item.id}`;
 
         // --- ENCABEZADO DE LA TARJETA ---
         const header = document.createElement("div");
@@ -618,13 +657,13 @@ function dibujarLista(lista, mostrarExtras) {
         `;
 
         const badgeCriterio = document.createElement("div");
-        if (item.cumple4Partes) {
+        if (cumple4PartesActual) {
             badgeCriterio.className = "badge-criterio badge-precat";
-            badgeCriterio.setAttribute("title", "Palabra de Precatecumenado: Apta para preparación litúrgica completa (posee citas en Históricos, Proféticos, Cartas/NT y Evangelios).");
+            badgeCriterio.setAttribute("title", `Palabra de Precatecumenado: Apta para preparación litúrgica completa (posee citas en ${soloPentateuco ? 'Pentateuco (Torá)' : 'Históricos'}, Proféticos, Cartas/NT y Evangelios).`);
             badgeCriterio.innerHTML = `🌱 Precatecumenado`;
         } else {
             const faltantes = [];
-            if (item.hist === 0) faltantes.push("Hist");
+            if (lecturasActuales.Hist.length === 0) faltantes.push(soloPentateuco ? "Pentateuco" : "Hist");
             if (item.prof === 0) faltantes.push("Prof");
             if (item.nt === 0) faltantes.push("NT");
             if (item.ev === 0) faltantes.push("Ev");
@@ -669,13 +708,19 @@ function dibujarLista(lista, mostrarExtras) {
         const countsRow = document.createElement("div");
         countsRow.className = "word-counts-row";
         
-        const tooltipTotal = `Total actual: ${totalUnido} perícopas. ${diffTotal !== 0 ? `El (${diffTotal}) indica que se han consolidado ${Math.abs(diffTotal)} citas contiguas de las ${item.total} originales de Léon-Dufour.` : `Total de citas originales: ${item.total}`}`;
+        const histLabel = soloPentateuco ? "Pent" : "Hist";
+        const histCount = lecturasActuales.Hist.length;
+        const histTitle = soloPentateuco 
+            ? `Pentateuco / Torá: ${histCount} citas (Históricos posteriores ocultos)` 
+            : `Históricos / Torá: ${item.hist} citas`;
+
+        const tooltipTotal = `Total actual: ${totalUnido} perícopas. ${diffTotal !== 0 ? `El (${diffTotal}) indica que se han consolidado ${Math.abs(diffTotal)} citas contiguas de las ${totalOriginalBase} originales de Léon-Dufour.` : `Total de citas originales: ${totalOriginalBase}`}`;
 
         countsRow.innerHTML = `
             <span class="count-pill total-pill" title="${tooltipTotal}">
               ${totalUnido} ${diffTotal !== 0 ? `<small class="diff-tag">(${diffTotal})</small>` : ''} perícopas
             </span>
-            <span class="count-pill cat-hist ${item.hist === 0 ? 'zero' : ''}" title="Históricos / Torá: ${item.hist} citas">${item.hist} Hist</span>
+            <span class="count-pill cat-hist ${histCount === 0 ? 'zero' : ''}" title="${histTitle}">${histCount} ${histLabel}</span>
             <span class="count-pill cat-prof ${item.prof === 0 ? 'zero' : ''}" title="Proféticos: ${item.prof} citas">${item.prof} Prof</span>
             <span class="count-pill cat-nt ${item.nt === 0 ? 'zero' : ''}" title="Cartas / Nuevo Testamento: ${item.nt} citas">${item.nt} NT</span>
             <span class="count-pill cat-ev ${item.ev === 0 ? 'zero' : ''}" title="Evangelios: ${item.ev} citas">${item.ev} Ev</span>
@@ -727,7 +772,7 @@ function dibujarLista(lista, mostrarExtras) {
         btnUnir.onclick = (e) => {
             e.stopPropagation();
             item.estaUnido = !item.estaUnido;
-            dibujarLista(lista, mostrarExtras);
+            dibujarLista(lista, mostrarExtras, soloPentateuco);
         };
 
         // Botón Copiar Perícopas
@@ -737,7 +782,7 @@ function dibujarLista(lista, mostrarExtras) {
         btnCopiar.innerHTML = `📋 Copiar Esquema`;
         btnCopiar.onclick = (e) => {
             e.stopPropagation();
-            copiarEsquemaPalabra(item, lecturasActuales, mostrarExtras);
+            copiarEsquemaPalabra(item, lecturasActuales, mostrarExtras, soloPentateuco);
         };
 
         // Botón Excluir Palabra
@@ -762,7 +807,10 @@ function dibujarLista(lista, mostrarExtras) {
         categoriesContainer.className = "categories-grid";
 
         // Bloques de las 4 partes fundamentales
-        categoriesContainer.appendChild(crearBloqueCategoria("1. Históricos (Torá)", lecturasActuales.Hist, "cat-hist", "Lectura de la Torá / Libros Históricos del AT"));
+        const histBlockTitle = soloPentateuco ? "1. Pentateuco (Torá)" : "1. Históricos (Torá)";
+        const histBlockDesc = soloPentateuco ? "Lectura de la Torá / Ley de Moisés (Génesis a Deuteronomio)" : "Lectura de la Torá / Libros Históricos del AT";
+
+        categoriesContainer.appendChild(crearBloqueCategoria(histBlockTitle, lecturasActuales.Hist, "cat-hist", histBlockDesc));
         categoriesContainer.appendChild(crearBloqueCategoria("2. Proféticos", lecturasActuales.Prof, "cat-prof", "Lectura de los Profetas Mayores y Menores"));
         categoriesContainer.appendChild(crearBloqueCategoria("3. Cartas / NT", lecturasActuales.NT, "cat-nt", "Lectura de Hechos, Cartas Apostólicas y Apocalipsis"));
         categoriesContainer.appendChild(crearBloqueCategoria("4. Evangelio", lecturasActuales.Ev, "cat-ev", "Lectura del Santo Evangelio (Culminación)"));
@@ -841,7 +889,7 @@ function crearBloqueCategoria(titulo, citas, claseTema, descripcion) {
 }
 
 // --- COPIAR ESQUEMA AL PORTAPAPELES ---
-function copiarEsquemaPalabra(item, lecturas, mostrarExtras) {
+function copiarEsquemaPalabra(item, lecturas, mostrarExtras, soloPentateuco = false) {
     const formatearCitas = (lista) => {
         if (!lista || lista.length === 0) return "  (Ninguna)";
         return lista.map(c => `  • ${c.citaOriginal}`).join("\n");
@@ -851,7 +899,7 @@ function copiarEsquemaPalabra(item, lecturas, mostrarExtras) {
     texto += `Vocabulario de Teología Bíblica de Xavier Léon-Dufour\n`;
     texto += `--------------------------------------------------\n\n`;
     
-    texto += `1. HISTÓRICOS (Torá):\n${formatearCitas(lecturas.Hist)}\n\n`;
+    texto += `${soloPentateuco ? '1. PENTATEUCO (Torá)' : '1. HISTÓRICOS (Torá)'}:\n${formatearCitas(lecturas.Hist)}\n\n`;
     texto += `2. PROFÉTICOS:\n${formatearCitas(lecturas.Prof)}\n\n`;
     texto += `3. CARTAS / NUEVO TESTAMENTO:\n${formatearCitas(lecturas.NT)}\n\n`;
     texto += `4. EVANGELIO:\n${formatearCitas(lecturas.Ev)}\n\n`;
@@ -1014,6 +1062,9 @@ function calcularDistribucionLineal(citas, k) {
 function abrirCalculadora(item) {
     palabraCalculadoraActual = item;
     calcModalTitulo.textContent = `👥 Preparación: "${item.palabra.toUpperCase()}"`;
+    if (calcCheckPentateuco && checkPentateuco) {
+        calcCheckPentateuco.checked = checkPentateuco.checked;
+    }
     renderizarCalculadora();
     modalCalculadora.style.display = "flex";
     document.body.classList.add("modal-open");
@@ -1029,6 +1080,7 @@ function renderizarCalculadora() {
     const item = palabraCalculadoraActual;
     const usarUnidas = calcCheckUnido.checked;
     const incluirExtras = calcCheckExtras.checked;
+    const soloPentCalc = calcCheckPentateuco ? calcCheckPentateuco.checked : false;
 
     // Recolectar citas de la palabra según filtros de la calculadora
     let citasAConsolidar = [];
@@ -1037,7 +1089,10 @@ function renderizarCalculadora() {
         return usarUnidas ? unirSegmentosContiguos(arr) : arr;
     };
 
-    citasAConsolidar.push(...procesar(item.lecturas.Historicos));
+    const citasHistBase = item.lecturas.Historicos || [];
+    const citasHistFiltradas = soloPentCalc ? citasHistBase.filter(c => esPentateuco(c.libro)) : citasHistBase;
+
+    citasAConsolidar.push(...procesar(citasHistFiltradas));
     citasAConsolidar.push(...procesar(item.lecturas.Profeticos));
     citasAConsolidar.push(...procesar(item.lecturas["Nuevo Testamento"]));
     citasAConsolidar.push(...procesar(item.lecturas.Evangelio));
@@ -1146,11 +1201,15 @@ function copiarRepartoCompleto() {
     const item = palabraCalculadoraActual;
     const usarUnidas = calcCheckUnido.checked;
     const incluirExtras = calcCheckExtras.checked;
+    const soloPentCalc = calcCheckPentateuco ? calcCheckPentateuco.checked : false;
 
     let citasAConsolidar = [];
     const procesar = (arr) => (usarUnidas ? unirSegmentosContiguos(arr) : arr || []);
 
-    citasAConsolidar.push(...procesar(item.lecturas.Historicos));
+    const citasHistBase = item.lecturas.Historicos || [];
+    const citasHistFiltradas = soloPentCalc ? citasHistBase.filter(c => esPentateuco(c.libro)) : citasHistBase;
+
+    citasAConsolidar.push(...procesar(citasHistFiltradas));
     citasAConsolidar.push(...procesar(item.lecturas.Profeticos));
     citasAConsolidar.push(...procesar(item.lecturas["Nuevo Testamento"]));
     citasAConsolidar.push(...procesar(item.lecturas.Evangelio));
@@ -1166,7 +1225,7 @@ function copiarRepartoCompleto() {
 
     let msg = `📖 *REPARTO DE LECTURAS PARA LA PREPARACIÓN*\n`;
     msg += `Palabra: *"${item.palabra.toUpperCase()}"* (Léon-Dufour)\n`;
-    msg += `👥 ${numParticipantesActual} Participantes | ${citasFinales.length} lecturas (~${totalCharsGeneral.toLocaleString()} caracteres en total)\n`;
+    msg += `👥 ${numParticipantesActual} Participantes | ${citasFinales.length} lecturas (~${totalCharsGeneral.toLocaleString()} caracteres en total)${soloPentCalc ? ' · [Solo Pentateuco]' : ''}\n`;
     msg += `====================================\n\n`;
 
     particiones.forEach(p => {
@@ -1210,6 +1269,7 @@ chipNums.forEach(chip => {
 });
 
 calcCheckUnido.onchange = renderizarCalculadora;
+if (calcCheckPentateuco) calcCheckPentateuco.onchange = renderizarCalculadora;
 calcCheckExtras.onchange = renderizarCalculadora;
 btnCerrarCalcModal.onclick = cerrarCalculadora;
 btnCerrarCalcModalBottom.onclick = cerrarCalculadora;
@@ -1628,6 +1688,7 @@ if (btnModoPrecat) {
         btnModoPrecat.classList.add("active");
         if (btnModoTodas) btnModoTodas.classList.remove("active");
         selectOrden.value = "precat";
+        if (checkPentateuco) checkPentateuco.checked = true;
         actualizarVista();
     };
 }
@@ -1648,3 +1709,4 @@ if (btnModoTodas) {
 inputBusqueda.addEventListener("input", actualizarVista);
 selectOrden.addEventListener("change", actualizarVista);
 checkExtras.addEventListener("change", actualizarVista);
+if (checkPentateuco) checkPentateuco.addEventListener("change", actualizarVista);

@@ -80,11 +80,16 @@ La aplicación integra este catálogo exacto y ofrece un **selector de modo dest
   * Preservación de citas disjuntas y capítulos completos.
 - Botón interactivo para alternar entre "Perícopas Unidas" (para proclamación) y "Citas Sueltas" (fuente original).
 
-### C. Gestor de Exclusiones
+### C. Filtro de Solo Pentateuco (Torá / Ley)
+- Permite restringir la **1ª Lectura** exclusivamente a los 5 libros de la Torá (Génesis, Éxodo, Levítico, Números, Deuteronomio).
+- Oculta automáticamente las citas de los demás libros históricos (Josué a 2 Macabeos) para celebraciones donde se busca estrictamente una lectura de la Ley.
+- Ajusta dinámicamente los conteos de perícopas, la verificación de 4 partes (`🌱 Precatecumenado`), el reparto en la Calculadora de Participantes y el esquema copiado.
+
+### D. Gestor de Exclusiones
 - Permite a la comunidad registrar palabras que ya se han preparado para que queden ocultas automáticamente.
 - Persistencia en el navegador mediante `localStorage`.
 
-### D. Calculadora de Participantes y Reparto Lineal Continuo
+### E. Calculadora de Participantes y Reparto Lineal Continuo
 - Permite a los hermanos preparadores indicar el **número de participantes** (ej. 2, 3, 4, 5, 6 o más hermanos).
 - **Optimización de Búsqueda Lineal:** Las lecturas se distribuyen en **estricto orden canónico bíblico continuo** ($Génesis \rightarrow Apocalipsis$).
 - **Sin Saltos en la Biblia:** Cada hermano recibe un bloque contiguo de libros y capítulos (ej. *Hermano 1: Génesis a Jueces*, *Hermano 2: 1 Samuel a Salmos*, etc.), de modo que avanza siempre hacia adelante buscando sus citas sin necesidad de retroceder ni dar saltos en su Biblia física.
@@ -94,7 +99,7 @@ La aplicación integra este catálogo exacto y ofrece un **selector de modo dest
   * *Copia individual:* Genera el mensaje formateado con las citas asignadas a un hermano específico incluyendo conteo de caracteres por cita.
   * *Copia grupal:* Genera el reparto completo de toda la preparación con el desglose de caracteres para enviarlo directamente al grupo de la comunidad.
 
-### E. Área de Guía y Nomenclatura Bíblica
+### F. Área de Guía y Nomenclatura Bíblica
 - **Acceso Directo en Header (`📖 Guía`):** Despliega un centro de ayuda litúrgica y teológica interactivo organizado en 3 secciones:
   1. *Criterios del Camino:* Explicación de las 4 partes fundamentales de la Escritura en la Liturgia de la Palabra (Históricos, Proféticos, Cartas/NT, Evangelio) y cómo mantener el hilo conductor temático.
   2. *Nomenclatura y Puntuación Bíblica:*
@@ -108,7 +113,7 @@ La aplicación integra este catálogo exacto y ofrece un **selector de modo dest
      - Letras `a`, `b`, `c` (frases o cláusulas sucesivas de un mismo versículo: `a` = 1ª frase, `b` = 2ª frase, `c` = 3ª frase, muy común en versículos poéticos o largos con 3 partes).
   3. *Uso de la Aplicación:* Detalle de perícopas unidas, calculadora lineal y gestión de exclusiones.
 
-### F. Lectura Íntegra del Artículo Teológico de Xavier Léon-Dufour
+### G. Lectura Íntegra del Artículo Teológico de Xavier Léon-Dufour
 - **Acceso Completo al Vocabulario Original:** Cada término teológico incluye un botón destacado (`📚 Leer Léon-Dufour` y `📚 Artículo`) para leer el artículo teológico íntegro y sin abreviar de la obra de Xavier Léon-Dufour (*Vocabulario de Teología Bíblica*).
 - **Tipografía y Legibilidad Editorial:** Modal diseñado para lectura reposada y estudio bíblico, respetando la estructura original (introducción, desarrollo de la revelación en el AT y NT, divisiones numeradas y notas dogmáticas).
 - **Citas Bíblicas Interactivas dentro del Texto:** Cada cita que aparece mencionada en el texto del artículo se transforma automáticamente en un botón interactivo (`<cite class="cite-pill">`). Al tocarlo, abre de inmediato el pasaje bíblico en la *Biblia de Jerusalén* por encima del artículo sin cerrar la lectura.
