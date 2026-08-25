@@ -2153,26 +2153,99 @@
       color: var(--text-muted);
     }
 
-    .chip-destino-guia {
-      font-size: 0.72rem;
-      font-weight: 600;
-      padding: 2px 8px;
-      border-radius: var(--radius-full);
-      background: var(--bg-app);
+    /* Estilos diferenciados para los chips de destinos en la Guía */
+    .indice-legend-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 8px 14px;
+      background: var(--bg-card);
       border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 0.76rem;
       color: var(--text-main);
+      align-items: center;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip-destino-guia {
+      font-size: 0.74rem;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: var(--radius-full);
       cursor: pointer;
       transition: all 0.15s ease;
       display: inline-flex;
       align-items: center;
-      gap: 3px;
+      gap: 4px;
+      white-space: nowrap;
     }
 
-    .chip-destino-guia:hover {
-      background: var(--primary-light);
-      border-color: var(--primary);
-      color: var(--primary);
+    /* 1. Disponible en Precatecumenado (148 palabras) */
+    .chip-destino-guia.chip-disponible-precat {
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      color: #166534;
+    }
+    .chip-destino-guia.chip-disponible-precat:hover {
+      background: #dcfce7;
+      border-color: #22c55e;
+      color: #14532d;
       transform: translateY(-1px);
+      box-shadow: 0 2px 5px rgba(34, 197, 94, 0.2);
+    }
+    .chip-num-badge {
+      background: #16a34a;
+      color: #ffffff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: var(--radius-full);
+      margin-left: 2px;
+    }
+
+    /* 2. Disponible en Vocabulario Completo (289 palabras) */
+    .chip-destino-guia.chip-disponible-todas {
+      background: #eff6ff;
+      border: 1.5px solid #93c5fd;
+      color: #1e40af;
+    }
+    .chip-destino-guia.chip-disponible-todas:hover {
+      background: #dbeafe;
+      border-color: #3b82f6;
+      color: #1e3a8a;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 5px rgba(59, 130, 246, 0.2);
+    }
+
+    /* 3. Sin ficha directa en la lista de preparación */
+    .chip-destino-guia.chip-sin-referencia {
+      background: #f8fafc;
+      border: 1.5px dashed #cbd5e1;
+      color: #94a3b8;
+      cursor: help;
+      opacity: 0.85;
+    }
+    .chip-destino-guia.chip-sin-referencia:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+      color: #64748b;
+      transform: none;
+      box-shadow: none;
+    }
+    .chip-sin-badge {
+      background: #e2e8f0;
+      color: #64748b;
+      font-size: 0.63rem;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: var(--radius-full);
+      margin-left: 2px;
     }
 
     .indice-item-raw {
@@ -2960,8 +3033,14 @@
             <h3 class="guia-section-title">📚 Índice de Artículos y Remisiones (Xavier Léon-Dufour)</h3>
             <p class="guia-text">
               Índice analítico oficial del <em>Vocabulario de Teología Bíblica</em> (Páginas 850 a 869). Contiene los
-              <strong>289 artículos principales</strong> y <strong>467 remisiones bíblicas</strong> de la A a la Y. Toca sobre cualquier tema de destino para buscarlo y prepararlo en la aplicación.
+              <strong>289 artículos principales</strong> y <strong>467 remisiones bíblicas</strong> de la A a la Y.
             </p>
+
+            <div class="indice-legend-bar">
+              <span class="legend-item"><span class="chip-destino-guia chip-disponible-precat" style="padding:1px 6px;">🟢 Palabra <span class="chip-num-badge">#N°</span></span> Precatecumenado (148 temas)</span>
+              <span class="legend-item"><span class="chip-destino-guia chip-disponible-todas" style="padding:1px 6px;">📘 Palabra</span> Vocabulario General (289 temas)</span>
+              <span class="legend-item"><span class="chip-destino-guia chip-sin-referencia" style="padding:1px 6px;">⚪ Palabra <span class="chip-sin-badge">Sin ficha</span></span> Concepto sin ficha directa</span>
+            </div>
 
             <div class="indice-guia-search-box">
               <input type="text" id="inputBuscarIndiceGuia" class="input-buscar-indice"

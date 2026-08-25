@@ -1859,6 +1859,20 @@ function renderizarTags() {
 function buscarTermino(termino) {
     if (!inputBusqueda) return;
     inputBusqueda.value = termino;
+
+    // Si estamos en modo precat y la palabra solo existe en el vocabulario completo (289), cambiar a modo 'todas'
+    if (modoFiltro === "precat" && termino) {
+        const pNorm = normalizar(termino);
+        const enPrecat = listaPrecat.some(p => normalizar(p.palabra).includes(pNorm) || normalizar(p.vocabKey).includes(pNorm));
+        const enTodas = listaTodas.some(p => normalizar(p.palabra).includes(pNorm) || normalizar(p.vocabKey).includes(pNorm));
+        if (!enPrecat && enTodas) {
+            modoFiltro = "todas";
+            if (btnModoTodas) btnModoTodas.classList.add("active");
+            if (btnModoPrecat) btnModoPrecat.classList.remove("active");
+            if (selectOrden.value === "precat") selectOrden.value = "alpha";
+        }
+    }
+
     actualizarVista();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -2178,6 +2192,25 @@ function inicializarIndiceGuia() {
     indiceGuiaInicializado = true;
 }
 
+function verificarEstadoPalabra(palabra) {
+    if (!palabra) return { existe: false, tipo: 'ninguno' };
+    const pNorm = normalizar(palabra);
+    
+    // 1. ¿Existe en listaPrecat (las 148 palabras)?
+    const itemPrecat = listaPrecat.find(p => normalizar(p.palabra) === pNorm || normalizar(p.vocabKey) === pNorm);
+    if (itemPrecat) {
+        return { existe: true, tipo: 'precat', item: itemPrecat, numPrecat: itemPrecat.numPrecat };
+    }
+    
+    // 2. ¿Existe en listaTodas (las 289 palabras)?
+    const itemTodas = listaTodas.find(p => normalizar(p.palabra) === pNorm || normalizar(p.vocabKey) === pNorm);
+    if (itemTodas) {
+        return { existe: true, tipo: 'todas', item: itemTodas, numPrecat: itemTodas.numPrecat };
+    }
+    
+    return { existe: false, tipo: 'ninguno' };
+}
+
 function renderizarIndiceGuia() {
     if (!contenedorIndiceGuia || typeof INDICE_REMISIONES_DATA === 'undefined' || !INDICE_REMISIONES_DATA.listaCompleta) return;
 
@@ -2230,7 +2263,18 @@ function renderizarIndiceGuia() {
                 ${tieneDestinos ? `
                     <div class="indice-item-destinos">
                         <span style="font-weight:600;">➔ ${esArticulo ? 'Temas conexos:' : 'Se prepara como:'}</span>
-                        ${item.destinos.map(d => `<span class="chip-destino-guia" title="Toca para ir a '${d}' en la aplicación" onclick="event.stopPropagation(); irAPalabraDesdeGuia('${d}');">🔍 ${d}</span>`).join('')}
+                        ${item.destinos.map(d => {
+                            const est = verificarEstadoPalabra(d);
+                            if (est.existe) {
+                                if (est.tipo === 'precat') {
+                                    return `<span class="chip-destino-guia chip-disponible-precat" title="Palabra oficial del Precatecumenado (#${est.numPrecat}). Toca para abrir y preparar." onclick="event.stopPropagation(); irAPalabraDesdeGuia('${d}', 'precat');">🟢 ${d} <span class="chip-num-badge">#${est.numPrecat}</span></span>`;
+                                } else {
+                                    return `<span class="chip-destino-guia chip-disponible-todas" title="Disponible en Vocabulario Completo de Léon-Dufour (289 temas). Toca para abrir." onclick="event.stopPropagation(); irAPalabraDesdeGuia('${d}', 'todas');">📘 ${d}</span>`;
+                                }
+                            } else {
+                                return `<span class="chip-destino-guia chip-sin-referencia" title="Concepto bíblico sin ficha de preparación directa en la aplicación. Toca para ver información." onclick="event.stopPropagation(); alertarSinReferencia('${d}');">⚪ ${d} <span class="chip-sin-badge">Sin ficha</span></span>`;
+                            }
+                        }).join('')}
                     </div>
                 ` : ''}
                 ${item.referenciasRaw ? `
@@ -2245,7 +2289,28 @@ function renderizarIndiceGuia() {
     contenedorIndiceGuia.innerHTML = html;
 }
 
-function irAPalabraDesdeGuia(palabra) {
+function irAPalabraDesdeGuia(palabra, modoPreferido) {
+    const estado = verificarEstadoPalabra(palabra);
+    if (!estado.existe) {
+        alertarSinReferencia(palabra);
+        return;
+    }
+
     cerrarGuia();
+
+    // Si la palabra está en el vocabulario general (no precat), activar modo "todas"
+    if (modoPreferido === 'todas' || (!estado.numPrecat && modoFiltro === 'precat')) {
+        modoFiltro = "todas";
+        if (btnModoTodas) btnModoTodas.classList.add("active");
+        if (btnModoPrecat) btnModoPrecat.classList.remove("active");
+        if (selectOrden.value === "precat") selectOrden.value = "alpha";
+    }
+
     buscarTermino(palabra);
+    mostrarToast(`Mostrando "${palabra}" en la lista`);
+}
+
+function alertarSinReferencia(palabra) {
+    mostrarToast(`⚠️ "${palabra}" no tiene ficha directa de lecturas`);
+    alert(`La palabra o concepto "${palabra}" es una referencia del índice analítico de Xavier Léon-Dufour, pero no cuenta con una ficha de preparación litúrgica directa en la lista de la aplicación.`);
 }
