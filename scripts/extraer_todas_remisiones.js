@@ -367,10 +367,30 @@ function procesarTodoElIndice() {
         }
     });
 
+    const listaCompleta = entries.map((e, idx) => {
+        let term = e.termino.trim();
+        if (term.toLowerCase() === 'acubar') term = 'Acabar';
+        const normTerm = normalizar(term);
+        const esArticuloPrincipal = vocabKeys.some(k => normalizar(k) === normTerm);
+        const destinos = extraerTodosLosTemas(e.rawReferences);
+        const letra = term.charAt(0).toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+        return {
+            id: idx + 1,
+            termino: term,
+            terminoNorm: normTerm,
+            tipo: esArticuloPrincipal ? 'ARTICULO_PRINCIPAL' : 'REMISION',
+            letra: letra,
+            destinos: destinos,
+            referenciasRaw: e.rawReferences
+        };
+    });
+
     const exportData = {
         mapaRemisiones,
         mapaAliasPorPalabra,
-        mapaTemasConexos
+        mapaTemasConexos,
+        listaCompleta
     };
 
     const jsContent = `// Base de datos oficial de Remisiones e Índice Analítico de Xavier Léon-Dufour (Pág 850 a 869)

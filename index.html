@@ -1918,6 +1918,174 @@
       line-height: 1.5;
     }
 
+    /* Estilos para el Índice de Artículos y Remisiones dentro de la Guía */
+    .indice-guia-search-box {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: var(--bg-app);
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+    }
+
+    .input-buscar-indice {
+      width: 100%;
+      padding: 9px 12px;
+      font-size: 0.85rem;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: var(--bg-card);
+      color: var(--text-main);
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .input-buscar-indice:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    .alfabeto-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .btn-letra-guia {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      min-width: 26px;
+      height: 26px;
+      padding: 0 5px;
+      border-radius: var(--radius-sm);
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .btn-letra-guia:hover,
+    .btn-letra-guia.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    .indice-guia-container {
+      max-height: 480px;
+      overflow-y: auto;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: var(--bg-card);
+      display: flex;
+      flex-direction: column;
+      scrollbar-width: thin;
+    }
+
+    .indice-item-row {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      transition: background 0.15s ease;
+    }
+
+    .indice-item-row:last-child {
+      border-bottom: none;
+    }
+
+    .indice-item-row:hover {
+      background: rgba(2, 132, 199, 0.04);
+    }
+
+    .indice-item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .indice-item-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .indice-item-title.es-articulo {
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-tipo-indice {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .badge-tipo-articulo {
+      background: rgba(16, 185, 129, 0.15);
+      color: #059669;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-tipo-remision {
+      background: rgba(245, 158, 11, 0.15);
+      color: #d97706;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .indice-item-destinos {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .chip-destino-guia {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      background: var(--bg-app);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .chip-destino-guia:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .indice-item-raw {
+      font-size: 0.73rem;
+      color: var(--text-muted);
+      font-style: italic;
+      line-height: 1.35;
+    }
+
     /* ==========================================================================
        MODAL ARTÍCULO TEOLÓGICO DE XAVIER LÉON-DUFOUR
        ========================================================================== */
@@ -2494,6 +2662,7 @@
         <button class="guia-tab-btn active" data-tab="tab-liturgia">🕊️ Criterios del Camino (4 Partes)</button>
         <button class="guia-tab-btn" data-tab="tab-nomenclatura">✍️ Nomenclatura Bíblica (s, ss, p)</button>
         <button class="guia-tab-btn" data-tab="tab-herramientas">🛠️ Uso de la Aplicación</button>
+        <button class="guia-tab-btn" data-tab="tab-indice-remisiones">📚 Índice de Artículos y Remisiones</button>
       </div>
 
       <div class="modal-body" style="padding: 16px;">
@@ -2685,6 +2854,34 @@
                   localmente en tu teléfono o navegador para no repetir temas.
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PESTAÑA 4: Índice Completo de Artículos y Remisiones (Léon-Dufour) -->
+        <div id="tab-indice-remisiones" class="guia-tab-pane">
+          <div class="guia-card-section">
+            <h3 class="guia-section-title">📚 Índice de Artículos y Remisiones (Xavier Léon-Dufour)</h3>
+            <p class="guia-text">
+              Índice analítico oficial del <em>Vocabulario de Teología Bíblica</em> (Páginas 850 a 869). Contiene los
+              <strong>289 artículos principales</strong> y <strong>467 remisiones bíblicas</strong> de la A a la Y. Toca sobre cualquier tema de destino para buscarlo y prepararlo en la aplicación.
+            </p>
+
+            <div class="indice-guia-search-box">
+              <input type="text" id="inputBuscarIndiceGuia" class="input-buscar-indice"
+                placeholder="🔍 Filtrar término o remisión (ej: Aclamación, Yugo, Alegría, Abba, Eucaristía, Matrimonio...)"
+                aria-label="Buscar en el índice">
+
+              <div id="alfabetoIndiceGuia" class="alfabeto-bar">
+                <!-- Se genera dinámicamente: Todas, A, B, C... Y -->
+              </div>
+              <div id="statsIndiceGuia" style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">
+                Mostrando 760 términos
+              </div>
+            </div>
+
+            <div id="contenedorIndiceGuia" class="indice-guia-container">
+              <!-- Se renderiza dinámicamente con las 760 entradas del índice -->
             </div>
           </div>
         </div>

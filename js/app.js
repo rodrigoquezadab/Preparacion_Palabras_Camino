@@ -1988,6 +1988,7 @@ function abrirGuia() {
     if (modalGuia) {
         modalGuia.style.display = "flex";
         document.body.classList.add("modal-open");
+        if (!indiceGuiaInicializado) inicializarIndiceGuia();
     }
 }
 
@@ -2126,4 +2127,124 @@ if (checkPericopas) {
     };
     checkPericopas.addEventListener("change", handlePericopas);
     checkPericopas.addEventListener("input", handlePericopas);
+}
+
+// --- ÍNDICE COMPLETO DE ARTÍCULOS Y REMISIONES EN LA GUÍA (760 ENTRADAS) ---
+const inputBuscarIndiceGuia = document.getElementById("inputBuscarIndiceGuia");
+const alfabetoIndiceGuia = document.getElementById("alfabetoIndiceGuia");
+const statsIndiceGuia = document.getElementById("statsIndiceGuia");
+const contenedorIndiceGuia = document.getElementById("contenedorIndiceGuia");
+
+let letraSeleccionadaGuia = "";
+let indiceGuiaInicializado = false;
+
+function inicializarIndiceGuia() {
+    if (!contenedorIndiceGuia || typeof INDICE_REMISIONES_DATA === 'undefined' || !INDICE_REMISIONES_DATA.listaCompleta) return;
+    
+    // 1. Construir barra de alfabeto dinámicamente
+    if (alfabetoIndiceGuia && alfabetoIndiceGuia.children.length === 0) {
+        const letrasDisponibles = new Set();
+        INDICE_REMISIONES_DATA.listaCompleta.forEach(item => {
+            if (item.letra) letrasDisponibles.add(item.letra);
+        });
+
+        const letrasOrdenadas = Array.from(letrasDisponibles).sort((a, b) => a.localeCompare(b, 'es'));
+        
+        let htmlAlfabeto = `<button class="btn-letra-guia active" data-letra="">Todas</button>`;
+        letrasOrdenadas.forEach(letra => {
+            htmlAlfabeto += `<button class="btn-letra-guia" data-letra="${letra}">${letra}</button>`;
+        });
+        alfabetoIndiceGuia.innerHTML = htmlAlfabeto;
+
+        alfabetoIndiceGuia.querySelectorAll(".btn-letra-guia").forEach(btn => {
+            btn.onclick = () => {
+                alfabetoIndiceGuia.querySelectorAll(".btn-letra-guia").forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                letraSeleccionadaGuia = btn.dataset.letra || "";
+                renderizarIndiceGuia();
+            };
+        });
+    }
+
+    // 2. Listener de búsqueda en tiempo real
+    if (inputBuscarIndiceGuia) {
+        inputBuscarIndiceGuia.oninput = () => {
+            renderizarIndiceGuia();
+        };
+    }
+
+    renderizarIndiceGuia();
+    indiceGuiaInicializado = true;
+}
+
+function renderizarIndiceGuia() {
+    if (!contenedorIndiceGuia || typeof INDICE_REMISIONES_DATA === 'undefined' || !INDICE_REMISIONES_DATA.listaCompleta) return;
+
+    const query = inputBuscarIndiceGuia ? normalizar(inputBuscarIndiceGuia.value) : "";
+    const items = INDICE_REMISIONES_DATA.listaCompleta;
+
+    const filtrados = items.filter(item => {
+        // Filtro por letra
+        if (letraSeleccionadaGuia && item.letra !== letraSeleccionadaGuia) return false;
+
+        // Filtro por búsqueda
+        if (query.length > 0) {
+            const matchTermino = item.terminoNorm.includes(query);
+            const matchDestinos = item.destinos && item.destinos.some(d => normalizar(d).includes(query));
+            const matchRaw = item.referenciasRaw && normalizar(item.referenciasRaw).includes(query);
+            if (!matchTermino && !matchDestinos && !matchRaw) return false;
+        }
+
+        return true;
+    });
+
+    if (statsIndiceGuia) {
+        statsIndiceGuia.textContent = `Mostrando ${filtrados.length} de ${items.length} términos`;
+    }
+
+    if (filtrados.length === 0) {
+        contenedorIndiceGuia.innerHTML = `
+            <div style="padding: 24px; text-align: center; color: var(--text-muted); font-size: 0.85rem;">
+                No se encontraron términos en el índice para "${inputBuscarIndiceGuia.value}".
+            </div>
+        `;
+        return;
+    }
+
+    let html = "";
+    filtrados.forEach(item => {
+        const esArticulo = item.tipo === 'ARTICULO_PRINCIPAL';
+        const tieneDestinos = item.destinos && item.destinos.length > 0;
+
+        html += `
+            <div class="indice-item-row">
+                <div class="indice-item-header">
+                    <div class="indice-item-title ${esArticulo ? 'es-articulo' : ''}">
+                        ${esArticulo ? '📖' : '🔄'} <strong>${item.termino}</strong>
+                    </div>
+                    <span class="badge-tipo-indice ${esArticulo ? 'badge-tipo-articulo' : 'badge-tipo-remision'}">
+                        ${esArticulo ? 'Artículo Principal' : 'Remisión'}
+                    </span>
+                </div>
+                ${tieneDestinos ? `
+                    <div class="indice-item-destinos">
+                        <span style="font-weight:600;">➔ ${esArticulo ? 'Temas conexos:' : 'Se prepara como:'}</span>
+                        ${item.destinos.map(d => `<span class="chip-destino-guia" title="Toca para ir a '${d}' en la aplicación" onclick="event.stopPropagation(); irAPalabraDesdeGuia('${d}');">🔍 ${d}</span>`).join('')}
+                    </div>
+                ` : ''}
+                ${item.referenciasRaw ? `
+                    <div class="indice-item-raw">
+                        Ref. Léon-Dufour: ${item.referenciasRaw}
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    });
+
+    contenedorIndiceGuia.innerHTML = html;
+}
+
+function irAPalabraDesdeGuia(palabra) {
+    cerrarGuia();
+    buscarTermino(palabra);
 }
