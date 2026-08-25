@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e3a8a" />
+      <stop offset="100%" stop-color="#172554" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#000000" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Fondo Litúrgico -->
+  <rect x="4" y="4" width="120" height="120" rx="28" fill="url(#bgGrad)" stroke="#60a5fa" stroke-width="2" stroke-opacity="0.3" />
+
+  <!-- Cruz Dorada Superior -->
+  <g filter="url(#dropShadow)">
+    <rect x="61" y="14" width="6" height="24" rx="2" fill="url(#goldGrad)" />
+    <rect x="52" y="20" width="24" height="6" rx="2" fill="url(#goldGrad)" />
+  </g>
+
+  <!-- Sagrada Escritura Abierta -->
+  <g filter="url(#dropShadow)">
+    <!-- Base del Libro -->
+    <path d="M 22 96 C 42 90, 60 92, 64 96 C 68 92, 86 90, 106 96 L 106 50 C 86 44, 68 46, 64 50 C 60 46, 42 44, 22 50 Z" fill="#334155" />
+    
+    <!-- Página Izquierda -->
+    <path d="M 24 94 C 42 88, 58 90, 63 94 L 63 48 C 58 44, 42 42, 24 48 Z" fill="#ffffff" />
+    <!-- Página Derecha -->
+    <path d="M 104 94 C 86 88, 70 90, 65 94 L 65 48 C 70 44, 86 42, 104 48 Z" fill="#f8fafc" />
+    
+    <!-- Líneas de Escritura (Página Izquierda) -->
+    <line x1="30" y1="56" x2="55" y2="54" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" />
+    <line x1="30" y1="64" x2="57" y2="62" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" />
+    <line x1="30" y1="72" x2="55" y2="70" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" />
+    <line x1="30" y1="80" x2="50" y2="78" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" />
+
+    <!-- Líneas de Escritura (Página Derecha) -->
+    <line x1="73" y1="54" x2="98" y2="56" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" />
+    <line x1="71" y1="62" x2="98" y2="64" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" />
+    <line x1="73" y1="70" x2="98" y2="72" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" />
+    <line x1="78" y1="78" x2="98" y2="80" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" />
+
+    <!-- Cinta / Señalador Litúrgico Dorado -->
+    <path d="M 62 44 L 66 44 L 66 104 L 64 100 L 62 104 Z" fill="url(#goldGrad)" />
+  </g>
+</svg>

@@ -11,6 +11,11 @@
     content="Herramienta mobile-first para la preparación de la Liturgia de la Palabra del Camino Neocatecumenal basada en el Vocabulario de Teología Bíblica de Xavier Léon-Dufour.">
   <meta name="theme-color" content="#1e3a8a">
 
+  <!-- Favicon e Icono de Navegador y Dispositivos -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="favicon.svg">
+
   <!-- Google Fonts: Plus Jakarta Sans & Cinzel -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -135,6 +140,24 @@
       justify-content: space-between;
       align-items: center;
       gap: 10px;
+    }
+
+    .header-title-link {
+      text-decoration: none;
+      color: inherit;
+      display: inline-flex;
+      align-items: center;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      cursor: pointer;
+    }
+
+    .header-title-link:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+    }
+
+    .header-title-link:active {
+      transform: translateY(0);
     }
 
     .header-title-box {
@@ -1756,10 +1779,12 @@
   <!-- 1. HEADER LITÚRGICO -->
   <header class="header-bar">
     <div class="header-content">
-      <div class="header-title-box">
-        <h1 class="header-title">📖 Preparación de la Palabra</h1>
-        <span class="header-subtitle">Vocabulario de Teología Bíblica — Xavier Léon-Dufour</span>
-      </div>
+      <a href="./" class="header-title-link" title="Toca para recargar / refrescar la aplicación">
+        <div class="header-title-box">
+          <h1 class="header-title">📖 Preparación de la Palabra</h1>
+          <span class="header-subtitle">Vocabulario de Teología Bíblica — Xavier Léon-Dufour</span>
+        </div>
+      </a>
       <div style="display:flex; gap:6px;">
         <button id="btnAbrirGuia" class="btn-toggle-filters"
           title="Guía y Criterios: Consulta los 4 grupos litúrgicos del Camino, nomenclatura bíblica (s, ss, p, puntuación) y cómo usar la aplicación">
