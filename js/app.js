@@ -131,6 +131,7 @@ const btnModoPrecat = document.getElementById("btnModoPrecat");
 const btnModoTodas = document.getElementById("btnModoTodas");
 const checkPentateuco = document.getElementById("checkPentateuco");
 const checkExtras = document.getElementById("checkExtras");
+const checkPericopas = document.getElementById("checkPericopas");
 const inputExcluir = document.getElementById("inputExcluir");
 const btnAgregarExclusion = document.getElementById("btnAgregarExclusion");
 const countExcluidasHeader = document.getElementById("countExcluidasHeader");
@@ -596,6 +597,7 @@ fetch("palabras.json")
 function actualizarVista() {
     const soloPentateuco = checkPentateuco ? checkPentateuco.checked : false;
     const mostrarExtras = checkExtras.checked;
+    const unirPericopas = checkPericopas ? checkPericopas.checked : true;
     const orden = selectOrden.value;
     const busqueda = normalizar(inputBusqueda.value);
 
@@ -647,11 +649,12 @@ function actualizarVista() {
     });
 
     const badgePentInfo = soloPentateuco ? ` · <span style="color:#059669; font-weight:700;">📜 Solo Pentateuco</span>` : ``;
+    const badgePericopasInfo = !unirPericopas ? ` · <span style="color:#2563eb; font-weight:700;">📄 Citas Sueltas</span>` : ``;
 
     if (modoFiltro === "precat") {
-        infoStats.innerHTML = `🌱 <strong>Precatecumenado:</strong> Viendo <strong>${lista.length}</strong> de 148 palabras oficiales del documento${badgePentInfo}`;
+        infoStats.innerHTML = `🌱 <strong>Precatecumenado:</strong> Viendo <strong>${lista.length}</strong> de 148 palabras oficiales del documento${badgePentInfo}${badgePericopasInfo}`;
     } else {
-        infoStats.innerHTML = `📚 <strong>Vocabulario Completo:</strong> Viendo <strong>${lista.length}</strong> de ${listaTodas.length} palabras de Xavier Léon-Dufour${badgePentInfo}`;
+        infoStats.innerHTML = `📚 <strong>Vocabulario Completo:</strong> Viendo <strong>${lista.length}</strong> de ${listaTodas.length} palabras de Xavier Léon-Dufour${badgePentInfo}${badgePericopasInfo}`;
     }
 
     dibujarLista(lista, mostrarExtras, soloPentateuco);
@@ -777,11 +780,17 @@ function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
             ? `Pentateuco / Torá: ${histCount} citas (Históricos posteriores ocultos)` 
             : `Históricos / Torá: ${item.hist} citas`;
 
-        const tooltipTotal = `Total actual: ${totalUnido} perícopas. ${diffTotal !== 0 ? `El (${diffTotal}) indica que se han consolidado ${Math.abs(diffTotal)} citas contiguas de las ${totalOriginalBase} originales de Léon-Dufour.` : `Total de citas originales: ${totalOriginalBase}`}`;
+        const tooltipTotal = item.estaUnido 
+            ? `Total actual: ${totalUnido} perícopas. ${diffTotal !== 0 ? `El (${diffTotal}) indica que se han consolidado ${Math.abs(diffTotal)} citas contiguas de las ${totalOriginalBase} originales de Léon-Dufour.` : `Total de citas originales: ${totalOriginalBase}`}`
+            : `Total actual: ${totalOriginalBase} citas individuales sueltas.`;
+
+        const totalPillText = item.estaUnido 
+            ? `${totalUnido} ${diffTotal !== 0 ? `<small class="diff-tag">(${diffTotal})</small>` : ''} perícopas`
+            : `${totalOriginalBase} citas`;
 
         countsRow.innerHTML = `
             <span class="count-pill total-pill" title="${tooltipTotal}">
-              ${totalUnido} ${diffTotal !== 0 ? `<small class="diff-tag">(${diffTotal})</small>` : ''} perícopas
+              ${totalPillText}
             </span>
             <span class="count-pill cat-hist ${histCount === 0 ? 'zero' : ''}" title="${histTitle}">${histCount} ${histLabel}</span>
             <span class="count-pill cat-prof ${item.prof === 0 ? 'zero' : ''}" title="Proféticos: ${item.prof} citas">${item.prof} Prof</span>
@@ -1145,6 +1154,12 @@ function abrirCalculadora(item) {
     calcModalTitulo.textContent = `👥 Preparación: "${item.palabra.toUpperCase()}"`;
     if (calcCheckPentateuco && checkPentateuco) {
         calcCheckPentateuco.checked = checkPentateuco.checked;
+    }
+    if (calcCheckExtras && checkExtras) {
+        calcCheckExtras.checked = checkExtras.checked;
+    }
+    if (calcCheckUnido) {
+        calcCheckUnido.checked = (typeof item.estaUnido === 'boolean') ? item.estaUnido : (checkPericopas ? checkPericopas.checked : true);
     }
     renderizarCalculadora();
     modalCalculadora.style.display = "flex";
@@ -1859,3 +1874,11 @@ inputBusqueda.addEventListener("input", actualizarVista);
 selectOrden.addEventListener("change", actualizarVista);
 checkExtras.addEventListener("change", actualizarVista);
 if (checkPentateuco) checkPentateuco.addEventListener("change", actualizarVista);
+if (checkPericopas) {
+    checkPericopas.addEventListener("change", () => {
+        const val = checkPericopas.checked;
+        listaPrecat.forEach(p => p.estaUnido = val);
+        listaTodas.forEach(p => p.estaUnido = val);
+        actualizarVista();
+    });
+}
