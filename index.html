@@ -467,9 +467,11 @@
       background: var(--bg-card);
       border-bottom: 1px solid var(--border-dark);
       padding: 16px;
-      max-height: 500px;
-      overflow: hidden;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      max-height: 85vh;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, padding 0.3s ease;
       box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
     }
 
@@ -480,6 +482,7 @@
       border-bottom: none;
       opacity: 0;
       pointer-events: none;
+      overflow: hidden;
     }
 
     .advanced-content {
@@ -506,7 +509,7 @@
 
     .input-text {
       flex: 1;
-      min-width: 180px;
+      min-width: 140px;
       padding: 8px 12px;
       font-size: 0.85rem;
       font-family: inherit;
@@ -524,6 +527,7 @@
       font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
+      white-space: nowrap;
       transition: background 0.15s;
     }
 
@@ -535,12 +539,41 @@
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      padding: 8px;
+      padding: 10px;
       background: var(--bg-app);
       border: 1px dashed var(--border-color);
       border-radius: var(--radius-sm);
-      min-height: 40px;
-      align-items: center;
+      min-height: 44px;
+      max-height: 250px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      align-items: flex-start;
+      align-content: flex-start;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-dark) var(--bg-app);
+    }
+
+    .tags-container::-webkit-scrollbar,
+    .advanced-panel::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .tags-container::-webkit-scrollbar-track,
+    .advanced-panel::-webkit-scrollbar-track {
+      background: var(--bg-app);
+      border-radius: var(--radius-full);
+    }
+
+    .tags-container::-webkit-scrollbar-thumb,
+    .advanced-panel::-webkit-scrollbar-thumb {
+      background: var(--border-dark);
+      border-radius: var(--radius-full);
+    }
+
+    .tags-container::-webkit-scrollbar-thumb:hover,
+    .advanced-panel::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
     }
 
     .sin-exclusiones {
@@ -549,39 +582,80 @@
       font-style: italic;
     }
 
+    .tags-container.modo-edicion {
+      border-color: #ef4444;
+      border-style: solid;
+      background-color: rgba(239, 68, 68, 0.04);
+    }
+
     .tag-excluido {
-      background: #fee2e2;
-      color: #991b1b;
-      border: 1px solid #fecaca;
-      padding: 3px 8px;
+      background: var(--bg-card);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 4px 10px;
       border-radius: var(--radius-full);
       font-size: 0.75rem;
       font-weight: 600;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      user-select: none;
+      transition: all 0.15s ease;
+    }
+
+    [data-theme="dark"] .tag-excluido {
+      background: #1e293b;
+      color: #f1f5f9;
+      border-color: var(--border-dark);
+    }
+
+    /* En modo edición se destacan las etiquetas y se muestra el botón de borrado */
+    .tags-container.modo-edicion .tag-excluido {
+      background: #fee2e2;
+      color: #991b1b;
+      border-color: #fecaca;
+    }
+
+    [data-theme="dark"] .tags-container.modo-edicion .tag-excluido {
+      background: rgba(239, 68, 68, 0.22);
+      color: #fca5a5;
+      border-color: rgba(239, 68, 68, 0.45);
     }
 
     .btn-remove-tag {
+      display: none; /* Oculto por defecto para proteger de toques involuntarios al hacer scroll */
       background: none;
       border: none;
-      color: #991b1b;
+      color: inherit;
       cursor: pointer;
-      font-size: 0.95rem;
+      font-size: 1.05rem;
       line-height: 1;
       font-weight: bold;
-      padding: 0 2px;
+      padding: 0 4px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: transform 0.15s, color 0.15s;
+    }
+
+    .tags-container.modo-edicion .btn-remove-tag {
+      display: inline-flex;
     }
 
     .btn-remove-tag:hover {
-      color: #7f1d1d;
+      color: #ef4444;
+      transform: scale(1.25);
+    }
+
+    [data-theme="dark"] .btn-remove-tag:hover {
+      color: #ffffff;
     }
 
     .btn-exclusion-action {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-sm);
-      padding: 4px 10px;
+      padding: 5px 10px;
       font-size: 0.75rem;
       font-weight: 700;
       cursor: pointer;
@@ -592,16 +666,49 @@
       color: var(--text-main);
     }
 
+    .btn-exclusion-action.btn-edit-mode {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-exclusion-action.btn-edit-mode:hover {
+      background: var(--primary-light);
+    }
+
+    .btn-exclusion-action.btn-edit-mode.active {
+      background: #10b981;
+      border-color: #059669;
+      color: #ffffff;
+    }
+
+    .btn-exclusion-action.btn-edit-mode.active:hover {
+      background: #059669;
+      border-color: #047857;
+      color: #ffffff;
+    }
+
     .btn-exclusion-action.btn-reload:hover {
       background: #eff6ff;
       border-color: #3b82f6;
       color: #1e3a8a;
     }
 
+    [data-theme="dark"] .btn-exclusion-action.btn-reload:hover {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: #60a5fa;
+      color: #93c5fd;
+    }
+
     .btn-exclusion-action.btn-clear:hover {
       background: #fef2f2;
       border-color: #ef4444;
       color: #991b1b;
+    }
+
+    [data-theme="dark"] .btn-exclusion-action.btn-clear:hover {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: #f87171;
+      color: #fca5a5;
     }
 
     /* ==========================================================================
@@ -2115,9 +2222,13 @@
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
           <div class="panel-section-title">Exclusiones activas (<span id="countExcluidasHeader">0</span>):</div>
           <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button id="btnModoEditarExclusiones" class="btn-exclusion-action btn-edit-mode"
+              title="Activar o desactivar el modo de edición para quitar palabras de la lista de exclusiones">
+              ✏️ Quitar Palabras
+            </button>
             <button id="btnRestaurarExclusiones" class="btn-exclusion-action btn-reload"
               title="Volver a cargar las 25 palabras excluidas por defecto (temas ya preparados en la comunidad)">
-              🔄 Cargar Predeterminadas
+              🔄 Predeterminadas
             </button>
             <button id="btnBorrarTodasExclusiones" class="btn-exclusion-action btn-clear"
               title="Borrar todas las palabras excluidas para ver el temario completo">

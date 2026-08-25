@@ -142,9 +142,11 @@ const checkSoloCompletas = document.getElementById("checkSoloCompletas");
 const inputExcluir = document.getElementById("inputExcluir");
 const btnAgregarExclusion = document.getElementById("btnAgregarExclusion");
 const countExcluidasHeader = document.getElementById("countExcluidasHeader");
+const btnModoEditarExclusiones = document.getElementById("btnModoEditarExclusiones");
 const btnBorrarTodasExclusiones = document.getElementById("btnBorrarTodasExclusiones");
 const btnRestaurarExclusiones = document.getElementById("btnRestaurarExclusiones");
 const contenedorTags = document.getElementById("contenedorTags");
+let modoEdicionExclusiones = false;
 const seccionBusqueda = document.getElementById("seccionBusqueda") || document.querySelector(".search-section");
 const btnToggleSearch = document.getElementById("btnToggleSearch");
 const btnToggleTema = document.getElementById("btnToggleTema");
@@ -1690,15 +1692,48 @@ function guardarLocalStorage() {
     }
 }
 
+function toggleModoEdicionExclusiones() {
+    if (setExcluidos.size === 0) {
+        mostrarToast("ℹ️ No hay palabras excluidas para quitar");
+        return;
+    }
+    modoEdicionExclusiones = !modoEdicionExclusiones;
+    actualizarEstadoModoEdicion();
+    if (modoEdicionExclusiones) {
+        mostrarToast("✏️ Modo edición activado: toca la '×' en las palabras que desees quitar");
+    } else {
+        mostrarToast("🔒 Lista protegida contra toques accidentales");
+    }
+}
+
+function actualizarEstadoModoEdicion() {
+    if (contenedorTags) {
+        contenedorTags.classList.toggle("modo-edicion", modoEdicionExclusiones);
+    }
+    if (btnModoEditarExclusiones) {
+        btnModoEditarExclusiones.classList.toggle("active", modoEdicionExclusiones);
+        btnModoEditarExclusiones.innerHTML = modoEdicionExclusiones 
+            ? `🔒 Listo / Bloquear` 
+            : `✏️ Quitar Palabras`;
+        btnModoEditarExclusiones.setAttribute("title", modoEdicionExclusiones 
+            ? "Toca para finalizar la edición y proteger la lista contra toques accidentales" 
+            : "Toca para activar el modo de eliminación y quitar palabras de la lista");
+        btnModoEditarExclusiones.style.display = setExcluidos.size > 0 ? "inline-flex" : "none";
+    }
+}
+
 function renderizarTags() {
     contenedorTags.innerHTML = "";
     if (setExcluidos.size === 0) {
-        contenedorTags.innerHTML = `<span class="sin-exclusiones">Sin palabras excluidas. Toca "🔄 Cargar Predeterminadas" para cargar la lista de temas ya celebrados.</span>`;
+        contenedorTags.innerHTML = `<span class="sin-exclusiones">Sin palabras excluidas. Toca "🔄 Predeterminadas" para cargar la lista de temas ya celebrados.</span>`;
         if (countExcluidasHeader) countExcluidasHeader.textContent = "0";
+        modoEdicionExclusiones = false;
+        actualizarEstadoModoEdicion();
         return;
     }
 
     if (countExcluidasHeader) countExcluidasHeader.textContent = setExcluidos.size;
+    actualizarEstadoModoEdicion();
 
     setExcluidos.forEach(pNorm => {
         // Encontrar objeto de palabra para mostrar el nombre con formato y número
@@ -1710,9 +1745,12 @@ function renderizarTags() {
 
         const tag = document.createElement("div");
         tag.className = "tag-excluido";
-        tag.setAttribute("title", `Toca la '×' para quitar la exclusión de "${item ? item.palabra : pNorm}"`);
-        tag.innerHTML = `<span>${nombreMostrar}</span> <button class="btn-remove-tag" aria-label="Quitar exclusión">&times;</button>`;
-        tag.querySelector("button").onclick = () => eliminarExclusion(pNorm, item ? item.palabra : nombreMostrar);
+        tag.setAttribute("title", `Exclusión activa: "${item ? item.palabra : pNorm}"`);
+        tag.innerHTML = `<span>${nombreMostrar}</span> <button class="btn-remove-tag" aria-label="Quitar exclusión" title="Quitar exclusión">&times;</button>`;
+        tag.querySelector("button").onclick = (e) => {
+            e.stopPropagation();
+            eliminarExclusion(pNorm, item ? item.palabra : nombreMostrar);
+        };
         contenedorTags.appendChild(tag);
     });
 }
@@ -1744,6 +1782,7 @@ function agregarExclusiones() {
         guardarLocalStorage();
         renderizarTags();
         actualizarVista();
+        if (contenedorTags) contenedorTags.scrollTop = contenedorTags.scrollHeight;
         mostrarToast("✅ Palabras añadidas a exclusiones");
     }
 }
@@ -1755,6 +1794,7 @@ function excluirPalabraDirecta(nombrePalabra) {
         guardarLocalStorage();
         renderizarTags();
         actualizarVista();
+        if (contenedorTags) contenedorTags.scrollTop = contenedorTags.scrollHeight;
         mostrarToast(`🚫 "${nombrePalabra}" añadida a excluidas`);
     }
 }
@@ -1772,7 +1812,11 @@ function borrarTodasExclusiones() {
         mostrarToast("ℹ️ No hay palabras excluidas actualmente");
         return;
     }
+    if (!confirm("⚠️ ¿Estás seguro de que deseas borrar TODAS las palabras excluidas para ver el temario completo?")) {
+        return;
+    }
     setExcluidos.clear();
+    modoEdicionExclusiones = false;
     guardarLocalStorage();
     renderizarTags();
     actualizarVista();
@@ -1780,6 +1824,11 @@ function borrarTodasExclusiones() {
 }
 
 function restaurarExclusionesPredeterminadas() {
+    if (setExcluidos.size > 0) {
+        if (!confirm("🔄 ¿Deseas recargar la lista de las 25 palabras excluidas predeterminadas?")) {
+            return;
+        }
+    }
     EXCLUSIONES_PREDETERMINADAS.forEach(p => {
         setExcluidos.add(normalizar(p));
     });
@@ -1794,6 +1843,7 @@ inputExcluir.addEventListener("keydown", (e) => {
     if (e.key === "Enter") agregarExclusiones();
 });
 
+if (btnModoEditarExclusiones) btnModoEditarExclusiones.onclick = toggleModoEdicionExclusiones;
 if (btnBorrarTodasExclusiones) btnBorrarTodasExclusiones.onclick = borrarTodasExclusiones;
 if (btnRestaurarExclusiones) btnRestaurarExclusiones.onclick = restaurarExclusionesPredeterminadas;
 
