@@ -256,14 +256,13 @@ const EXCLUSIONES_PREDETERMINADAS = [
     "Fariseo",        // #55
     "Llave",          // #78
     "Puerta",         // #112
-    "Aleluya",
     "Alabanza",       // #5
     "Amigo",          // #7
     "Esposo"          // #48
 ];
 
 function obtenerExclusionesIniciales() {
-    const versionInit = localStorage.getItem('palabrasExcluidas_init_v2');
+    const versionInit = localStorage.getItem('palabrasExcluidas_init_v3');
     const guardadas = localStorage.getItem('palabrasExcluidas');
 
     if (versionInit && guardadas !== null) {
@@ -276,7 +275,7 @@ function obtenerExclusionesIniciales() {
 
     // Carga inicial por defecto con la lista predeterminada
     const listaInicial = EXCLUSIONES_PREDETERMINADAS.map(p => normalizar(p));
-    localStorage.setItem('palabrasExcluidas_init_v2', 'true');
+    localStorage.setItem('palabrasExcluidas_init_v3', 'true');
     localStorage.setItem('palabrasExcluidas', JSON.stringify(listaInicial));
     return listaInicial;
 }
@@ -2528,7 +2527,7 @@ function actualizarEstadoModoEdicion() {
 function renderizarTags() {
     contenedorTags.innerHTML = "";
     if (setExcluidos.size === 0) {
-        contenedorTags.innerHTML = `<span class="sin-exclusiones">Sin palabras excluidas. Toca "✏️ Editar Palabras" para cargar las 25 predeterminadas o añade palabras arriba.</span>`;
+        contenedorTags.innerHTML = `<span class="sin-exclusiones">Sin palabras excluidas. Toca "✏️ Editar Palabras" para cargar las 27 predeterminadas o añade palabras arriba.</span>`;
         if (countExcluidasHeader) countExcluidasHeader.textContent = "0";
         actualizarEstadoModoEdicion();
         return;
@@ -2539,7 +2538,9 @@ function renderizarTags() {
 
     // Mapear y ordenar numéricamente por número de Precatecumenado (#1, #2, #3...)
     const listaTags = Array.from(setExcluidos).map(pNorm => {
-        const item = listaGlobal.find(i => normalizar(i.palabra) === pNorm || (i.vocabKey && normalizar(i.vocabKey) === pNorm) || (i.palabraNorm && i.palabraNorm.includes(pNorm)));
+        const item = listaGlobal.find(i => normalizar(i.palabra) === pNorm)
+                  || listaGlobal.find(i => i.vocabKey && normalizar(i.vocabKey) === pNorm)
+                  || listaGlobal.find(i => i.palabraNorm && i.palabraNorm.includes(pNorm));
         const num = (item && item.numPrecat) ? Number(item.numPrecat) : 99999;
         let nombreMostrar = item ? item.palabra : (pNorm.charAt(0).toUpperCase() + pNorm.slice(1));
         if (item && item.numPrecat) {
@@ -2686,7 +2687,7 @@ function borrarTodasExclusiones() {
 
 function restaurarExclusionesPredeterminadas() {
     if (setExcluidos.size > 0) {
-        if (!confirm("🔄 ¿Deseas recargar la lista de las 25 palabras excluidas predeterminadas?")) {
+        if (!confirm("🔄 ¿Deseas recargar la lista de las 27 palabras excluidas predeterminadas?")) {
             return;
         }
     }
@@ -2696,7 +2697,7 @@ function restaurarExclusionesPredeterminadas() {
     guardarLocalStorage();
     renderizarTags();
     actualizarVista();
-    mostrarToast("🔄 Lista predeterminada de 25 temas cargada");
+    mostrarToast("🔄 Lista predeterminada de 27 temas cargada");
 }
 
 btnAgregarExclusion.addEventListener("click", agregarExclusiones);
