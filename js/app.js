@@ -46,6 +46,177 @@ const NOMBRES_LIBROS = {
     "1JN": "1 Juan", "2JN": "2 Juan", "3JN": "3 Juan", JUDAS: "Judas", AP: "Apocalipsis"
 };
 
+// --- MAPA DE ABREVIATURAS Y SIGLAS BÍBLICAS CANÓNICAS EN ESPAÑOL ---
+const BOOK_MAP = {
+    // Pentateuco e Históricos
+    "gen": { code: "GEN", name: "Génesis" }, "gn": { code: "GEN", name: "Génesis" },
+    "ex": { code: "EX", name: "Éxodo" }, "éx": { code: "EX", name: "Éxodo" }, "exo": { code: "EX", name: "Éxodo" },
+    "lev": { code: "LEV", name: "Levítico" }, "lv": { code: "LEV", name: "Levítico" },
+    "num": { code: "NUM", name: "Números" }, "nm": { code: "NUM", name: "Números" },
+    "dt": { code: "DT", name: "Deuteronomio" }, "deut": { code: "DT", name: "Deuteronomio" },
+    "jos": { code: "JOS", name: "Josué" }, "jue": { code: "JUE", name: "Jueces" }, "juec": { code: "JUE", name: "Jueces" },
+    "rt": { code: "RUT", name: "Rut" }, "rut": { code: "RUT", name: "Rut" },
+    "1sam": { code: "1SAM", name: "1 Samuel" }, "1sa": { code: "1SAM", name: "1 Samuel" }, "1s": { code: "1SAM", name: "1 Samuel" },
+    "2sam": { code: "2SAM", name: "2 Samuel" }, "2sa": { code: "2SAM", name: "2 Samuel" }, "2s": { code: "2SAM", name: "2 Samuel" },
+    "1re": { code: "1RE", name: "1 Reyes" }, "1r": { code: "1RE", name: "1 Reyes" }, "1rey": { code: "1RE", name: "1 Reyes" },
+    "2re": { code: "2RE", name: "2 Reyes" }, "2r": { code: "2RE", name: "2 Reyes" }, "2rey": { code: "2RE", name: "2 Reyes" },
+    "1cr": { code: "1CRO", name: "1 Crónicas" }, "1cro": { code: "1CRO", name: "1 Crónicas" },
+    "2cr": { code: "2CRO", name: "2 Crónicas" }, "2cro": { code: "2CRO", name: "2 Crónicas" },
+    "esd": { code: "ESD", name: "Esdras" }, "neh": { code: "NEH", name: "Nehemías" }, "ne": { code: "NEH", name: "Nehemías" },
+    "tob": { code: "TOB", name: "Tobías" }, "tb": { code: "TOB", name: "Tobías" },
+    "jdt": { code: "JUD", name: "Judit" }, "judit": { code: "JUD", name: "Judit" },
+    "est": { code: "EST", name: "Ester" },
+    "1mac": { code: "1MAC", name: "1 Macabeos" }, "1ma": { code: "1MAC", name: "1 Macabeos" }, "1m": { code: "1MAC", name: "1 Macabeos" },
+    "2mac": { code: "2MAC", name: "2 Macabeos" }, "2ma": { code: "2MAC", name: "2 Macabeos" }, "2m": { code: "2MAC", name: "2 Macabeos" },
+
+    // Sapienciales
+    "job": { code: "JOB", name: "Job" }, "jb": { code: "JOB", name: "Job" },
+    "prov": { code: "PROV", name: "Proverbios" }, "pr": { code: "PROV", name: "Proverbios" },
+    "ecl": { code: "ECL", name: "Eclesiastés" }, "qo": { code: "ECL", name: "Eclesiastés" }, "qoh": { code: "ECL", name: "Eclesiastés" },
+    "cant": { code: "CANT", name: "Cantar de los Cantares" }, "ct": { code: "CANT", name: "Cantar de los Cantares" },
+    "sab": { code: "SAB", name: "Sabiduría" }, "sb": { code: "SAB", name: "Sabiduría" },
+    "eclo": { code: "ECLO", name: "Eclesiástico" }, "sir": { code: "ECLO", name: "Eclesiástico" },
+
+    // Salmos
+    "sal": { code: "SAL", name: "Salmos" }, "sl": { code: "SAL", name: "Salmos" }, "ps": { code: "SAL", name: "Salmos" },
+
+    // Proféticos
+    "is": { code: "IS", name: "Isaías" }, "isa": { code: "IS", name: "Isaías" },
+    "jer": { code: "JER", name: "Jeremías" }, "jr": { code: "JER", name: "Jeremías" },
+    "lam": { code: "LAM", name: "Lamentaciones" }, "bar": { code: "BAR", name: "Baruc" }, "ba": { code: "BAR", name: "Baruc" },
+    "ez": { code: "EZ", name: "Ezequiel" }, "dan": { code: "DAN", name: "Daniel" }, "dn": { code: "DAN", name: "Daniel" },
+    "os": { code: "OS", name: "Oseas" }, "jl": { code: "JL", name: "Joel" },
+    "am": { code: "AM", name: "Amós" }, "abd": { code: "ABD", name: "Abdías" },
+    "jon": { code: "JON", name: "Jonás" }, "miq": { code: "MIQ", name: "Miqueas" }, "mi": { code: "MIQ", name: "Miqueas" },
+    "nah": { code: "NAH", name: "Nahúm" }, "na": { code: "NAH", name: "Nahúm" },
+    "hab": { code: "HAB", name: "Habacuc" }, "ha": { code: "HAB", name: "Habacuc" },
+    "sof": { code: "SOF", name: "Sofonías" }, "ag": { code: "AG", name: "Ageo" }, "hag": { code: "AG", name: "Ageo" },
+    "zac": { code: "ZAC", name: "Zacarías" }, "za": { code: "ZAC", name: "Zacarías" },
+    "mal": { code: "MAL", name: "Malaquías" }, "ml": { code: "MAL", name: "Malaquías" },
+
+    // Evangelios
+    "mt": { code: "MT", name: "Mateo" }, "mc": { code: "MC", name: "Marcos" },
+    "lc": { code: "LC", name: "Lucas" }, "jn": { code: "JN", name: "Juan" },
+
+    // Cartas / Nuevo Testamento
+    "hch": { code: "HCH", name: "Hechos de los Apóstoles" }, "act": { code: "HCH", name: "Hechos de los Apóstoles" }, "he": { code: "HCH", name: "Hechos de los Apóstoles" },
+    "rom": { code: "ROM", name: "Romanos" }, "rm": { code: "ROM", name: "Romanos" },
+    "1cor": { code: "1COR", name: "1 Corintios" }, "1co": { code: "1COR", name: "1 Corintios" },
+    "2cor": { code: "2COR", name: "2 Corintios" }, "2co": { code: "2COR", name: "2 Corintios" },
+    "gal": { code: "GAL", name: "Gálatas" }, "ga": { code: "GAL", name: "Gálatas" },
+    "ef": { code: "EF", name: "Efesios" }, "flp": { code: "FLP", name: "Filipenses" }, "fil": { code: "FLP", name: "Filipenses" },
+    "col": { code: "COL", name: "Colosenses" },
+    "1tes": { code: "1TES", name: "1 Tesalonicenses" }, "1te": { code: "1TES", name: "1 Tesalonicenses" },
+    "2tes": { code: "2TES", name: "2 Tesalonicenses" }, "2te": { code: "2TES", name: "2 Tesalonicenses" },
+    "1tim": { code: "1TIM", name: "1 Timoteo" }, "1ti": { code: "1TIM", name: "1 Timoteo" },
+    "2tim": { code: "2TIM", name: "2 Timoteo" }, "2ti": { code: "2TIM", name: "2 Timoteo" },
+    "tit": { code: "TIT", name: "Tito" }, "ti": { code: "TIT", name: "Tito" },
+    "flm": { code: "FLM", name: "Filemón" }, "heb": { code: "HEB", name: "Hebreos" },
+    "st": { code: "ST", name: "Santiago" }, "stg": { code: "ST", name: "Santiago" }, "sant": { code: "ST", name: "Santiago" },
+    "1pe": { code: "1PE", name: "1 Pedro" }, "1p": { code: "1PE", name: "1 Pedro" },
+    "2pe": { code: "2PE", name: "2 Pedro" }, "2p": { code: "2PE", name: "2 Pedro" },
+    "1jn": { code: "1JN", name: "1 Juan" }, "1j": { code: "1JN", name: "1 Juan" },
+    "2jn": { code: "2JN", name: "2 Juan" }, "2j": { code: "2JN", name: "2 Juan" },
+    "3jn": { code: "3JN", name: "3 Juan" }, "3j": { code: "3JN", name: "3 Juan" },
+    "jud": { code: "JUDAS", name: "Judas" }, "judas": { code: "JUDAS", name: "Judas" },
+    "ap": { code: "AP", name: "Apocalipsis" }, "apoc": { code: "AP", name: "Apocalipsis" }
+};
+
+const SINGLE_CHAPTER_BOOKS = new Set(["ABD", "FLM", "2JN", "3JN", "JUDAS"]);
+
+// --- PARSEADOR INTELIGENTE DE CITAS CON HERENCIA CONTEXTUAL DE LIBROS ---
+function parseSmartQuoteClient(rawText, lastBookInfo) {
+    if (!rawText) return null;
+    let clean = rawText.replace(/[\n\r\t]+/g, ' ').trim();
+    clean = clean.replace(/^[\[(]+|[\]),;]+$/g, '').trim();
+
+    // Normalizaciones tipográficas habituales de digitalización
+    if (/^1s\s+\d/i.test(clean)) clean = clean.replace(/^1s\s+/i, 'Is ');
+    if (/^1Jn\s+1[5-7]/i.test(clean)) clean = clean.replace(/^1Jn\s+/i, 'Jn ');
+    if (/^2Cor\s+15/i.test(clean)) clean = clean.replace(/^2Cor\s+/i, '1Cor ');
+    if (/^Ap\s+33,3/i.test(clean)) clean = 'Ap 3,3';
+    if (/^Ez\s+98/i.test(clean)) clean = 'Ez 28,2-5';
+
+    let parts = clean.split(' ').filter(Boolean);
+    let bookKey = null;
+    let rest = '';
+
+    if (parts.length >= 2) {
+        let candidate = parts[0].toLowerCase().replace(/[\.:]/g, '');
+        if (BOOK_MAP[candidate]) {
+            bookKey = candidate;
+            rest = parts.slice(1).join(' ');
+        }
+    }
+
+    // Si no contiene sigla inicial explícita, hereda el libro de la cita anterior (contexto activo)
+    if (!bookKey && lastBookInfo) {
+        bookKey = lastBookInfo.key;
+        rest = clean;
+    }
+
+    if (!bookKey || !BOOK_MAP[bookKey]) {
+        return null;
+    }
+
+    let bookInfo = BOOK_MAP[bookKey];
+    let isSingleChapter = SINGLE_CHAPTER_BOOKS.has(bookInfo.code);
+
+    let cap = null;
+    let vIni = null;
+    let vFin = null;
+    let continuidad = null;
+
+    if (isSingleChapter) {
+        cap = 1;
+        let vMatch = rest.match(/^(?:1,)?(\d+)(?:[–\-](\d+))?(?:([a-z]+))?/i);
+        if (vMatch) {
+            vIni = parseInt(vMatch[1], 10);
+            if (vMatch[2]) vFin = parseInt(vMatch[2], 10);
+            if (vMatch[3] && vMatch[3].includes('ss')) continuidad = 'ss';
+            else if (vMatch[3] && vMatch[3].includes('s')) continuidad = 's';
+        }
+    } else {
+        let capMatch = rest.match(/^(\d+)(?:[,.]([0-9a-zA-Z\-–.,sp ]+))?/);
+        if (capMatch) {
+            let num1 = parseInt(capMatch[1], 10);
+            let versePart = capMatch[2] || '';
+
+            if (versePart) {
+                cap = num1;
+                if (versePart.includes('ss')) continuidad = 'ss';
+                else if (versePart.includes('s') && !versePart.includes('–') && !versePart.includes('-')) continuidad = 's';
+                
+                let rangeMatch = versePart.match(/^(\d+)(?:[–\-](\d+))?/);
+                if (rangeMatch) {
+                    vIni = parseInt(rangeMatch[1], 10);
+                    if (rangeMatch[2]) vFin = parseInt(rangeMatch[2], 10);
+                }
+            } else {
+                cap = num1;
+            }
+        }
+    }
+
+    if (cap === null || isNaN(cap)) cap = 1;
+
+    let citaCorta = `${bookInfo.code} ${rest}`;
+    let citaCompleta = `${bookInfo.name} ${rest}`;
+
+    return {
+        key: bookKey,
+        citaOriginal: citaCorta,
+        citaCompleta: citaCompleta,
+        libro: bookInfo.code,
+        libroNombre: bookInfo.name,
+        capitulo: cap,
+        versiculoInicio: vIni,
+        versiculoFin: vFin,
+        continuidad: continuidad,
+        textoRef: `${bookInfo.code}-${cap}`
+    };
+}
+
 // --- LIBROS DEL PENTATEUCO (Torá / Ley: 5 libros) ---
 const LIBROS_PENTATEUCO = new Set(["GEN", "EX", "LEV", "NUM", "DT"]);
 const esPentateuco = (l) => {
@@ -184,6 +355,13 @@ const calcBalanceIndicator = document.getElementById("calcBalanceIndicator");
 const calcSummaryText = document.getElementById("calcSummaryText");
 const contenedorHermanos = document.getElementById("contenedorHermanos");
 const btnCopiarRepartoCompleto = document.getElementById("btnCopiarRepartoCompleto");
+const btnExportarFichaHTML = document.getElementById("btnExportarFichaHTML");
+const calcViewsWrapper = document.getElementById("calcViewsWrapper");
+const calcTabBtnCards = document.getElementById("calcTabBtnCards");
+const calcTabBtnArticulo = document.getElementById("calcTabBtnArticulo");
+const calcArticuloCuerpo = document.getElementById("calcArticuloCuerpo");
+const calcArticuloLegend = document.getElementById("calcArticuloLegend");
+let calcActiveView = "articulo";
 
 // Modal de Artículo Teológico de Léon-Dufour
 const modalArticulo = document.getElementById("modalArticulo");
@@ -1159,9 +1337,75 @@ function obtenerRangoLibros(lista) {
     return `${primerLibro} → ${ultimoLibro}`;
 }
 
-function calcularDistribucionLineal(citas, k, criterio = "caracteres") {
+function extraerCitasEnOrdenDeTexto(rawContenido, item, usarUnidas, soloPentCalc, incluirExtras) {
+    if (!rawContenido) return [];
+    const citasList = [];
+    let lastBookInfo = null;
+    let seqCounter = 0;
+
+    rawContenido.replace(/<cite[^>]*>([\s\S]*?)<\/cite>/gi, (match, citeText) => {
+        const cleanText = citeText.replace(/<[^>]*>/g, '').trim();
+        if (!cleanText) return match;
+        const parsed = parseSmartQuoteClient(cleanText, lastBookInfo);
+        if (parsed) {
+            lastBookInfo = { key: parsed.key, lastCap: parsed.capitulo };
+
+            const code = (parsed.libro || '').toUpperCase().trim();
+            const setEv = new Set(["MT", "MC", "LC", "JN"]);
+            const setNt = new Set(["HCH", "ROM", "1COR", "2COR", "GAL", "EF", "FLP", "COL", "1TES", "2TES", "1TIM", "2TIM", "TIT", "FLM", "HEB", "ST", "1PE", "2PE", "1JN", "2JN", "3JN", "JUDAS", "AP"]);
+            const setProf = new Set(["IS", "JER", "LAM", "BAR", "EZ", "DAN", "OS", "JL", "AM", "ABD", "JON", "MIQ", "NAH", "HAB", "SOF", "AG", "ZAC", "MAL"]);
+            const setSap = new Set(["JOB", "PROV", "ECL", "CANT", "SAB", "ECLO"]);
+
+            let cat = 'Historicos';
+            if (code === 'SAL') cat = 'Salmos';
+            else if (setEv.has(code)) cat = 'Evangelio';
+            else if (setNt.has(code)) cat = 'Nuevo Testamento';
+            else if (setProf.has(code)) cat = 'Profeticos';
+            else if (setSap.has(code)) cat = 'Sapienciales';
+            else cat = 'Historicos';
+
+            if (cat === 'Historicos' && soloPentCalc && !esPentateuco(parsed.libro)) {
+                return match;
+            }
+            if ((cat === 'Salmos' || cat === 'Sapienciales') && !incluirExtras) {
+                return match;
+            }
+
+            seqCounter++;
+            citasList.push({
+                seqId: seqCounter,
+                id: seqCounter,
+                citaOriginal: parsed.citaOriginal,
+                citaCompleta: parsed.citaCompleta || parsed.citaOriginal,
+                cleanText: cleanText,
+                libro: parsed.libro,
+                libroNombre: parsed.libroNombre || NOMBRES_LIBROS[parsed.libro] || parsed.libro,
+                capitulo: parsed.capitulo,
+                versiculoInicio: parsed.versiculoInicio,
+                versiculoFin: parsed.versiculoFin,
+                continuidad: parsed.continuidad,
+                categoria: cat,
+                textoRef: parsed.textoRef,
+                chars: calcularCaracteresCita(parsed)
+            });
+        }
+        return match;
+    });
+
+    if (usarUnidas) {
+        const mergedList = unirSegmentosContiguos(citasList);
+        mergedList.forEach((c, idx) => {
+            c.seqId = idx + 1;
+            c.id = idx + 1;
+        });
+        return mergedList;
+    }
+    return citasList;
+}
+
+function calcularDistribucionLineal(citas, k, criterio = "rotativo") {
     if (!citas || citas.length === 0) return [];
-    const ordenadas = ordenarCitasAsc(citas);
+    const ordenadas = (criterio === "rotativo") ? [...citas] : ordenarCitasAsc(citas);
     const n = ordenadas.length;
     const numPart = Math.max(1, Math.min(k, n));
 
@@ -1179,7 +1423,30 @@ function calcularDistribucionLineal(citas, k, criterio = "caracteres") {
         }];
     }
 
-    // 1. Asignar pesos según el criterio seleccionado
+    // 1. MODO ROTATIVO / ALTERNADO (POR DEFECTO):
+    // Asigna la 1ª cita al 1º, la 2ª al 2º... y así rotativamente entre los K participantes siguiendo el orden secuencial de lectura
+    if (criterio === "rotativo") {
+        const buckets = Array.from({ length: numPart }, () => []);
+        ordenadas.forEach((cita, idx) => {
+            const pIdx = idx % numPart;
+            cita.hermano = pIdx + 1;
+            buckets[pIdx].push(cita);
+        });
+
+        return buckets.map((slice, p) => {
+            const sliceChars = slice.reduce((sum, c) => sum + calcularCaracteresCita(c), 0);
+            return {
+                hermano: p + 1,
+                citas: slice,
+                rango: obtenerRangoLibros(slice),
+                totalCitas: slice.length,
+                totalCaracteres: sliceChars,
+                porcentaje: totalCharsGeneral > 0 ? Math.round((sliceChars / totalCharsGeneral) * 100) : 0
+            };
+        });
+    }
+
+    // 2. CRITERIOS POR BLOQUES LINEALES CONTINUOS (Programación Dinámica Global)
     let weights;
     if (criterio === "citas") {
         // Cargas iguales de cantidad de citas
@@ -1188,7 +1455,7 @@ function calcularDistribucionLineal(citas, k, criterio = "caracteres") {
         // Texto real + costo cognitivo de búsqueda en Biblia (~200 car. por cita)
         weights = rawChars.map(c => c + 200);
     } else {
-        // 'caracteres' por defecto: tiempo de lectura real
+        // 'caracteres': tiempo de lectura real
         weights = rawChars.map(c => Math.max(50, c));
     }
 
@@ -1199,7 +1466,6 @@ function calcularDistribucionLineal(citas, k, criterio = "caracteres") {
     const totalWeight = prefWeights[n];
     const targetWeight = totalWeight / numPart;
 
-    // 2. Programación Dinámica Global (Mínima Varianza / Error Cuadrático Global)
     // dp[p][i]: costo mínimo de repartir las primeras i citas entre p hermanos
     const dp = Array.from({ length: numPart + 1 }, () => Array(n + 1).fill(Infinity));
     const parent = Array.from({ length: numPart + 1 }, () => Array(n + 1).fill(0));
@@ -1220,7 +1486,7 @@ function calcularDistribucionLineal(citas, k, criterio = "caracteres") {
         }
     }
 
-    // 3. Reconstruir los puntos de corte óptimos
+    // Reconstruir los puntos de corte óptimos
     const splits = [];
     let curr = n;
     for (let p = numPart; p >= 1; p--) {
@@ -1229,7 +1495,7 @@ function calcularDistribucionLineal(citas, k, criterio = "caracteres") {
     }
     splits.unshift(0);
 
-    // 4. Generar particiones resultantes con estadísticas de balance
+    // Generar particiones resultantes con estadísticas de balance
     const partitions = [];
     for (let p = 0; p < numPart; p++) {
         const from = splits[p];
@@ -1262,6 +1528,7 @@ function abrirCalculadora(item) {
         calcCheckUnido.checked = (typeof item.estaUnido === 'boolean') ? item.estaUnido : (checkPericopas ? checkPericopas.checked : false);
     }
     renderizarCalculadora();
+    setCalcViewTab(calcActiveView || "articulo");
     modalCalculadora.style.display = "flex";
     document.body.classList.add("modal-open");
 }
@@ -1271,47 +1538,198 @@ function cerrarCalculadora() {
     document.body.classList.remove("modal-open");
 }
 
+function setCalcViewTab(tabKey) {
+    calcActiveView = tabKey;
+    if (calcViewsWrapper) {
+        calcViewsWrapper.className = `calc-views-wrapper view-${tabKey}`;
+    }
+    if (calcTabBtnCards) calcTabBtnCards.classList.toggle("active", tabKey === "cards");
+    if (calcTabBtnArticulo) calcTabBtnArticulo.classList.toggle("active", tabKey === "articulo");
+}
+
+function formatearArticuloConAsignaciones(rawHtml, relacionados, particiones, item, criterio = "rotativo", soloPentCalc = false, incluirExtras = false, usarUnidas = false) {
+    if (!rawHtml) return "";
+    let lastBookInfo = null;
+    let seqIndex = 0;
+    const numPart = particiones.length;
+
+    // Construir lista plana de perícopas asignadas a cada hermano
+    const pericopasList = [];
+    particiones.forEach(p => {
+        p.citas.forEach(c => {
+            const ini = c.versiculoInicio || 1;
+            const fin = (c.continuidad === 's' ? ini + 1 : (c.continuidad === 'ss' ? 9999 : (c.versiculoFin || (c.versiculoInicio ? ini : 9999))));
+            pericopasList.push({
+                cita: c,
+                hermano: p.hermano,
+                seqId: c.seqId,
+                libro: c.libro,
+                libroNombre: c.libroNombre || NOMBRES_LIBROS[c.libro] || c.libro,
+                capitulo: c.capitulo,
+                start: ini,
+                end: fin,
+                citaOriginal: c.citaOriginal,
+                citaCompleta: c.citaCompleta || c.citaOriginal,
+                textoRef: c.textoRef,
+                encounteredCount: 0
+            });
+        });
+    });
+
+    const buscarPericopaParaCita = (parsed) => {
+        if (!parsed) return null;
+        const cIni = parsed.versiculoInicio || 1;
+        const cFin = (parsed.continuidad === 's' ? cIni + 1 : (parsed.continuidad === 'ss' ? 9999 : (parsed.versiculoFin || cIni)));
+
+        // Buscar coincidencia exacta o por contención en perícopa unificada
+        for (const peri of pericopasList) {
+            if (peri.libro === parsed.libro && peri.capitulo === parsed.capitulo) {
+                if (cIni >= peri.start && cFin <= peri.end) {
+                    return peri;
+                }
+                if (peri.start === 1 && peri.end >= 9990) {
+                    return peri;
+                }
+            }
+        }
+        return null;
+    };
+
+    let html = rawHtml.replace(/<cite[^>]*>([\s\S]*?)<\/cite>/gi, (match, citeText) => {
+        const cleanText = citeText.replace(/<[^>]*>/g, '').trim();
+        if (!cleanText) return match;
+
+        const parsed = parseSmartQuoteClient(cleanText, lastBookInfo);
+        if (parsed) {
+            lastBookInfo = { key: parsed.key, lastCap: parsed.capitulo };
+            const bookCode = parsed.libro;
+            const bookName = parsed.libroNombre || NOMBRES_LIBROS[bookCode] || bookCode;
+            const cap = parsed.capitulo;
+            const vIni = (parsed.versiculoInicio !== null && parsed.versiculoInicio !== undefined) ? parsed.versiculoInicio : '';
+            const vFin = (parsed.versiculoFin !== null && parsed.versiculoFin !== undefined) ? parsed.versiculoFin : '';
+            const cont = parsed.continuidad || '';
+            const textRef = parsed.textoRef;
+
+            const code = (bookCode || '').toUpperCase().trim();
+            const setEv = new Set(["MT", "MC", "LC", "JN"]);
+            const setNt = new Set(["HCH", "ROM", "1COR", "2COR", "GAL", "EF", "FLP", "COL", "1TES", "2TES", "1TIM", "2TIM", "TIT", "FLM", "HEB", "ST", "1PE", "2PE", "1JN", "2JN", "3JN", "JUDAS", "AP"]);
+            const setProf = new Set(["IS", "JER", "LAM", "BAR", "EZ", "DAN", "OS", "JL", "AM", "ABD", "JON", "MIQ", "NAH", "HAB", "SOF", "AG", "ZAC", "MAL"]);
+            const setSap = new Set(["JOB", "PROV", "ECL", "CANT", "SAB", "ECLO"]);
+
+            let cat = 'Historicos';
+            if (code === 'SAL') cat = 'Salmos';
+            else if (setEv.has(code)) cat = 'Evangelio';
+            else if (setNt.has(code)) cat = 'Nuevo Testamento';
+            else if (setProf.has(code)) cat = 'Profeticos';
+            else if (setSap.has(code)) cat = 'Sapienciales';
+            else cat = 'Historicos';
+
+            if (cat === 'Historicos' && soloPentCalc && !esPentateuco(bookCode)) {
+                return `<cite class="cite-pill cite-unassigned" data-cite="${parsed.citaOriginal}" data-full-name="${parsed.citaCompleta}" data-book="${bookCode}" data-book-name="${bookName}" data-cap="${cap}" data-vini="${vIni}" data-vfin="${vFin}" data-cont="${cont}" data-ref="${textRef}" data-raw="${cleanText}"><span class="cite-pill-txt">${cleanText}</span></cite>`;
+            }
+            if ((cat === 'Salmos' || cat === 'Sapienciales') && !incluirExtras) {
+                return `<cite class="cite-pill cite-unassigned" data-cite="${parsed.citaOriginal}" data-full-name="${parsed.citaCompleta}" data-book="${bookCode}" data-book-name="${bookName}" data-cap="${cap}" data-vini="${vIni}" data-vfin="${vFin}" data-cont="${cont}" data-ref="${textRef}" data-raw="${cleanText}"><span class="cite-pill-txt">${cleanText}</span></cite>`;
+            }
+
+            const peri = buscarPericopaParaCita(parsed);
+
+            if (peri) {
+                peri.encounteredCount++;
+                const hermano = peri.hermano;
+
+                if (peri.encounteredCount === 1) {
+                    // Primera aparición: Turno de lectura asignado
+                    seqIndex++;
+                    const seqShow = peri.seqId || seqIndex;
+                    return `<cite class="cite-pill cite-assigned assigned-h${hermano}" data-seq="${seqShow}" data-cite="${peri.citaOriginal}" data-full-name="${peri.citaCompleta || peri.citaOriginal}" data-book="${bookCode}" data-book-name="${bookName}" data-cap="${cap}" data-vini="${vIni}" data-vfin="${vFin}" data-cont="${cont}" data-ref="${textRef}" data-raw="${cleanText}" data-hermano="${hermano}" title="📖 #${seqShow} ${peri.citaCompleta || peri.citaOriginal} — Proclama: Hermano ${hermano} (Toca para leer el texto bíblico)"><span class="cite-seq-badge">#${seqShow}</span><span class="cite-pill-txt">${cleanText}</span><span class="cite-h-badge h-badge-${hermano}">H${hermano}</span></cite>`;
+                } else {
+                    // Aparición posterior que ya está incluida en una perícopa asignada
+                    return `<cite class="cite-pill cite-pericopa-merged assigned-h${hermano}" data-is-pericopa="true" data-pericopa="${peri.citaCompleta || peri.citaOriginal}" data-hermano="${hermano}" title="🔗 Perícopa ya asignada al Hermano ${hermano} (incluida en #${peri.seqId || 1} ${peri.citaCompleta || peri.citaOriginal})"><span class="cite-pill-txt">${cleanText}</span><span class="cite-pericopa-tag">🔗 Perícopa</span><span class="cite-h-badge h-badge-${hermano}">H${hermano}</span></cite>`;
+                }
+            }
+        }
+
+        return `<cite class="cite-pill" data-cite="${cleanText}" data-raw="${cleanText}">${cleanText}</cite>`;
+    });
+
+    // 2. Transformar enlaces cruzados de Léon-Dufour
+    html = html.replace(/<a class="otro" href="([^"]*)"[^>]*>([sS]*?)<\/a>/gi, (match, href, linkText) => {
+        const cleanWord = linkText.replace(/<[^>]*>/g, '').trim();
+        return `<a class="otro" data-palabra="${cleanWord}" title="Explorar tema: ${cleanWord}">${linkText}</a>`;
+    });
+
+    // 3. Agregar caja de temas y vocablos relacionados al final
+    if (relacionados && relacionados.length > 0) {
+        html += `
+            <div class="articulo-relacionados-box">
+                <div class="articulo-relacionados-title">
+                    <span>🔗</span> Temas y Vocablos Teológicos Relacionados:
+                </div>
+                <div class="articulo-relacionados-chips">
+        `;
+        relacionados.forEach(rel => {
+            const nombreRel = (typeof rel === 'object' && rel.text) ? rel.text : rel;
+            html += `<button class="chip-relacionado" data-palabra="${nombreRel}" title="Ver tema teológico '${nombreRel}'">${nombreRel}</button>`;
+        });
+        html += `
+                </div>
+            </div>
+        `;
+    }
+
+    return html;
+}
+
 function renderizarCalculadora() {
     if (!palabraCalculadoraActual) return;
     const item = palabraCalculadoraActual;
     const usarUnidas = calcCheckUnido.checked;
     const incluirExtras = calcCheckExtras.checked;
     const soloPentCalc = calcCheckPentateuco ? calcCheckPentateuco.checked : false;
+    const criterioActual = calcSelectCriterio ? calcSelectCriterio.value : "rotativo";
 
-    // Recolectar citas de la palabra según filtros de la calculadora
-    let citasAConsolidar = [];
-    const procesar = (arr) => {
-        if (!arr) return [];
-        return usarUnidas ? unirSegmentosContiguos(arr) : arr;
-    };
+    const vocabKey = item.vocabKey || item.palabra;
+    const datosEntrada = (dataGlobalRef && dataGlobalRef.palabras) ? dataGlobalRef.palabras[vocabKey] : null;
+    const rawContenido = (datosEntrada && datosEntrada.contenido) ? datosEntrada.contenido : (item.contenido || "");
+    const relacionados = (datosEntrada && datosEntrada.relacionados) ? datosEntrada.relacionados : (item.relacionados || []);
 
-    const citasHistBase = item.lecturas.Historicos || [];
-    const citasHistFiltradas = soloPentCalc ? citasHistBase.filter(c => esPentateuco(c.libro)) : citasHistBase;
+    let citasFinales;
+    if (criterioActual === "rotativo" && rawContenido) {
+        citasFinales = extraerCitasEnOrdenDeTexto(rawContenido, item, usarUnidas, soloPentCalc, incluirExtras);
+    } else {
+        let citasAConsolidar = [];
+        const procesar = (arr) => {
+            if (!arr) return [];
+            return usarUnidas ? unirSegmentosContiguos(arr) : arr;
+        };
 
-    citasAConsolidar.push(...procesar(citasHistFiltradas));
-    citasAConsolidar.push(...procesar(item.lecturas.Profeticos));
-    citasAConsolidar.push(...procesar(item.lecturas["Nuevo Testamento"]));
-    citasAConsolidar.push(...procesar(item.lecturas.Evangelio));
+        const citasHistBase = item.lecturas.Historicos || [];
+        const citasHistFiltradas = soloPentCalc ? citasHistBase.filter(c => esPentateuco(c.libro)) : citasHistBase;
 
-    if (incluirExtras) {
-        citasAConsolidar.push(...procesar(item.lecturas.Salmos));
-        citasAConsolidar.push(...procesar(item.lecturas.Sapienciales));
+        citasAConsolidar.push(...procesar(citasHistFiltradas));
+        citasAConsolidar.push(...procesar(item.lecturas.Profeticos));
+        citasAConsolidar.push(...procesar(item.lecturas["Nuevo Testamento"]));
+        citasAConsolidar.push(...procesar(item.lecturas.Evangelio));
+
+        if (incluirExtras) {
+            citasAConsolidar.push(...procesar(item.lecturas.Salmos));
+            citasAConsolidar.push(...procesar(item.lecturas.Sapienciales));
+        }
+
+        citasFinales = ordenarCitasAsc(citasAConsolidar);
     }
 
-    // Ordenar de forma canónica bíblica para garantizar búsqueda lineal continua
-    const citasFinales = ordenarCitasAsc(citasAConsolidar);
     const totalLecturas = citasFinales.length;
     const totalCharsGeneral = citasFinales.reduce((sum, c) => sum + calcularCaracteresCita(c), 0);
 
     numPartDisplay.textContent = numParticipantesActual;
-    calcModalSubtitulo.textContent = `${totalLecturas} ${usarUnidas ? 'perícopas unidas' : 'citas'} (${totalCharsGeneral.toLocaleString()} caracteres) en orden bíblico entre ${numParticipantesActual} participantes`;
+    calcModalSubtitulo.textContent = `${totalLecturas} ${usarUnidas ? 'perícopas unidas' : 'citas'} (${totalCharsGeneral.toLocaleString()} caracteres) entre ${numParticipantesActual} participantes`;
 
     // Actualizar botones chips activos
     chipNums.forEach(chip => {
         chip.classList.toggle("active", parseInt(chip.dataset.num, 10) === numParticipantesActual);
     });
 
-    const criterioActual = calcSelectCriterio ? calcSelectCriterio.value : "caracteres";
     const particiones = calcularDistribucionLineal(citasFinales, numParticipantesActual, criterioActual);
     const promedioChars = Math.round(totalCharsGeneral / Math.max(1, particiones.length));
 
@@ -1322,7 +1740,12 @@ function renderizarCalculadora() {
     const devMax = (maxPct - minPct) / 2;
 
     if (calcBalanceIndicator) {
-        if (devMax <= 3.5) {
+        if (criterioActual === "rotativo") {
+            calcBalanceIndicator.innerHTML = `🔄 Turno Alternado (Rotativo)`;
+            calcBalanceIndicator.style.background = "#eff6ff";
+            calcBalanceIndicator.style.color = "#1e3a8a";
+            calcBalanceIndicator.style.borderColor = "#bfdbfe";
+        } else if (devMax <= 3.5) {
             calcBalanceIndicator.innerHTML = `⚖️ Balance Óptimo (±${devMax.toFixed(1)}%)`;
             calcBalanceIndicator.style.background = "#ecfdf5";
             calcBalanceIndicator.style.color = "#065f46";
@@ -1335,15 +1758,17 @@ function renderizarCalculadora() {
         }
     }
 
-    if (criterioActual === "citas") {
-        calcSummaryText.textContent = `Reparto por cantidad de citas: cada hermano recibe un número similar de lecturas en orden bíblico continuo.`;
+    if (criterioActual === "rotativo") {
+        calcSummaryText.textContent = `Reparto alternado rotativo: la 1ª cita va al 1º, la 2ª al 2º y así sucesivamente por turnos entre los ${numParticipantesActual} participantes.`;
+    } else if (criterioActual === "citas") {
+        calcSummaryText.textContent = `Reparto en bloques continuos por cantidad de citas: cada hermano recibe un número similar de lecturas en un solo tramo de la Biblia.`;
     } else if (criterioActual === "hibrido") {
-        calcSummaryText.textContent = `Reparto híbrido: equilibra el volumen de texto (~${promedioChars.toLocaleString()} car.) y el esfuerzo de búsqueda en la Biblia.`;
+        calcSummaryText.textContent = `Reparto híbrido en bloques continuos: equilibra el volumen de texto (~${promedioChars.toLocaleString()} car.) y el esfuerzo de búsqueda en la Biblia.`;
     } else {
-        calcSummaryText.textContent = `Reparto por tiempo de lectura (DP Óptimo): equilibra el volumen de texto (~${promedioChars.toLocaleString()} car. por hermano) para igualar el tiempo de preparación.`;
+        calcSummaryText.textContent = `Reparto por tiempo de lectura (Bloques DP Óptimo): equilibra el volumen de texto (~${promedioChars.toLocaleString()} car. por hermano) para igualar el tiempo de preparación.`;
     }
 
-    // Renderizar tarjetas por hermano
+    // 1. Renderizar tarjetas por hermano
     contenedorHermanos.innerHTML = "";
     particiones.forEach(p => {
         const hCard = document.createElement("div");
@@ -1355,7 +1780,7 @@ function renderizarCalculadora() {
         const hTitleBox = document.createElement("div");
         hTitleBox.className = "hermano-title-box";
         hTitleBox.innerHTML = `
-            <div class="hermano-badge-avatar" title="Participante ${p.hermano}">${p.hermano}</div>
+            <div class="hermano-badge-avatar h-badge-${p.hermano}" title="Participante ${p.hermano}">${p.hermano}</div>
             <div>
                 <span class="hermano-name">Hermano ${p.hermano}</span>
                 <div class="hermano-stats-badge">
@@ -1398,6 +1823,78 @@ function renderizarCalculadora() {
         hCard.appendChild(hBody);
         contenedorHermanos.appendChild(hCard);
     });
+
+    // 2. Renderizar texto anotado de Léon-Dufour en la calculadora
+    if (calcArticuloCuerpo) {
+        if (rawContenido) {
+            calcArticuloCuerpo.innerHTML = formatearArticuloConAsignaciones(rawContenido, relacionados, particiones, item, criterioActual, soloPentCalc, incluirExtras, usarUnidas);
+
+            // Activar clics en citas bíblicas dentro del artículo anotado de la calculadora
+            calcArticuloCuerpo.querySelectorAll(".cite-pill").forEach(pill => {
+                pill.onclick = (e) => {
+                    e.stopPropagation();
+                    if (pill.dataset.isPericopa === "true") {
+                        const per = pill.dataset.pericopa || "esta perícopa";
+                        const h = pill.dataset.hermano || "";
+                        mostrarToast(`🔗 Cita ya asignada como parte de la perícopa "${per}" al Hermano ${h}`);
+                        return;
+                    }
+                    const textRef = pill.dataset.ref;
+                    if (textRef && dbTextos[textRef]) {
+                        const citaObj = {
+                            citaOriginal: pill.dataset.cite || pill.dataset.raw,
+                            citaCompleta: pill.dataset.fullName || pill.dataset.cite || pill.dataset.raw,
+                            libro: pill.dataset.book,
+                            libroNombre: pill.dataset.bookName || NOMBRES_LIBROS[pill.dataset.book] || pill.dataset.book,
+                            capitulo: parseInt(pill.dataset.cap, 10),
+                            versiculoInicio: pill.dataset.vini ? parseInt(pill.dataset.vini, 10) : null,
+                            versiculoFin: pill.dataset.vfin ? parseInt(pill.dataset.vfin, 10) : null,
+                            continuidad: pill.dataset.cont || null,
+                            textoRef: textRef
+                        };
+                        abrirModalLectura(citaObj);
+                        return;
+                    }
+                    const citeText = pill.dataset.cite || pill.dataset.raw;
+                    const citaObj = resolverCitaDesdeTexto(citeText, item);
+                    if (citaObj) {
+                        abrirModalLectura(citaObj);
+                    } else {
+                        mostrarToast(`📖 Referencia: ${citeText}`);
+                    }
+                };
+            });
+
+            // Activar clics en temas relacionados
+            calcArticuloCuerpo.querySelectorAll(".otro, .chip-relacionado").forEach(btn => {
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    const termino = btn.dataset.palabra;
+                    cerrarCalculadora();
+                    inputBusqueda.value = termino;
+                    actualizarVista();
+                    mostrarToast(`🔍 Explorando "${termino}"`);
+                };
+            });
+        } else {
+            calcArticuloCuerpo.innerHTML = `
+                <div class="empty-state">
+                    <p>No se encontró el texto completo del artículo de Léon-Dufour para <strong>${item.palabra}</strong>.</p>
+                </div>
+            `;
+        }
+    }
+
+    // 3. Renderizar leyenda de participantes
+    if (calcArticuloLegend) {
+        calcArticuloLegend.innerHTML = "";
+        particiones.forEach(p => {
+            const chipLeg = document.createElement("span");
+            chipLeg.className = `calc-legend-chip assigned-h${p.hermano}`;
+            chipLeg.innerHTML = `<span class="cite-h-badge h-badge-${p.hermano}">H${p.hermano}</span> Hermano ${p.hermano} (${p.totalCitas} citas)`;
+            calcArticuloLegend.appendChild(chipLeg);
+        });
+    }
 }
 
 function copiarAsignacionIndividual(palabra, p) {
@@ -1411,7 +1908,12 @@ function copiarAsignacionIndividual(palabra, p) {
         msg += `${idx + 1}. ${c.citaOriginal} (~${chars.toLocaleString()} car.)\n`;
     });
     msg += `------------------------------------\n`;
-    msg += `Búsqueda lineal en orden bíblico continuo.`;
+    const criterioActual = calcSelectCriterio ? calcSelectCriterio.value : "rotativo";
+    if (criterioActual === "rotativo") {
+        msg += `Reparto alternado rotativo por turnos.`;
+    } else {
+        msg += `Búsqueda lineal en orden bíblico continuo.`;
+    }
 
     navigator.clipboard.writeText(msg).then(() => {
         mostrarToast(`✅ Asignación de Hermano ${p.hermano} copiada al portapapeles`);
@@ -1424,55 +1926,257 @@ function copiarRepartoCompleto() {
     const usarUnidas = calcCheckUnido.checked;
     const incluirExtras = calcCheckExtras.checked;
     const soloPentCalc = calcCheckPentateuco ? calcCheckPentateuco.checked : false;
+    const criterioActual = calcSelectCriterio ? calcSelectCriterio.value : "rotativo";
 
-    let citasAConsolidar = [];
-    const procesar = (arr) => (usarUnidas ? unirSegmentosContiguos(arr) : arr || []);
+    const vocabKey = item.vocabKey || item.palabra;
+    const datosEntrada = (dataGlobalRef && dataGlobalRef.palabras) ? dataGlobalRef.palabras[vocabKey] : null;
+    const rawContenido = (datosEntrada && datosEntrada.contenido) ? datosEntrada.contenido : (item.contenido || "");
 
-    const citasHistBase = item.lecturas.Historicos || [];
-    const citasHistFiltradas = soloPentCalc ? citasHistBase.filter(c => esPentateuco(c.libro)) : citasHistBase;
+    let citasFinales;
+    if (criterioActual === "rotativo" && rawContenido) {
+        citasFinales = extraerCitasEnOrdenDeTexto(rawContenido, item, usarUnidas, soloPentCalc, incluirExtras);
+    } else {
+        let citasAConsolidar = [];
+        const procesar = (arr) => (usarUnidas ? unirSegmentosContiguos(arr) : arr || []);
 
-    citasAConsolidar.push(...procesar(citasHistFiltradas));
-    citasAConsolidar.push(...procesar(item.lecturas.Profeticos));
-    citasAConsolidar.push(...procesar(item.lecturas["Nuevo Testamento"]));
-    citasAConsolidar.push(...procesar(item.lecturas.Evangelio));
+        const citasHistBase = item.lecturas.Historicos || [];
+        const citasHistFiltradas = soloPentCalc ? citasHistBase.filter(c => esPentateuco(c.libro)) : citasHistBase;
 
-    if (incluirExtras) {
-        citasAConsolidar.push(...procesar(item.lecturas.Salmos));
-        citasAConsolidar.push(...procesar(item.lecturas.Sapienciales));
+        citasAConsolidar.push(...procesar(citasHistFiltradas));
+        citasAConsolidar.push(...procesar(item.lecturas.Profeticos));
+        citasAConsolidar.push(...procesar(item.lecturas["Nuevo Testamento"]));
+        citasAConsolidar.push(...procesar(item.lecturas.Evangelio));
+
+        if (incluirExtras) {
+            citasAConsolidar.push(...procesar(item.lecturas.Salmos));
+            citasAConsolidar.push(...procesar(item.lecturas.Sapienciales));
+        }
+
+        citasFinales = ordenarCitasAsc(citasAConsolidar);
     }
 
-    const criterioActual = calcSelectCriterio ? calcSelectCriterio.value : "caracteres";
+    const totalCharsGeneral = citasFinales.reduce((sum, c) => sum + calcularCaracteresCita(c), 0);
+
     const criterioNombres = {
-        caracteres: "Tiempo de Lectura (Caracteres Reales)",
-        hibrido: "Híbrido (Texto + Búsquedas)",
-        citas: "Cantidad de Citas"
+        rotativo: "Alternado / Rotativo (1ª al 1º, 2ª al 2º... por turnos)",
+        caracteres: "Tiempo de Lectura (Caracteres Reales - DP Óptimo)",
+        hibrido: "Híbrido (Texto + Esfuerzo de Búsqueda)",
+        citas: "Cantidad de Citas (Bloques Continuos)"
     };
-    const criterioTxt = criterioNombres[criterioActual] || "Tiempo de Lectura";
+    const criterioTxt = criterioNombres[criterioActual] || "Alternado / Rotativo";
     const particiones = calcularDistribucionLineal(citasFinales, numParticipantesActual, criterioActual);
 
-    let msg = `📖 *REPARTO DE LECTURAS PARA LA PREPARACIÓN*\n`;
-    msg += `Palabra: *"${item.palabra.toUpperCase()}"* (Léon-Dufour)\n`;
-    msg += `👥 ${numParticipantesActual} Participantes | ${citasFinales.length} lecturas (~${totalCharsGeneral.toLocaleString()} caracteres en total)${soloPentCalc ? ' · [Solo Pentateuco]' : ''}\n`;
+    let msg = `📖 *REPARTO COMPLETO DE LECTURAS PARA LA PREPARACIÓN*\n`;
+    msg += `🕊️ Palabra: *"${item.palabra.toUpperCase()}"* (Xavier Léon-Dufour)\n`;
+    msg += `👥 *${numParticipantesActual} Participantes* | ${citasFinales.length} lecturas (~${totalCharsGeneral.toLocaleString()} caracteres en total)${soloPentCalc ? ' · [Solo Pentateuco]' : ''}\n`;
     msg += `⚖️ Criterio: ${criterioTxt}\n`;
     msg += `====================================\n\n`;
 
     particiones.forEach(p => {
-        msg += `👤 *HERMANO ${p.hermano}* (${p.totalCitas} lecturas · ~${p.totalCaracteres.toLocaleString()} car. · ${p.porcentaje}%)\n`;
+        msg += `👤 *HERMANO ${p.hermano}* (${p.totalCitas} lecturas · ~${p.totalCaracteres.toLocaleString()} car. · ${p.porcentaje}% del total)\n`;
         msg += `📖 *Rango:* ${p.rango}\n`;
-        p.citas.forEach(c => {
+        p.citas.forEach((c, idx) => {
             const chars = calcularCaracteresCita(c);
-            msg += `  • ${c.citaOriginal} (~${chars.toLocaleString()} car.)\n`;
+            msg += `  ${idx + 1}. ${c.citaOriginal} (~${chars.toLocaleString()} car.)\n`;
         });
         msg += `\n`;
     });
 
     msg += `====================================\n`;
-    msg += `Distribución lineal óptima por Programación Dinámica. Cada hermano avanza en su Biblia sin retroceder.`;
+    if (criterioActual === "rotativo") {
+        msg += `Reparto alternado rotativo entre los ${numParticipantesActual} participantes (1ª al 1º, 2ª al 2º... por turnos sucesivos según orden de lectura).`;
+    } else {
+        msg += `Distribución lineal óptima por Programación Dinámica. Cada hermano avanza en su Biblia sin retroceder.`;
+    }
 
-    navigator.clipboard.writeText(msg).then(() => {
-        mostrarToast("✅ Reparto completo copiado para WhatsApp");
-    });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(msg).then(() => {
+            mostrarToast(`✅ Reparto completo de los ${numParticipantesActual} hermanos copiado`);
+        }).catch(() => {
+            copiarTextoFallback(msg, `✅ Reparto completo de los ${numParticipantesActual} hermanos copiado`);
+        });
+    } else {
+        copiarTextoFallback(msg, `✅ Reparto completo de los ${numParticipantesActual} hermanos copiado`);
+    }
 }
+
+function copiarTextoFallback(texto, mensajeToast) {
+    const ta = document.createElement("textarea");
+    ta.value = texto;
+    ta.style.position = "fixed";
+    ta.style.left = "-9999px";
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+        document.execCommand("copy");
+        mostrarToast(mensajeToast || "✅ Texto copiado al portapapeles");
+    } catch (e) {
+        mostrarToast("⚠️ No se pudo copiar automáticamente");
+    }
+    document.body.removeChild(ta);
+}
+
+// ==========================================================================
+// GENERADOR DE FICHA INTERACTIVA HTML AUTÓNOMA (CON VOTACIÓN Y BIBLIA OFFLINE)
+// ==========================================================================
+
+function exportarFichaPreparacionHTML() {
+    if (!palabraCalculadoraActual) return;
+    const item = palabraCalculadoraActual;
+    const usarUnidas = calcCheckUnido.checked;
+    const incluirExtras = calcCheckExtras.checked;
+    const soloPentCalc = calcCheckPentateuco ? calcCheckPentateuco.checked : false;
+    const criterioActual = calcSelectCriterio ? calcSelectCriterio.value : "rotativo";
+
+    const htmlCompleto = generarCodigoHTMLFicha(item, numParticipantesActual, criterioActual, usarUnidas, soloPentCalc, incluirExtras, dbTextos);
+
+    const ahora = new Date();
+    const pad = (n) => String(n).padStart(2, "0");
+    const timestamp = `${ahora.getFullYear()}-${pad(ahora.getMonth() + 1)}-${pad(ahora.getDate())}_${pad(ahora.getHours())}-${pad(ahora.getMinutes())}-${pad(ahora.getSeconds())}`;
+
+    const blob = new Blob([htmlCompleto], { type: "text/html;charset=utf-8" });
+    const nombreArchivo = `preparacion_${normalizar(item.palabra)}_${timestamp}.html`;
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = nombreArchivo;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    mostrarToast(`📄 Ficha descargada: ${nombreArchivo}`);
+}
+
+const TEMPLATE_FICHA_BASE = "<!DOCTYPE html>\n<html lang=\"es\" data-theme=\"dark\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>🕊️ Preparación Litúrgica: __PALABRA_MAYUS__ (Léon-Dufour)</title>\n  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n  <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap\" rel=\"stylesheet\">\n  <style>\n    :root {\n      --bg-app: #0b0f19;\n      --bg-card: #131b2e;\n      --bg-header: #070a12;\n      --text-main: #f8fafc;\n      --text-muted: #94a3b8;\n      --border-color: #1e293b;\n      --border-dark: #334155;\n      --primary: #4338ca;\n      --primary-hover: #4f46e5;\n      --accent: #d97706;\n      --success: #059669;\n      --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);\n      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.4);\n      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.5);\n      --radius-sm: 6px;\n      --radius-md: 10px;\n      --radius-lg: 14px;\n      --radius-full: 9999px;\n      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;\n      --font-serif: 'Merriweather', Georgia, serif;\n\n      /* Paleta de Colores Consistente H1 - H12 */\n      --h1-color: #2563eb;\n      --h2-color: #059669;\n      --h3-color: #7c3aed;\n      --h4-color: #d97706;\n      --h5-color: #e11d48;\n      --h6-color: #0891b2;\n      --h7-color: #4338ca;\n      --h8-color: #65a30d;\n      --h9-color: #c026d3;\n      --h10-color: #475569;\n      --h11-color: #b45309;\n      --h12-color: #312e81;\n    }\n\n    [data-theme=\"light\"] {\n      --bg-app: #f8fafc;\n      --bg-card: #ffffff;\n      --bg-header: #ffffff;\n      --text-main: #0f172a;\n      --text-muted: #475569;\n      --border-color: #cbd5e1;\n      --border-dark: #94a3b8;\n      --primary: #2563eb;\n      --primary-hover: #1d4ed8;\n      --accent: #b45309;\n      --success: #047857;\n    }\n\n    * { box-sizing: border-box; margin: 0; padding: 0; }\n    html { scroll-behavior: smooth; }\n    body {\n      font-family: var(--font-sans);\n      background: var(--bg-app);\n      color: var(--text-main);\n      line-height: 1.5;\n      padding-bottom: 60px;\n    }\n\n    /* HEADER NO FIJO (SCROLL NATURAL) */\n    .app-header {\n      background: var(--bg-header);\n      border-bottom: 1px solid var(--border-color);\n      padding: 14px 20px;\n      position: relative;\n    }\n    .header-container {\n      max-width: 1200px;\n      margin: 0 auto;\n      display: flex;\n      justify-content: space-between;\n      align-items: center;\n      flex-wrap: wrap;\n      gap: 12px;\n    }\n    .header-title-box { display: flex; flex-direction: column; gap: 3px; }\n    .header-badge-row { display: flex; gap: 6px; align-items: center; }\n    .badge-dufour {\n      font-size: 0.72rem;\n      font-weight: 700;\n      padding: 2px 8px;\n      border-radius: var(--radius-full);\n      background: rgba(99, 102, 241, 0.15);\n      color: #818cf8;\n      border: 1px solid rgba(99, 102, 241, 0.3);\n    }\n    .badge-preparacion {\n      font-size: 0.72rem;\n      font-weight: 700;\n      padding: 2px 8px;\n      border-radius: var(--radius-full);\n      background: rgba(16, 185, 129, 0.15);\n      color: #34d399;\n      border: 1px solid rgba(16, 185, 129, 0.3);\n    }\n    .word-title {\n      font-size: 1.45rem;\n      font-weight: 800;\n      letter-spacing: -0.5px;\n      color: var(--text-main);\n    }\n    .meta-row {\n      display: flex;\n      gap: 12px;\n      font-size: 0.76rem;\n      color: var(--text-muted);\n      flex-wrap: wrap;\n    }\n\n    .header-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }\n    .btn-hdr {\n      padding: 6px 12px;\n      font-size: 0.78rem;\n      font-weight: 700;\n      border-radius: var(--radius-sm);\n      border: 1px solid var(--border-dark);\n      background: var(--bg-card);\n      color: var(--text-main);\n      cursor: pointer;\n      display: inline-flex;\n      align-items: center;\n      gap: 6px;\n      transition: all 0.2s;\n    }\n    .btn-hdr:hover { border-color: var(--primary); transform: translateY(-1px); }\n    .btn-primary-hdr { background: var(--primary); color: #fff; border-color: var(--primary); }\n    .btn-primary-hdr:hover { background: var(--primary-hover); }\n    .btn-danger-hdr { background: transparent; color: #ef4444; border-color: rgba(239, 68, 68, 0.3); }\n    .btn-danger-hdr:hover { background: rgba(239, 68, 68, 0.1); border-color: #ef4444; }\n\n    /* BARRA DE IDENTIDAD (MI ROL) */\n    .identity-bar {\n      max-width: 1200px;\n      margin: 12px auto 0 auto;\n      padding: 10px 16px;\n      background: var(--bg-card);\n      border: 1px solid var(--border-color);\n      border-radius: var(--radius-md);\n      display: flex;\n      align-items: center;\n      justify-content: space-between;\n      flex-wrap: wrap;\n      gap: 10px;\n    }\n    .identity-chips-group {\n      display: flex;\n      align-items: center;\n      gap: 6px;\n      flex-wrap: wrap;\n    }\n    .identity-label {\n      font-size: 0.8rem;\n      font-weight: 800;\n      color: var(--text-main);\n      display: flex;\n      align-items: center;\n      gap: 5px;\n    }\n    .identity-chip {\n      font-size: 0.74rem;\n      font-weight: 700;\n      padding: 4px 12px;\n      border-radius: var(--radius-full);\n      border: 1.5px solid transparent;\n      cursor: pointer;\n      transition: all 0.15s;\n      background: var(--bg-app);\n      color: var(--text-muted);\n    }\n    .identity-chip:hover {\n      transform: translateY(-1px);\n      filter: brightness(1.2);\n    }\n    .identity-chip.active {\n      font-weight: 800;\n      box-shadow: 0 0 10px rgba(255,255,255,0.25);\n      border-color: #ffffff;\n      color: #ffffff;\n    }\n\n    /* BADGE COLORS CONSISTENCY */\n    .h-badge-1, .assigned-h1 { background: #2563eb; color: #ffffff; }\n    .h-badge-2, .assigned-h2 { background: #059669; color: #ffffff; }\n    .h-badge-3, .assigned-h3 { background: #7c3aed; color: #ffffff; }\n    .h-badge-4, .assigned-h4 { background: #d97706; color: #ffffff; }\n    .h-badge-5, .assigned-h5 { background: #e11d48; color: #ffffff; }\n    .h-badge-6, .assigned-h6 { background: #0891b2; color: #ffffff; }\n    .h-badge-7, .assigned-h7 { background: #4338ca; color: #ffffff; }\n    .h-badge-8, .assigned-h8 { background: #65a30d; color: #ffffff; }\n    .h-badge-9, .assigned-h9 { background: #c026d3; color: #ffffff; }\n    .h-badge-10, .assigned-h10 { background: #475569; color: #ffffff; }\n    .h-badge-11, .assigned-h11 { background: #b45309; color: #ffffff; }\n    .h-badge-12, .assigned-h12 { background: #312e81; color: #ffffff; }\n\n    /* Pill borders & tints in dark mode */\n    .cite-assigned.assigned-h1 { border-color: #3b82f6; background: rgba(59, 130, 246, 0.18); color: #93c5fd; }\n    .cite-assigned.assigned-h2 { border-color: #10b981; background: rgba(16, 185, 129, 0.18); color: #6ee7b7; }\n    .cite-assigned.assigned-h3 { border-color: #8b5cf6; background: rgba(139, 92, 246, 0.18); color: #c4b5fd; }\n    .cite-assigned.assigned-h4 { border-color: #f59e0b; background: rgba(245, 158, 11, 0.18); color: #fde68a; }\n    .cite-assigned.assigned-h5 { border-color: #f43f5e; background: rgba(244, 63, 94, 0.18); color: #fda4af; }\n    .cite-assigned.assigned-h6 { border-color: #06b6d4; background: rgba(6, 182, 212, 0.18); color: #67e8f9; }\n    .cite-assigned.assigned-h7 { border-color: #6366f1; background: rgba(99, 102, 241, 0.18); color: #a5b4fc; }\n    .cite-assigned.assigned-h8 { border-color: #84cc16; background: rgba(132, 204, 22, 0.18); color: #bef264; }\n    .cite-assigned.assigned-h9 { border-color: #d946ef; background: rgba(217, 70, 239, 0.18); color: #f0abfc; }\n    .cite-assigned.assigned-h10 { border-color: #64748b; background: rgba(100, 116, 139, 0.18); color: #cbd5e1; }\n    .cite-assigned.assigned-h11 { border-color: #d97706; background: rgba(217, 119, 6, 0.18); color: #fed7aa; }\n    .cite-assigned.assigned-h12 { border-color: #4338ca; background: rgba(67, 56, 202, 0.18); color: #c7d2fe; }\n\n    /* Pill borders & tints in light mode */\n    [data-theme=\"light\"] .cite-assigned.assigned-h1 { border-color: #93c5fd; background: #eff6ff; color: #1e40af; }\n    [data-theme=\"light\"] .cite-assigned.assigned-h2 { border-color: #a7f3d0; background: #ecfdf5; color: #065f46; }\n    [data-theme=\"light\"] .cite-assigned.assigned-h3 { border-color: #ddd6fe; background: #f5f3ff; color: #5b21b6; }\n    [data-theme=\"light\"] .cite-assigned.assigned-h4 { border-color: #fde68a; background: #fffbeb; color: #92400e; }\n    [data-theme=\"light\"] .cite-assigned.assigned-h5 { border-color: #fecdd3; background: #fff1f2; color: #9f1239; }\n    [data-theme=\"light\"] .cite-assigned.assigned-h6 { border-color: #a5f3fc; background: #ecfeff; color: #155e75; }\n    [data-theme=\"light\"] .cite-assigned.assigned-h7 { border-color: #c7d2fe; background: #eef2ff; color: #3730a3; }\n    [data-theme=\"light\"] .cite-assigned.assigned-h8 { border-color: #d9f99d; background: #f7fee7; color: #3f6212; }\n    [data-theme=\"light\"] .cite-assigned.assigned-h9 { border-color: #f5d0fe; background: #fdf4ff; color: #86198f; }\n    [data-theme=\"light\"] .cite-assigned.assigned-h10 { border-color: #cbd5e1; background: #f8fafc; color: #1e293b; }\n    [data-theme=\"light\"] .cite-assigned.assigned-h11 { border-color: #fed7aa; background: #fff7ed; color: #9a3412; }\n    [data-theme=\"light\"] .cite-assigned.assigned-h12 { border-color: #c7d2fe; background: #eef2ff; color: #312e81; }\n\n    /* Pastillas para citas de perícopas ya asignadas previamente */\n    .cite-pill.cite-pericopa-merged {\n      position: relative;\n      padding: 2px 4px 2px 6px;\n      display: inline-flex;\n      align-items: center;\n      gap: 4px;\n      font-weight: 700;\n      font-size: 0.82rem;\n      line-height: 1.2;\n      border-radius: var(--radius-sm);\n      border-style: dashed !important;\n      opacity: 0.85;\n      cursor: help;\n      margin: 0 2px;\n      transition: all 0.15s ease;\n    }\n    .cite-pill.cite-pericopa-merged:hover {\n      opacity: 1;\n      filter: brightness(1.15);\n      transform: translateY(-1px);\n    }\n    .cite-pericopa-tag {\n      font-size: 0.65rem;\n      font-weight: 800;\n      opacity: 0.9;\n      margin-left: 1px;\n      margin-right: 1px;\n      background: rgba(255, 255, 255, 0.12);\n      padding: 1px 4px;\n      border-radius: 3px;\n    }\n    [data-theme=\"light\"] .cite-pericopa-tag {\n      background: rgba(0, 0, 0, 0.08);\n    }\n\n    /* Resaltado de citas cuando coincide con Mi Rol */\n    .cite-pill.is-my-turn {\n      outline: 2.5px solid #fbbf24;\n      box-shadow: 0 0 10px rgba(251, 191, 36, 0.45);\n      animation: pulseMyTurn 2s infinite ease-in-out;\n    }\n    @keyframes pulseMyTurn {\n      0%, 100% { transform: scale(1); }\n      50% { transform: scale(1.04); }\n    }\n\n    /* MAIN CONTINUOUS CONTAINER */\n    .main-content {\n      max-width: 1200px;\n      margin: 16px auto;\n      padding: 0 16px;\n      display: flex;\n      flex-direction: column;\n      gap: 24px;\n    }\n\n    /* SECCIÓN 1: ARTÍCULO DE LÉON-DUFOUR */\n    .section-card {\n      background: var(--bg-card);\n      border: 1px solid var(--border-color);\n      border-radius: var(--radius-lg);\n      overflow: hidden;\n      box-shadow: var(--shadow-sm);\n    }\n    .section-header-bar {\n      padding: 14px 20px;\n      background: var(--bg-app);\n      border-bottom: 1px solid var(--border-color);\n      display: flex;\n      justify-content: space-between;\n      align-items: center;\n      flex-wrap: wrap;\n      gap: 8px;\n    }\n    .section-header-title {\n      font-size: 1.05rem;\n      font-weight: 800;\n      color: var(--text-main);\n      display: flex;\n      align-items: center;\n      gap: 8px;\n    }\n    .section-header-sub {\n      font-size: 0.76rem;\n      color: var(--text-muted);\n    }\n\n    .articulo-body {\n      font-family: var(--font-serif);\n      font-size: 1.05rem;\n      line-height: 1.85;\n      padding: 24px;\n      color: var(--text-main);\n    }\n    .articulo-body p { margin-bottom: 18px; text-align: justify; }\n    .articulo-body .hf1, .articulo-body .hf2, .articulo-body .hf3 {\n      font-weight: 800; font-family: var(--font-sans); margin-bottom: 8px; display: inline;\n    }\n    .articulo-body .fid { font-weight: 800; font-family: var(--font-sans); color: #818cf8; margin-right: 4px; }\n\n    .cite-pill {\n      font-style: normal;\n      font-family: var(--font-sans);\n      font-size: 0.82rem;\n      font-weight: 700;\n      padding: 2px 6px;\n      border-radius: var(--radius-sm);\n      cursor: pointer;\n      display: inline-flex;\n      align-items: center;\n      gap: 4px;\n      margin: 0 2px;\n      transition: all 0.15s ease;\n    }\n    .cite-pill:hover {\n      transform: translateY(-1px);\n      box-shadow: var(--shadow-sm);\n      filter: brightness(1.15);\n    }\n    .cite-seq-badge {\n      font-size: 0.65rem;\n      font-weight: 800;\n      opacity: 0.8;\n      margin-right: 1px;\n    }\n    .cite-h-badge {\n      font-size: 0.65rem;\n      font-weight: 800;\n      padding: 1px 5px;\n      border-radius: 3px;\n      color: #fff;\n    }\n    .cite-my-vote-tag {\n      font-size: 0.68rem;\n      font-weight: 800;\n      color: #38bdf8;\n      background: rgba(56, 189, 248, 0.18);\n      border: 1px solid rgba(56, 189, 248, 0.3);\n      padding: 1px 4px;\n      border-radius: 3px;\n      display: inline-block;\n    }\n    .cite-unassigned {\n      background: rgba(255,255,255,0.03);\n      color: var(--text-muted);\n      border: 1px dashed var(--border-color);\n    }\n\n    /* SECCIÓN 2: LECTURAS ORGANIZADAS Y VOTACIÓN (JUSTO DEBAJO DEL TEXTO) */\n    .filter-pills-bar {\n      display: flex;\n      gap: 6px;\n      padding: 12px 20px;\n      background: var(--bg-app);\n      border-bottom: 1px solid var(--border-color);\n      overflow-x: auto;\n    }\n    .filter-pill-btn {\n      padding: 6px 14px;\n      font-size: 0.78rem;\n      font-weight: 700;\n      border-radius: var(--radius-full);\n      border: 1px solid var(--border-dark);\n      background: var(--bg-card);\n      color: var(--text-muted);\n      cursor: pointer;\n      white-space: nowrap;\n      transition: all 0.15s;\n    }\n    .filter-pill-btn:hover { color: var(--text-main); border-color: var(--primary); }\n    .filter-pill-btn.active {\n      background: var(--primary);\n      color: #ffffff;\n      border-color: var(--primary);\n    }\n\n    .citas-list-grid {\n      padding: 16px 20px;\n      display: flex;\n      flex-direction: column;\n      gap: 12px;\n    }\n\n    .escrutinio-card {\n      background: var(--bg-app);\n      border: 1px solid var(--border-color);\n      border-radius: var(--radius-md);\n      padding: 12px 16px;\n      display: flex;\n      flex-direction: column;\n      gap: 10px;\n      transition: all 0.15s;\n    }\n    .escrutinio-card:hover {\n      border-color: rgba(99, 102, 241, 0.4);\n    }\n    .escrutinio-card-top {\n      display: flex;\n      justify-content: space-between;\n      align-items: center;\n      flex-wrap: wrap;\n      gap: 8px;\n    }\n    .escrutinio-cite-btn {\n      background: none;\n      border: none;\n      color: var(--text-main);\n      font-size: 0.95rem;\n      font-weight: 800;\n      cursor: pointer;\n      text-align: left;\n      display: flex;\n      align-items: center;\n      gap: 8px;\n    }\n    .escrutinio-cite-btn:hover { color: #818cf8; text-decoration: underline; }\n\n    /* FILA COMPARATIVA DE VOTOS (PERSONAL VS COLECTIVO) */\n    .votes-comparison-box {\n      background: var(--bg-card);\n      border: 1px solid var(--border-color);\n      border-radius: var(--radius-sm);\n      padding: 10px 14px;\n      display: flex;\n      justify-content: space-between;\n      align-items: center;\n      flex-wrap: wrap;\n      gap: 12px;\n    }\n    .my-vote-ref-box {\n      display: flex;\n      align-items: center;\n      gap: 8px;\n      font-size: 0.78rem;\n    }\n    .my-vote-ref-badge {\n      color: #38bdf8;\n      font-weight: 800;\n      background: rgba(56, 189, 248, 0.15);\n      border: 1px solid rgba(56, 189, 248, 0.3);\n      padding: 2px 8px;\n      border-radius: 4px;\n      font-size: 0.78rem;\n    }\n    .collective-vote-box {\n      display: flex;\n      align-items: center;\n      gap: 10px;\n      flex-wrap: wrap;\n    }\n    .stars-group {\n      display: inline-flex;\n      align-items: center;\n      gap: 3px;\n    }\n    .star-btn {\n      background: none;\n      border: none;\n      font-size: 1.25rem;\n      color: #475569;\n      cursor: pointer;\n      transition: transform 0.1s, color 0.1s;\n      padding: 0 2px;\n      line-height: 1;\n    }\n    .star-btn.active {\n      color: #f59e0b;\n      text-shadow: 0 0 6px rgba(245, 158, 11, 0.5);\n    }\n    .star-btn:hover {\n      transform: scale(1.2);\n      color: #fbbf24;\n    }\n    .star-btn-personal.active {\n      color: #38bdf8;\n      text-shadow: 0 0 6px rgba(56, 189, 248, 0.5);\n    }\n    .stepper-group {\n      display: inline-flex;\n      align-items: center;\n      gap: 6px;\n    }\n    .btn-step {\n      width: 26px;\n      height: 26px;\n      border-radius: 4px;\n      border: 1px solid var(--border-dark);\n      background: var(--bg-app);\n      color: var(--text-main);\n      font-weight: bold;\n      font-size: 0.9rem;\n      cursor: pointer;\n      display: flex;\n      align-items: center;\n      justify-content: center;\n    }\n    .btn-step:hover {\n      background: var(--primary);\n      color: #fff;\n      border-color: var(--primary);\n    }\n    .score-display {\n      font-size: 0.82rem;\n      font-weight: 800;\n      min-width: 55px;\n      text-align: center;\n      color: var(--text-main);\n    }\n    .note-input {\n      width: 100%;\n      background: var(--bg-card);\n      border: 1px solid var(--border-color);\n      border-radius: 4px;\n      padding: 6px 10px;\n      font-size: 0.78rem;\n      color: var(--text-main);\n      font-family: inherit;\n    }\n    .note-input:focus {\n      outline: none;\n      border-color: var(--primary);\n    }\n\n    /* SECCIÓN 3: CUADRO DE CANDIDATAS Y PODIO FINAL */\n    .podium-grid {\n      display: grid;\n      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));\n      gap: 12px;\n      padding: 16px 20px;\n    }\n    .podium-card {\n      background: var(--bg-app);\n      border: 1.5px solid var(--border-color);\n      border-radius: var(--radius-md);\n      padding: 12px;\n      display: flex;\n      flex-direction: column;\n      gap: 8px;\n    }\n    .podium-card.has-winner {\n      border-color: #f59e0b;\n      box-shadow: 0 0 12px rgba(245, 158, 11, 0.15);\n    }\n    .podium-card.has-tie {\n      border-color: #06b6d4;\n      box-shadow: 0 0 12px rgba(6, 182, 212, 0.15);\n    }\n    .podium-cat-header {\n      display: flex;\n      justify-content: space-between;\n      align-items: center;\n    }\n    .podium-cat-name {\n      font-size: 0.8rem;\n      font-weight: 800;\n      text-transform: uppercase;\n      letter-spacing: 0.3px;\n      display: flex;\n      align-items: center;\n      gap: 4px;\n    }\n    .cat-hist { color: #f97316; }\n    .cat-prof { color: #8b5cf6; }\n    .cat-nt { color: #3b82f6; }\n    .cat-ev { color: #10b981; }\n    .cat-sal { color: #ec4899; }\n\n    .podium-winner-banner {\n      background: rgba(245, 158, 11, 0.12);\n      border: 1px solid rgba(245, 158, 11, 0.3);\n      padding: 8px;\n      border-radius: var(--radius-sm);\n      display: flex;\n      flex-direction: column;\n      gap: 2px;\n    }\n    .winner-label {\n      font-size: 0.68rem;\n      font-weight: 800;\n      color: #f59e0b;\n      text-transform: uppercase;\n    }\n    .winner-cite {\n      font-size: 0.95rem;\n      font-weight: 800;\n      color: var(--text-main);\n      cursor: pointer;\n    }\n    .winner-cite:hover { text-decoration: underline; color: #fbbf24; }\n    .winner-score {\n      font-size: 0.72rem;\n      color: #fcd34d;\n      font-weight: 700;\n    }\n\n    .podium-tie-banner {\n      background: rgba(6, 182, 212, 0.12);\n      border: 1px solid rgba(6, 182, 212, 0.3);\n      padding: 8px;\n      border-radius: var(--radius-sm);\n      display: flex;\n      flex-direction: column;\n      gap: 2px;\n    }\n    .tie-label {\n      font-size: 0.68rem;\n      font-weight: 800;\n      color: #06b6d4;\n      text-transform: uppercase;\n    }\n    .podium-empty-banner {\n      font-size: 0.78rem;\n      color: var(--text-muted);\n      font-style: italic;\n      padding: 6px 0;\n    }\n\n    /* MODAL */\n    .modal-backdrop {\n      position: fixed;\n      top: 0; left: 0; right: 0; bottom: 0;\n      background: rgba(0,0,0,0.75);\n      backdrop-filter: blur(4px);\n      z-index: 1000;\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      padding: 16px;\n    }\n    .modal-card {\n      background: var(--bg-card);\n      border: 1px solid var(--border-color);\n      border-radius: var(--radius-lg);\n      width: 100%;\n      max-width: 820px;\n      max-height: 90vh;\n      display: flex;\n      flex-direction: column;\n      box-shadow: var(--shadow-lg);\n    }\n    .modal-header {\n      padding: 14px 18px;\n      background: var(--bg-app);\n      border-bottom: 1px solid var(--border-color);\n      display: flex;\n      justify-content: space-between;\n      align-items: center;\n    }\n    .modal-title { font-size: 1.15rem; font-weight: 800; }\n    .modal-subtitle { font-size: 0.78rem; color: var(--text-muted); }\n    .btn-close {\n      background: none;\n      border: none;\n      font-size: 1.4rem;\n      color: var(--text-muted);\n      cursor: pointer;\n      padding: 0 6px;\n    }\n    .btn-close:hover { color: var(--text-main); }\n\n    .modal-proclama-box {\n      padding: 10px 18px;\n      background: rgba(0,0,0,0.25);\n      border-bottom: 1px solid var(--border-color);\n      display: flex;\n      justify-content: space-between;\n      align-items: center;\n      flex-wrap: wrap;\n      gap: 8px;\n    }\n    .proclama-badge {\n      display: inline-flex;\n      align-items: center;\n      gap: 6px;\n      font-weight: 800;\n      font-size: 0.85rem;\n    }\n    .cat-badge {\n      font-size: 0.65rem;\n      font-weight: 700;\n      padding: 2px 6px;\n      border-radius: 4px;\n      background: rgba(255,255,255,0.05);\n      border: 1px solid var(--border-color);\n    }\n\n    /* BARRA DE VOTACION PERSONAL EN EL MODAL */\n    .modal-voting-personal-box {\n      padding: 12px 18px;\n      background: var(--bg-app);\n      border-bottom: 1px solid var(--border-color);\n      display: flex;\n      flex-direction: column;\n      gap: 8px;\n    }\n    .modal-personal-vote-row {\n      display: flex;\n      justify-content: space-between;\n      align-items: center;\n      flex-wrap: wrap;\n      gap: 8px;\n    }\n\n    .modal-body {\n      padding: 20px;\n      font-family: var(--font-serif);\n      font-size: 1rem;\n      line-height: 1.8;\n      overflow-y: auto;\n      color: var(--text-main);\n    }\n    .modal-body strong {\n      color: var(--primary);\n      font-size: 0.85rem;\n      margin-right: 2px;\n      font-family: var(--font-sans);\n    }\n\n    /* RESALTADO AMARILLO EXACTO DE LA CITA BÍBLICA */\n    .highlighted-verse, mark.highlighted-verse {\n      background: rgba(234, 179, 8, 0.25);\n      color: #fef08a;\n      padding: 3px 6px;\n      border-radius: 4px;\n      font-weight: 600;\n      border-left: 3.5px solid #eab308;\n      scroll-margin-top: 50px;\n      scroll-margin-bottom: 50px;\n      display: inline;\n    }\n\n    [data-theme=\"light\"] .highlighted-verse, [data-theme=\"light\"] mark.highlighted-verse {\n      background: #fef08a;\n      color: #713f12;\n      border-left: 3.5px solid #ca8a04;\n    }\n\n    #cita-start-target {\n      position: relative;\n      animation: highlightPulse 1.5s ease-out;\n    }\n\n    @keyframes highlightPulse {\n      0% {\n        background: #fde047;\n        box-shadow: 0 0 0 6px rgba(234, 179, 8, 0.45);\n      }\n      100% {\n        background: rgba(234, 179, 8, 0.25);\n        box-shadow: 0 0 0 0 rgba(234, 179, 8, 0);\n      }\n    }\n\n    .modal-footer {\n      padding: 12px 18px;\n      background: var(--bg-app);\n      border-top: 1px solid var(--border-color);\n      display: flex;\n      justify-content: space-between;\n      align-items: center;\n      flex-wrap: wrap;\n      gap: 8px;\n    }\n    .btn-action {\n      padding: 6px 14px;\n      font-size: 0.8rem;\n      font-weight: 700;\n      border-radius: var(--radius-sm);\n      border: 1.5px solid var(--border-dark);\n      background: var(--bg-card);\n      color: var(--text-main);\n      cursor: pointer;\n      transition: all 0.15s;\n    }\n    .btn-action:hover { border-color: var(--primary); }\n    .btn-action-primary { background: var(--primary); color: #fff; border-color: var(--primary); }\n    .btn-action-primary:hover { background: var(--primary-hover); }\n\n    /* TOAST */\n    .toast-msg {\n      position: fixed;\n      bottom: 24px;\n      right: 24px;\n      background: #1e293b;\n      color: #fff;\n      padding: 10px 18px;\n      border-radius: var(--radius-md);\n      font-size: 0.85rem;\n      font-weight: 700;\n      box-shadow: var(--shadow-lg);\n      border: 1px solid #334155;\n      z-index: 2000;\n      display: none;\n    }\n    .toast-msg.show { display: block; animation: fadeIn 0.2s ease; }\n    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }\n  </style>\n</head>\n<body>\n  <!-- HEADER NO FIJO (SCROLL NATURAL) -->\n  <header class=\"app-header\">\n    <div class=\"header-container\">\n      <div class=\"header-title-box\">\n        <div class=\"header-badge-row\">\n          <span class=\"badge-dufour\">Xavier Léon-Dufour</span>\n          <span class=\"badge-preparacion\">🕊️ Preparación Litúrgica</span>\n        </div>\n        <h1 class=\"word-title\">__PALABRA_MAYUS__</h1>\n        <div class=\"meta-row\">\n          <span>👥 <strong>__NUM_PART__ Participantes</strong></span>\n          <span>⚖️ Criterio: <strong>__CRITERIO_TXT__</strong></span>\n          <span>📖 <strong>__CITAS_COUNT__ Lecturas Asignadas</strong></span>\n          <span>🔤 ~ __TOTAL_CHARS__ caracteres</span>\n        </div>\n      </div>\n      <div class=\"header-actions\">\n        <button id=\"btnThemeToggle\" class=\"btn-hdr\" title=\"Alternar modo claro / oscuro\">🌙 / ☀️</button>\n        <button id=\"btnCopiarLiturgia\" class=\"btn-hdr btn-primary-hdr\" title=\"Copiar las lecturas ganadoras para WhatsApp\">📋 Copiar Liturgia Ganadora</button>\n        <button id=\"btnResetVotos\" class=\"btn-hdr btn-danger-hdr\" title=\"Reiniciar todas las puntuaciones\">🔄 Reiniciar Votos</button>\n      </div>\n    </div>\n  </header>\n\n  <!-- BARRA DE SELECCION DE IDENTIDAD (\"MI ROL\") -->\n  <div class=\"identity-bar\">\n    <div class=\"identity-label\">\n      <span>👤 Mi Rol en la Preparación:</span>\n    </div>\n    <div class=\"identity-chips-group\" id=\"identityChipsGroup\"></div>\n  </div>\n\n  <main class=\"main-content\">\n    <!-- 1. TEXTO ÍNTEGRO DE LÉON-DUFOUR -->\n    <section class=\"section-card\" id=\"secArticulo\">\n      <div class=\"section-header-bar\">\n        <div>\n          <h2 class=\"section-header-title\">📖 1. Lectura del Vocablo: Xavier Léon-Dufour</h2>\n          <span class=\"section-header-sub\">Lee el texto en comunidad. Toca cualquier cita para abrirla, proclamarla y emitir tu voto personal privado.</span>\n        </div>\n        <span style=\"font-size:0.75rem; color:var(--text-muted); font-weight:700;\">__CITAS_COUNT__ lecturas asignadas</span>\n      </div>\n      <div id=\"articuloCuerpo\" class=\"articulo-body\">\n        __ARTICULO_HTML__\n      </div>\n    </section>\n\n    <!-- 2. LECTURAS ORGANIZADAS PARA ESCRUTINIO COLECTIVO (JUSTO DEBAJO CON SCROLL ORGÁNICO) -->\n    <section class=\"section-card\" id=\"secEscrutinio\">\n      <div class=\"section-header-bar\">\n        <div>\n          <h2 class=\"section-header-title\">🗳️ 2. Votación y Escrutinio Colectivo de las Lecturas</h2>\n          <span class=\"section-header-sub\">Anota el voto grupal a viva voz teniendo como referencia directa tu voto personal emitido arriba.</span>\n        </div>\n        <a href=\"#secPodio\" class=\"btn-action\" style=\"text-decoration:none; font-size:0.75rem;\">🏆 Ver Podio Final ⬇️</a>\n      </div>\n\n      <!-- FILTROS DE CATEGORÍAS LITÚRGICAS -->\n      <div class=\"filter-pills-bar\">\n        <button class=\"filter-pill-btn active\" data-cat=\"all\" onclick=\"filtrarCategoria('all')\">🌟 Todas (__CITAS_COUNT__)</button>\n        <button class=\"filter-pill-btn\" data-cat=\"Historicos\" onclick=\"filtrarCategoria('Historicos')\">📜 1ª Históricos / Torá</button>\n        <button class=\"filter-pill-btn\" data-cat=\"Profeticos\" onclick=\"filtrarCategoria('Profeticos')\">🕊️ 2ª Proféticos</button>\n        <button class=\"filter-pill-btn\" data-cat=\"Nuevo Testamento\" onclick=\"filtrarCategoria('Nuevo Testamento')\">✉️ 3ª Cartas / NT</button>\n        <button class=\"filter-pill-btn\" data-cat=\"Evangelio\" onclick=\"filtrarCategoria('Evangelio')\">✝️ 4ª Evangelio</button>\n        <button class=\"filter-pill-btn\" data-cat=\"Salmos\" id=\"btnFilterSalmos\" onclick=\"filtrarCategoria('Salmos')\">🎵 Salmos</button>\n      </div>\n\n      <!-- LISTA DE CITAS SECUENCIAL CON VOTO PERSONAL Y COLECTIVO -->\n      <div class=\"citas-list-grid\" id=\"citasListGrid\"></div>\n    </section>\n\n    <!-- 3. CUADRO DE CANDIDATAS Y PODIO FINAL -->\n    <section class=\"section-card\" id=\"secPodio\">\n      <div class=\"section-header-bar\">\n        <div>\n          <h2 class=\"section-header-title\">🏆 3. Cuadro de Lecturas Candidatas y Ganadoras</h2>\n          <span class=\"section-header-sub\">Resultado del escrutinio en las 4 partes de la celebración litúrgica</span>\n        </div>\n        <button class=\"btn-action btn-action-primary\" onclick=\"document.getElementById('btnCopiarLiturgia').click()\">📋 Copiar para WhatsApp</button>\n      </div>\n      <div class=\"podium-grid\" id=\"podiumGrid\"></div>\n    </section>\n  </main>\n\n  <!-- MODAL LECTOR BÍBLICO (BIBLIA DE JERUSALÉN + VOTO PERSONAL PRIVADO) -->\n  <div id=\"modalLectura\" class=\"modal-backdrop\" style=\"display:none;\">\n    <div class=\"modal-card\">\n      <div class=\"modal-header\">\n        <div>\n          <h2 id=\"lecturaModalTitulo\" class=\"modal-title\">Lectura Bíblica</h2>\n          <span id=\"lecturaModalSubtitulo\" class=\"modal-subtitle\">Biblia de Jerusalén</span>\n        </div>\n        <button id=\"btnCerrarModalX\" class=\"btn-close\" title=\"Cerrar lectura\">&times;</button>\n      </div>\n\n      <!-- BARRA DE PROCLAMACIÓN -->\n      <div class=\"modal-proclama-box\" id=\"modalProclamaBox\">\n        <div id=\"modalProclamaBadge\" class=\"proclama-badge\"></div>\n        <div id=\"modalCatBadge\" class=\"cat-badge\"></div>\n      </div>\n\n      <!-- BARRA DE VOTO PERSONAL PRIVADO -->\n      <div class=\"modal-voting-personal-box\">\n        <div class=\"modal-personal-vote-row\">\n          <div style=\"display:flex; align-items:center; gap:8px; flex-wrap:wrap;\">\n            <span style=\"font-size:0.78rem; font-weight:800; color:#38bdf8;\">🙋‍♂️ Mi Voto Personal (Privado):</span>\n            <div class=\"stars-group\" id=\"modalPersonalStarsGroup\"></div>\n            <button class=\"btn-action\" style=\"padding:1px 6px; font-size:0.68rem;\" onclick=\"if(citaModalAct) setVotoPersonal(citaModalAct.id, 0)\">Borrar</button>\n          </div>\n          <span style=\"font-size:0.72rem; color:var(--text-muted); font-style:italic;\">Se almacena exclusivamente en tu dispositivo</span>\n        </div>\n        <input type=\"text\" id=\"modalPersonalNotaInput\" class=\"note-input\" placeholder=\"Mi resonancia personal sobre esta lectura...\" />\n      </div>\n\n      <!-- TEXTO DE LA ESCRITURA CON RESALTADO AMARILLO -->\n      <div id=\"lecturaModalCuerpo\" class=\"modal-body\"></div>\n\n      <!-- FOOTER DE NAVEGACIÓN -->\n      <div class=\"modal-footer\">\n        <div style=\"display:flex; gap:8px;\">\n          <button id=\"btnModalPrevCita\" class=\"btn-action\">⬅️ Anterior</button>\n          <button id=\"btnModalNextCita\" class=\"btn-action btn-action-primary\">➡️ Siguiente Cita</button>\n        </div>\n        <div style=\"display:flex; gap:8px;\">\n          <button id=\"btnCopiarTextoBiblico\" class=\"btn-action\">📋 Copiar Texto</button>\n          <button id=\"btnCerrarModalBottom\" class=\"btn-action\">Cerrar</button>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <div id=\"toastMsg\" class=\"toast-msg\"></div>\n\n  <!-- SCRIPT DE INTERACTIVIDAD INTEGRADA -->\n  <script>\n    const DATA = __PAYLOAD_JSON__;\n    const DB_TEXTOS = __DB_TEXTOS_JSON__;\n    const N_PART = DATA.numParticipantes;\n    const PALABRA_KEY = DATA.palabra.toLowerCase().replace(/\\s+/g, '_');\n    const STORAGE_KEY_PERSONAL = 'prep_votos_personales_' + PALABRA_KEY;\n    const STORAGE_KEY_COLECTIVO = 'prep_votos_colectivos_' + PALABRA_KEY;\n    const STORAGE_KEY_ROL = 'prep_mi_rol_' + PALABRA_KEY;\n\n    let stateVotosPersonales = {};\n    let stateNotasPersonales = {};\n    let stateVotosColectivos = {};\n    let stateNotasColectivas = {};\n    let miRolActual = null;\n    let filtroCatActual = 'all';\n\n    try {\n      const savedPers = localStorage.getItem(STORAGE_KEY_PERSONAL);\n      if (savedPers) {\n        const p = JSON.parse(savedPers);\n        stateVotosPersonales = p.votos || {};\n        stateNotasPersonales = p.notas || {};\n      }\n      const savedCol = localStorage.getItem(STORAGE_KEY_COLECTIVO);\n      if (savedCol) {\n        const c = JSON.parse(savedCol);\n        stateVotosColectivos = c.votos || {};\n        stateNotasColectivas = c.notas || {};\n      }\n      miRolActual = localStorage.getItem(STORAGE_KEY_ROL) || null;\n    } catch(e) {}\n\n    function guardarEstadoPersonal() {\n      try {\n        localStorage.setItem(STORAGE_KEY_PERSONAL, JSON.stringify({\n          votos: stateVotosPersonales,\n          notas: stateNotasPersonales\n        }));\n      } catch(e) {}\n    }\n\n    function guardarEstadoColectivo() {\n      try {\n        localStorage.setItem(STORAGE_KEY_COLECTIVO, JSON.stringify({\n          votos: stateVotosColectivos,\n          notas: stateNotasColectivas\n        }));\n      } catch(e) {}\n    }\n\n    function mostrarToast(msg) {\n      const t = document.getElementById('toastMsg');\n      if (!t) return;\n      t.textContent = msg;\n      t.classList.add('show');\n      setTimeout(() => t.classList.remove('show'), 2400);\n    }\n\n    // CATEGORÍAS LITÚRGICAS\n    const CAT_INFO = {\n      Historicos: { nombre: '1ª Lectura: Históricos / Torá', icon: '📜', colorClass: 'cat-hist' },\n      Profeticos: { nombre: '2ª Lectura: Proféticos', icon: '🕊️', colorClass: 'cat-prof' },\n      'Nuevo Testamento': { nombre: '3ª Lectura: Cartas / NT', icon: '✉️', colorClass: 'cat-nt' },\n      Evangelio: { nombre: '4ª Lectura: Evangelio', icon: '✝️', colorClass: 'cat-ev' },\n      Salmos: { nombre: 'Salmo Responsorial', icon: '🎵', colorClass: 'cat-sal' },\n      Sapienciales: { nombre: 'Sapienciales', icon: '📖', colorClass: 'cat-hist' }\n    };\n\n    // SELECTOR DE IDENTIDAD (\"MI ROL\")\n    function renderizarBarraIdentidad() {\n      const container = document.getElementById('identityChipsGroup');\n      if (!container) return;\n      container.innerHTML = '';\n\n      for (let h = 1; h <= N_PART; h++) {\n        const chip = document.createElement('button');\n        chip.className = 'identity-chip h-badge-' + h + (miRolActual === 'H' + h ? ' active' : '');\n        chip.textContent = 'Hermano ' + h;\n        chip.onclick = () => setMiRol('H' + h);\n        container.appendChild(chip);\n      }\n\n      const allChip = document.createElement('button');\n      allChip.className = 'identity-chip' + (!miRolActual ? ' active' : '');\n      allChip.textContent = '👀 Todos';\n      allChip.onclick = () => setMiRol(null);\n      container.appendChild(allChip);\n    }\n\n    function setMiRol(rol) {\n      miRolActual = rol;\n      try {\n        if (rol) localStorage.setItem(STORAGE_KEY_ROL, rol);\n        else localStorage.removeItem(STORAGE_KEY_ROL);\n      } catch(e) {}\n      renderizarBarraIdentidad();\n      actualizarResaltadoCitasMiRol();\n      mostrarToast(rol ? '👤 Rol seleccionado: ' + rol + ' (Tus lecturas han sido resaltadas)' : '👀 Mostrando asignaciones de todos');\n    }\n\n    function actualizarResaltadoCitasMiRol() {\n      document.querySelectorAll('.cite-pill').forEach(pill => {\n        const h = pill.dataset.hermano;\n        const isMyTurn = (miRolActual && h && ('H' + h === miRolActual));\n        pill.classList.toggle('is-my-turn', isMyTurn);\n      });\n    }\n\n    // PODIO LITURGICO\n    function renderizarPodio() {\n      const podiumGrid = document.getElementById('podiumGrid');\n      if (!podiumGrid) return;\n      podiumGrid.innerHTML = '';\n\n      const catsPresentes = ['Historicos', 'Profeticos', 'Nuevo Testamento', 'Evangelio'];\n      if (DATA.citasList.some(c => c.categoria === 'Salmos')) catsPresentes.push('Salmos');\n\n      catsPresentes.forEach(catKey => {\n        const info = CAT_INFO[catKey] || { nombre: catKey, icon: '📖', colorClass: 'cat-hist' };\n        const citasCat = DATA.citasList.filter(c => c.categoria === catKey);\n        if (citasCat.length === 0) return;\n\n        const citasRanking = [...citasCat].sort((a, b) => {\n          const vA = stateVotosColectivos[a.id] || 0;\n          const vB = stateVotosColectivos[b.id] || 0;\n          return vB - vA;\n        });\n\n        const maxVotos = stateVotosColectivos[citasRanking[0].id] || 0;\n        const ganadoras = maxVotos > 0 ? citasRanking.filter(c => (stateVotosColectivos[c.id] || 0) === maxVotos) : [];\n\n        const pCard = document.createElement('div');\n        pCard.className = 'podium-card' + (ganadoras.length === 1 ? ' has-winner' : (ganadoras.length > 1 ? ' has-tie' : ''));\n\n        let bannerHTML = '';\n        if (ganadoras.length === 1) {\n          const w = ganadoras[0];\n          bannerHTML = `\n            <div class=\"podium-winner-banner\">\n              <span class=\"winner-label\">🥇 Lectura Ganadora (Hermano ${w.hermano})</span>\n              <span class=\"winner-cite\" onclick=\"abrirCitaPorId(${w.id})\">${w.citaCompleta || w.citaOriginal}</span>\n              <span class=\"winner-score\">⭐ ${maxVotos} / ${N_PART} votos colectivos</span>\n            </div>\n          `;\n        } else if (ganadoras.length > 1) {\n          const citsTxt = ganadoras.map(g => `#${g.seqId || g.id} ${g.citaCompleta || g.citaOriginal} (H${g.hermano})`).join(', ');\n          bannerHTML = `\n            <div class=\"podium-tie-banner\">\n              <span class=\"tie-label\">⚡ Empate en ${maxVotos} votos</span>\n              <span class=\"winner-cite\">${citsTxt}</span>\n            </div>\n          `;\n        } else {\n          bannerHTML = `\n            <div class=\"podium-empty-banner\">\n              ⏳ Pendiente de votación colectiva\n            </div>\n          `;\n        }\n\n        let rankingListHTML = '<div style=\"display:flex; flex-direction:column; gap:4px; margin-top:6px; border-top:1px dashed var(--border-color); padding-top:6px; max-height:140px; overflow-y:auto;\">';\n        citasRanking.forEach(c => {\n          const vCol = stateVotosColectivos[c.id] || 0;\n          const vPers = stateVotosPersonales[c.id] || 0;\n          rankingListHTML += `\n            <div style=\"display:flex; justify-content:space-between; align-items:center; font-size:0.75rem;\">\n              <button style=\"background:none; border:none; color:var(--text-muted); cursor:pointer; font-weight:600; text-align:left;\" onclick=\"abrirCitaPorId(${c.id})\">\n                <span class=\"cite-seq-badge\">#${c.seqId || c.id}</span>\n                <span class=\"cite-h-badge h-badge-${c.hermano}\">H${c.hermano}</span> ${c.citaCompleta || c.citaOriginal}\n              </button>\n              <div style=\"display:flex; gap:6px; font-size:0.72rem;\">\n                ${vPers > 0 ? `<span style=\"color:#38bdf8;\" title=\"Tu voto personal\">🙋‍♂️${vPers}★</span>` : ''}\n                <span style=\"color:#f59e0b; font-weight:700;\">⭐ ${vCol}/${N_PART}</span>\n              </div>\n            </div>\n          `;\n        });\n        rankingListHTML += '</div>';\n\n        pCard.innerHTML = `\n          <div class=\"podium-cat-header\">\n            <span class=\"podium-cat-name ${info.colorClass}\">${info.icon} ${info.nombre}</span>\n            <small style=\"color:var(--text-muted); font-size:0.7rem;\">${citasCat.length} opciones</small>\n          </div>\n          ${bannerHTML}\n          ${rankingListHTML}\n        `;\n\n        podiumGrid.appendChild(pCard);\n      });\n    }\n\n    // FASE 1: VOTACIÓN PERSONAL (PRIVADA)\n    function setVotoPersonal(citaId, puntos) {\n      const pts = Math.max(0, Math.min(5, puntos));\n      stateVotosPersonales[citaId] = pts;\n      guardarEstadoPersonal();\n      actualizarUIVotoPersonal(citaId);\n      renderizarPodio();\n    }\n\n    function guardarNotaPersonal(citaId, text) {\n      stateNotasPersonales[citaId] = text;\n      guardarEstadoPersonal();\n      const modalInput = document.getElementById('modalPersonalNotaInput');\n      if (modalInput && citaModalAct && citaModalAct.id === citaId && modalInput.value !== text) {\n        modalInput.value = text;\n      }\n    }\n\n    function actualizarUIVotoPersonal(citaId) {\n      const v = stateVotosPersonales[citaId] || 0;\n\n      const pills = document.querySelectorAll(`.cite-pill[data-id=\"${citaId}\"]`);\n      pills.forEach(pill => {\n        let tag = pill.querySelector('.cite-my-vote-tag');\n        if (v > 0) {\n          if (!tag) {\n            tag = document.createElement('span');\n            tag.className = 'cite-my-vote-tag';\n            pill.appendChild(tag);\n          }\n          tag.textContent = '🙋‍♂️ ' + v + '★';\n        } else if (tag) {\n          tag.remove();\n        }\n      });\n\n      if (citaModalAct && citaModalAct.id === citaId) {\n        const starGroup = document.getElementById('modalPersonalStarsGroup');\n        if (starGroup) {\n          starGroup.querySelectorAll('.star-btn-personal').forEach(btn => {\n            const val = parseInt(btn.dataset.val, 10);\n            btn.classList.toggle('active', val <= v);\n          });\n        }\n      }\n\n      const refBadge = document.getElementById('refPersonalBadge_' + citaId);\n      if (refBadge) {\n        refBadge.textContent = v > 0 ? '🙋‍♂️ ' + v + '★' : 'Sin voto personal';\n      }\n    }\n\n    // FASE 2: VOTACIÓN COLECTIVA A VIVA VOZ\n    function setVotoColectivo(citaId, puntos) {\n      const pts = Math.max(0, Math.min(N_PART, puntos));\n      stateVotosColectivos[citaId] = pts;\n      guardarEstadoColectivo();\n      actualizarUIVotoColectivo(citaId);\n      renderizarPodio();\n    }\n\n    function guardarNotaColectiva(citaId, text) {\n      stateNotasColectivas[citaId] = text;\n      guardarEstadoColectivo();\n    }\n\n    function actualizarUIVotoColectivo(citaId) {\n      const v = stateVotosColectivos[citaId] || 0;\n\n      const dispEscrutinio = document.getElementById('dispCollectiveScore_' + citaId);\n      if (dispEscrutinio) dispEscrutinio.textContent = v + ' / ' + N_PART;\n\n      const starGroupEscrutinio = document.getElementById('collectiveStarGroup_' + citaId);\n      if (starGroupEscrutinio) {\n        starGroupEscrutinio.querySelectorAll('.star-btn').forEach(btn => {\n          const val = parseInt(btn.dataset.val, 10);\n          btn.classList.toggle('active', val <= v);\n        });\n      }\n    }\n\n    // RENDERIZAR LISTA DE CITAS ORGANIZADAS CON FILTROS\n    function renderizarListaCitas() {\n      const listContainer = document.getElementById('citasListGrid');\n      if (!listContainer) return;\n      listContainer.innerHTML = '';\n\n      let list = DATA.citasList;\n      if (filtroCatActual !== 'all') {\n        list = list.filter(c => c.categoria === filtroCatActual);\n      }\n\n      list.forEach(c => {\n        const vCol = stateVotosColectivos[c.id] || 0;\n        const vPers = stateVotosPersonales[c.id] || 0;\n        const notaPers = stateNotasPersonales[c.id] || '';\n        const notaCol = stateNotasColectivas[c.id] || '';\n        const catInfo = CAT_INFO[c.categoria] || { nombre: c.categoria, icon: '📖' };\n\n        let collectiveStarsHTML = '';\n        for (let s = 1; s <= N_PART; s++) {\n          collectiveStarsHTML += `<button class=\"star-btn ${s <= vCol ? 'active' : ''}\" data-val=\"${s}\" onclick=\"setVotoColectivo(${c.id}, ${s})\" title=\"${s} votos colectivos\">★</button>`;\n        }\n\n        const card = document.createElement('div');\n        card.className = 'escrutinio-card';\n\n        card.innerHTML = `\n          <div class=\"escrutinio-card-top\">\n            <button class=\"escrutinio-cite-btn\" onclick=\"abrirCitaPorId(${c.id})\">\n              <span class=\"cite-seq-badge\" style=\"font-size:0.85rem; font-weight:800; color:var(--text-main);\">#${c.seqId || c.id}</span>\n              <span class=\"cite-h-badge h-badge-${c.hermano}\">H${c.hermano}</span>\n              <span>${c.citaCompleta || c.citaOriginal}</span>\n              <small style=\"color:var(--text-muted); font-weight:normal; font-size:0.75rem;\">(~ ${c.chars.toLocaleString()} car.)</small>\n            </button>\n            <div style=\"display:flex; align-items:center; gap:6px;\">\n              <span class=\"cat-badge\">${catInfo.icon} ${c.categoria}</span>\n              <button class=\"btn-action\" style=\"padding:2px 8px; font-size:0.72rem;\" onclick=\"abrirCitaPorId(${c.id})\">📖 Leer</button>\n            </div>\n          </div>\n\n          <div class=\"votes-comparison-box\">\n            <div class=\"my-vote-ref-box\">\n              <span style=\"font-weight:700; color:var(--text-muted);\">🙋‍♂️ Tu Voto Personal:</span>\n              <span class=\"my-vote-ref-badge\" id=\"refPersonalBadge_${c.id}\">${vPers > 0 ? '🙋‍♂️ ' + vPers + '★' : 'Sin voto personal'}</span>\n              ${notaPers ? `<span style=\"font-size:0.74rem; color:var(--text-muted); font-style:italic; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;\" title=\"${notaPers.replace(/\"/g, '&quot;')}\">\"${notaPers}\"</span>` : ''}\n            </div>\n\n            <div class=\"collective-vote-box\">\n              <span style=\"font-size:0.78rem; font-weight:800; color:#f59e0b;\">👥 Voto Colectivo:</span>\n              <div class=\"stars-group\" id=\"collectiveStarGroup_${c.id}\">${collectiveStarsHTML}</div>\n              <div class=\"stepper-group\">\n                <button class=\"btn-step\" onclick=\"setVotoColectivo(${c.id}, (stateVotosColectivos[${c.id}] || 0) - 1)\">-</button>\n                <span class=\"score-display\" id=\"dispCollectiveScore_${c.id}\">${vCol} / ${N_PART}</span>\n                <button class=\"btn-step\" onclick=\"setVotoColectivo(${c.id}, (stateVotosColectivos[${c.id}] || 0) + 1)\">+</button>\n              </div>\n            </div>\n          </div>\n\n          <input type=\"text\" class=\"note-input\" placeholder=\"Resonancia o síntesis de la comunidad sobre esta perícopa...\" value=\"${notaCol.replace(/\"/g, '&quot;')}\" onchange=\"guardarNotaColectiva(${c.id}, this.value)\" />\n        `;\n\n        listContainer.appendChild(card);\n      });\n    }\n\n    function filtrarCategoria(cat) {\n      filtroCatActual = cat;\n      document.querySelectorAll('.filter-pill-btn').forEach(btn => {\n        btn.classList.toggle('active', btn.dataset.cat === cat);\n      });\n      renderizarListaCitas();\n    }\n    window.filtrarCategoria = filtrarCategoria;\n\n    // LECTOR BÍBLICO (BIBLIA DE JERUSALÉN CON RESALTADO AMARILLO)\n    let citaModalAct = null;\n    let indiceModalAct = -1;\n\n    function abrirCitaPorId(id) {\n      const idx = DATA.citasList.findIndex(x => x.id === id);\n      if (idx !== -1) abrirModalLecturaIndex(idx);\n    }\n    window.abrirCitaPorId = abrirCitaPorId;\n\n    function resaltarVersiculos(html, ini, fin, cont, citaOriginal) {\n      if (!html) return '';\n      let start = ini ? parseInt(ini, 10) : null;\n      let end = fin ? parseInt(fin, 10) : (cont === 's' ? start + 1 : (cont === 'ss' ? 9999 : start));\n\n      if (!start && citaOriginal) {\n        const m = citaOriginal.match(/,[ \\t]*([0-9]+)(?:[ \\t]*-[ \\t]*([0-9]+))?/);\n        if (m) {\n          start = parseInt(m[1], 10);\n          end = m[2] ? parseInt(m[2], 10) : (cont === 's' ? start + 1 : (cont === 'ss' ? 9999 : start));\n        }\n      }\n\n      if (!start) return html;\n\n      let isFirstHighlighted = true;\n      return html.replace(/<strong>([0-9]+)<\\/strong>([^<]*)/g, (match, vNum, vContent) => {\n        const num = parseInt(vNum, 10);\n        if (num >= start && num <= (end || start)) {\n          const idAttr = isFirstHighlighted ? ' id=\"cita-start-target\"' : '';\n          if (isFirstHighlighted) isFirstHighlighted = false;\n          return `<mark${idAttr} class=\"highlighted-verse\"><strong>${vNum}</strong>${vContent}</mark>`;\n        }\n        return `<strong>${vNum}</strong>${vContent}`;\n      });\n    }\n\n    function abrirModalLecturaIndex(idx) {\n      if (idx < 0 || idx >= DATA.citasList.length) return;\n      indiceModalAct = idx;\n      const c = DATA.citasList[idx];\n      citaModalAct = c;\n\n      const modal = document.getElementById('modalLectura');\n      const tit = document.getElementById('lecturaModalTitulo');\n      const sub = document.getElementById('lecturaModalSubtitulo');\n      const cuerpo = document.getElementById('lecturaModalCuerpo');\n      const proclamaBadge = document.getElementById('modalProclamaBadge');\n      const catBadge = document.getElementById('modalCatBadge');\n\n      tit.textContent = c.citaCompleta || c.citaOriginal;\n      sub.textContent = 'Biblia de Jerusalén · ' + (c.libroNombre || c.libro) + ' ' + c.capitulo;\n\n      // Banner de Proclamación\n      proclamaBadge.innerHTML = `\n        <span class=\"cite-h-badge h-badge-${c.hermano}\">H${c.hermano}</span>\n        <span>👤 Proclama: <strong>Hermano ${c.hermano}</strong></span>\n        <small style=\"color:var(--text-muted); font-weight:normal; margin-left:6px;\">(Lectura #${c.seqId || (idx + 1)} de ${DATA.citasList.length} en Léon-Dufour)</small>\n      `;\n\n      const catInfo = CAT_INFO[c.categoria] || { nombre: c.categoria, icon: '📖' };\n      catBadge.textContent = catInfo.icon + ' ' + catInfo.nombre;\n\n      // Estrellas de Voto Personal (1 a 5)\n      const vPers = stateVotosPersonales[c.id] || 0;\n      const persStarsGroup = document.getElementById('modalPersonalStarsGroup');\n      let persStarsHTML = '';\n      for (let s = 1; s <= 5; s++) {\n        persStarsHTML += `<button class=\"star-btn star-btn-personal ${s <= vPers ? 'active' : ''}\" data-val=\"${s}\" onclick=\"setVotoPersonal(${c.id}, ${s})\" title=\"${s} estrellas personales\">★</button>`;\n      }\n      persStarsGroup.innerHTML = persStarsHTML;\n\n      const persNotaInput = document.getElementById('modalPersonalNotaInput');\n      persNotaInput.value = stateNotasPersonales[c.id] || '';\n      persNotaInput.onchange = (e) => guardarNotaPersonal(c.id, e.target.value);\n\n      // Botones de Navegación\n      const btnPrev = document.getElementById('btnModalPrevCita');\n      const btnNext = document.getElementById('btnModalNextCita');\n      btnPrev.disabled = (idx === 0);\n      btnPrev.style.opacity = (idx === 0) ? '0.5' : '1';\n      btnNext.disabled = (idx === DATA.citasList.length - 1);\n      btnNext.style.opacity = (idx === DATA.citasList.length - 1) ? '0.5' : '1';\n\n      // Texto de las Escrituras con versículos resaltados en amarillo\n      const rawHtml = DB_TEXTOS[c.textoRef];\n      if (rawHtml) {\n        cuerpo.innerHTML = resaltarVersiculos(rawHtml, c.versiculoInicio, c.versiculoFin, c.continuidad, c.citaOriginal);\n      } else {\n        cuerpo.innerHTML = '<p>Texto bíblico completo no disponible en el paquete sin conexión.</p>';\n      }\n\n      modal.style.display = 'flex';\n\n      // Auto-scroll centrado en el primer versículo resaltado\n      setTimeout(() => {\n        const target = cuerpo.querySelector('#cita-start-target') || cuerpo.querySelector('.highlighted-verse');\n        if (target) {\n          target.scrollIntoView({ behavior: 'smooth', block: 'center' });\n        } else {\n          cuerpo.scrollTop = 0;\n        }\n      }, 60);\n    }\n\n    function cerrarModalLectura() {\n      document.getElementById('modalLectura').style.display = 'none';\n      citaModalAct = null;\n      indiceModalAct = -1;\n    }\n\n    document.getElementById('btnModalPrevCita').onclick = () => {\n      if (indiceModalAct > 0) abrirModalLecturaIndex(indiceModalAct - 1);\n    };\n\n    document.getElementById('btnModalNextCita').onclick = () => {\n      if (indiceModalAct < DATA.citasList.length - 1) abrirModalLecturaIndex(indiceModalAct + 1);\n    };\n\n    document.getElementById('btnCerrarModalX').onclick = cerrarModalLectura;\n    document.getElementById('btnCerrarModalBottom').onclick = cerrarModalLectura;\n\n    document.getElementById('btnCopiarTextoBiblico').onclick = () => {\n      const cuerpo = document.getElementById('lecturaModalCuerpo');\n      if (!cuerpo || !citaModalAct) return;\n      const txt = `📖 ${citaModalAct.citaCompleta || citaModalAct.citaOriginal} (Biblia de Jerusalén)\\n\\n${cuerpo.innerText}`;\n      navigator.clipboard.writeText(txt).then(() => mostrarToast('✅ Texto bíblico copiado al portapapeles'));\n    };\n\n    // VINCULAR CITAS DENTRO DEL TEXTO DE LÉON-DUFOUR\n    document.querySelectorAll('.articulo-body .cite-pill').forEach(pill => {\n      if (pill.dataset.isPericopa === 'true') {\n        pill.onclick = (e) => {\n          e.stopPropagation();\n          const per = pill.dataset.pericopa || 'esta perícopa';\n          const h = pill.dataset.hermano || '';\n          mostrarToast(`🔗 Cita ya asignada como parte de la perícopa \"${per}\" al Hermano ${h}`);\n        };\n        return;\n      }\n\n      const citeStr = (pill.dataset.cite || pill.dataset.raw || '').trim().toLowerCase();\n      const matched = DATA.citasList.find(c => (c.citaOriginal || '').toLowerCase() === citeStr || (c.citaCompleta || '').toLowerCase() === citeStr);\n      \n      if (matched) {\n        pill.dataset.id = matched.id;\n        pill.dataset.hermano = matched.hermano;\n        const vPers = stateVotosPersonales[matched.id] || 0;\n        if (vPers > 0) {\n          const tag = document.createElement('span');\n          tag.className = 'cite-my-vote-tag';\n          tag.textContent = '🙋‍♂️ ' + vPers + '★';\n          pill.appendChild(tag);\n        }\n      }\n\n      pill.onclick = () => {\n        const cId = pill.dataset.id ? parseInt(pill.dataset.id, 10) : (matched ? matched.id : null);\n        if (cId) {\n          abrirCitaPorId(cId);\n        } else {\n          const ref = pill.dataset.ref;\n          if (ref && DB_TEXTOS[ref]) {\n            const rawHtml = DB_TEXTOS[ref];\n            const tit = pill.dataset.fullName || pill.dataset.cite || pill.dataset.raw;\n            document.getElementById('lecturaModalTitulo').textContent = tit;\n            document.getElementById('lecturaModalSubtitulo').textContent = 'Biblia de Jerusalén';\n            document.getElementById('modalProclamaBadge').innerHTML = '<span>📖 Referencia Bíblica</span>';\n            document.getElementById('modalCatBadge').textContent = 'Biblia';\n            document.getElementById('modalPersonalStarsGroup').innerHTML = '';\n            document.getElementById('modalPersonalNotaInput').value = '';\n            document.getElementById('btnModalPrevCita').disabled = true;\n            document.getElementById('btnModalNextCita').disabled = true;\n            const cuerpo = document.getElementById('lecturaModalCuerpo');\n            cuerpo.innerHTML = resaltarVersiculos(rawHtml, pill.dataset.vini ? parseInt(pill.dataset.vini, 10) : null, pill.dataset.vfin ? parseInt(pill.dataset.vfin, 10) : null, pill.dataset.cont, tit);\n            document.getElementById('modalLectura').style.display = 'flex';\n            setTimeout(() => {\n              const target = cuerpo.querySelector('#cita-start-target') || cuerpo.querySelector('.highlighted-verse');\n              if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });\n              else cuerpo.scrollTop = 0;\n            }, 60);\n          }\n        }\n      };\n    });\n\n    // TEMA CLARO / OSCURO\n    document.getElementById('btnThemeToggle').onclick = () => {\n      const curr = document.documentElement.getAttribute('data-theme');\n      const next = curr === 'light' ? 'dark' : 'light';\n      document.documentElement.setAttribute('data-theme', next);\n      try { localStorage.setItem('preparacion_theme', next); } catch(e) {}\n    };\n\n    try {\n      const savedTheme = localStorage.getItem('preparacion_theme');\n      if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);\n    } catch(e) {}\n\n    // REINICIAR VOTOS\n    document.getElementById('btnResetVotos').onclick = () => {\n      if (confirm('¿Deseas reiniciar todas las puntuaciones personales y colectivas de esta preparación?')) {\n        stateVotosPersonales = {};\n        stateNotasPersonales = {};\n        stateVotosColectivos = {};\n        stateNotasColectivas = {};\n        guardarEstadoPersonal();\n        guardarEstadoColectivo();\n        renderizarListaCitas();\n        renderizarPodio();\n        document.querySelectorAll('.cite-my-vote-tag').forEach(t => t.remove());\n        mostrarToast('🔄 Puntuaciones reiniciadas');\n      }\n    };\n\n    // COPIAR LITURGIA GANADORA Y CANDIDATAS PARA WHATSAPP\n    document.getElementById('btnCopiarLiturgia').onclick = () => {\n      const cats = ['Historicos', 'Profeticos', 'Nuevo Testamento', 'Evangelio'];\n      let msg = `🕊️ *LITURGIA Y CANDIDATAS SELECCIONADAS*\\n`;\n      msg += `Palabra: *\"${DATA.palabraMayus}\"* (Xavier Léon-Dufour)\\n`;\n      msg += `👥 Preparada en comunidad (${N_PART} participantes)\\n`;\n      msg += `====================================\\n\\n`;\n\n      cats.forEach((catKey) => {\n        const info = CAT_INFO[catKey];\n        const citasCat = DATA.citasList.filter(c => c.categoria === catKey);\n        const citasRanking = [...citasCat].sort((a, b) => (stateVotosColectivos[b.id] || 0) - (stateVotosColectivos[a.id] || 0));\n        const maxV = stateVotosColectivos[citasRanking[0]?.id] || 0;\n        const ganadoras = maxV > 0 ? citasRanking.filter(c => (stateVotosColectivos[c.id] || 0) === maxV) : [citasRanking[0]];\n\n        msg += `${info.icon} *${info.nombre.toUpperCase()}:*\\n`;\n        if (ganadoras && ganadoras.length > 0) {\n          ganadoras.forEach(g => {\n            const v = stateVotosColectivos[g.id] || 0;\n            const nota = stateNotasColectivas[g.id];\n            const prefix = ganadoras.length === 1 ? '🥇 *Ganadora:*' : '⚡ *Candidata en Empate:*';\n            msg += `  ${prefix} *#${g.seqId || g.id} ${g.citaCompleta || g.citaOriginal}* (Hermano ${g.hermano}${v > 0 ? ' — ⭐ ' + v + '/' + N_PART + ' votos' : ''})\\n`;\n            if (nota) msg += `    📝 _\"${nota}\"_\\n`;\n          });\n        } else {\n          msg += `  • [Sin lectura asignada]\\n`;\n        }\n        msg += `\\n`;\n      });\n\n      const salmos = DATA.citasList.filter(c => c.categoria === 'Salmos');\n      if (salmos.length > 0) {\n        const salmosRanking = [...salmos].sort((a, b) => (stateVotosColectivos[b.id] || 0) - (stateVotosColectivos[a.id] || 0));\n        const maxVSal = stateVotosColectivos[salmosRanking[0]?.id] || 0;\n        const ganSal = maxVSal > 0 ? salmosRanking.filter(c => (stateVotosColectivos[c.id] || 0) === maxVSal) : [salmosRanking[0]];\n        msg += `🎵 *SALMO RESPONSORIAL:*\\n`;\n        ganSal.forEach(s => {\n          msg += `  • *#${s.seqId || s.id} ${s.citaCompleta || s.citaOriginal}* (Hermano ${s.hermano})\\n`;\n        });\n        msg += `\\n`;\n      }\n\n      msg += `====================================\\n`;\n      msg += `Liturgia preparada en comunidad con la aplicación de Preparación de Palabras.`;\n\n      if (navigator.clipboard && navigator.clipboard.writeText) {\n        navigator.clipboard.writeText(msg).then(() => {\n          mostrarToast('✅ Liturgia copiada para WhatsApp');\n        });\n      } else {\n        mostrarToast('✅ Liturgia generada');\n      }\n    };\n\n    // INICIALIZACIÓN\n    renderizarBarraIdentidad();\n    actualizarResaltadoCitasMiRol();\n    renderizarListaCitas();\n    renderizarPodio();\n  </script>\n</body>\n</html>";
+
+function generarCodigoHTMLFicha(item, numPart, criterioActual, usarUnidas, soloPentCalc, incluirExtras, dbTextos) {
+    const palabra = item.palabra;
+    const palabraMayus = palabra.toUpperCase();
+    const vocabKey = item.vocabKey || palabra;
+    const subInfo = item.subInfo || '';
+    const rawContenido = (dataGlobalRef && dataGlobalRef.palabras && dataGlobalRef.palabras[vocabKey] && dataGlobalRef.palabras[vocabKey].contenido) 
+        ? dataGlobalRef.palabras[vocabKey].contenido 
+        : (item.contenido || '');
+    const relacionados = (dataGlobalRef && dataGlobalRef.palabras && dataGlobalRef.palabras[vocabKey] && dataGlobalRef.palabras[vocabKey].relacionados)
+        ? dataGlobalRef.palabras[vocabKey].relacionados
+        : (item.relacionados || []);
+
+    let citasFinales;
+    if (criterioActual === "rotativo" && rawContenido) {
+        citasFinales = extraerCitasEnOrdenDeTexto(rawContenido, item, usarUnidas, soloPentCalc, incluirExtras);
+    } else {
+        let citasAConsolidar = [];
+        const procesar = (arr) => (usarUnidas ? unirSegmentosContiguos(arr) : arr || []);
+
+        const citasHistBase = item.lecturas.Historicos || [];
+        const citasHistFiltradas = soloPentCalc ? citasHistBase.filter(c => esPentateuco(c.libro)) : citasHistBase;
+
+        citasAConsolidar.push(...procesar(citasHistFiltradas));
+        citasAConsolidar.push(...procesar(item.lecturas.Profeticos));
+        citasAConsolidar.push(...procesar(item.lecturas["Nuevo Testamento"]));
+        citasAConsolidar.push(...procesar(item.lecturas.Evangelio));
+
+        if (incluirExtras) {
+            citasAConsolidar.push(...procesar(item.lecturas.Salmos));
+            citasAConsolidar.push(...procesar(item.lecturas.Sapienciales));
+        }
+
+        citasFinales = ordenarCitasAsc(citasAConsolidar);
+    }
+
+    const totalCharsGeneral = citasFinales.reduce((sum, c) => sum + calcularCaracteresCita(c), 0);
+
+    const criterioNombres = {
+        rotativo: "Alternado / Rotativo (1ª al 1º, 2ª al 2º... por turnos)",
+        caracteres: "Tiempo de Lectura (Caracteres Reales - DP Óptimo)",
+        hibrido: "Híbrido (Texto + Esfuerzo de Búsqueda)",
+        citas: "Cantidad de Citas (Bloques Continuos)"
+    };
+    const criterioTxt = criterioNombres[criterioActual] || "Alternado / Rotativo";
+    const particiones = calcularDistribucionLineal(citasFinales, numPart, criterioActual);
+
+    // Mapear cada cita única asignada para la lista del escrutinio y podio
+    const citasList = [];
+    particiones.forEach(p => {
+        p.citas.forEach(c => {
+            const code = (c.libro || '').toUpperCase().trim();
+            const setEv = new Set(["MT", "MC", "LC", "JN"]);
+            const setNt = new Set(["HCH", "ROM", "1COR", "2COR", "GAL", "EF", "FLP", "COL", "1TES", "2TES", "1TIM", "2TIM", "TIT", "FLM", "HEB", "ST", "1PE", "2PE", "1JN", "2JN", "3JN", "JUDAS", "AP"]);
+            const setProf = new Set(["IS", "JER", "LAM", "BAR", "EZ", "DAN", "OS", "JL", "AM", "ABD", "JON", "MIQ", "NAH", "HAB", "SOF", "AG", "ZAC", "MAL"]);
+            const setSap = new Set(["JOB", "PROV", "ECL", "CANT", "SAB", "ECLO"]);
+
+            let cat = c.categoria || 'Historicos';
+            if (code === 'SAL') cat = 'Salmos';
+            else if (setEv.has(code)) cat = 'Evangelio';
+            else if (setNt.has(code)) cat = 'Nuevo Testamento';
+            else if (setProf.has(code)) cat = 'Profeticos';
+            else if (setSap.has(code)) cat = 'Sapienciales';
+
+            citasList.push({
+                id: c.seqId || c.id || (citasList.length + 1),
+                seqId: c.seqId || c.id || (citasList.length + 1),
+                citaOriginal: c.citaOriginal,
+                citaCompleta: c.citaCompleta || c.citaOriginal,
+                libro: c.libro,
+                libroNombre: c.libroNombre || NOMBRES_LIBROS[c.libro] || c.libro,
+                capitulo: c.capitulo,
+                versiculoInicio: c.versiculoInicio,
+                versiculoFin: c.versiculoFin,
+                continuidad: c.continuidad,
+                categoria: cat,
+                hermano: p.hermano,
+                textoRef: c.textoRef,
+                chars: calcularCaracteresCita(c)
+            });
+        });
+    });
+
+    // Ordenar citasList según su secuencia #1..#N
+    citasList.sort((a, b) => (a.seqId || a.id) - (b.seqId || b.id));
+
+    const textosRequeridos = {};
+    citasList.forEach(c => {
+        if (c.textoRef && dbTextos[c.textoRef]) {
+            textosRequeridos[c.textoRef] = dbTextos[c.textoRef];
+        }
+    });
+
+    const articuloHtmlAnotado = formatearArticuloConAsignaciones(rawContenido, relacionados, particiones, item, criterioActual, soloPentCalc, incluirExtras, usarUnidas);
+
+    const payloadJSON = JSON.stringify({
+        palabra,
+        palabraMayus,
+        subInfo,
+        numParticipantes: numPart,
+        criterio: criterioActual,
+        criterioTxt,
+        totalCitas: citasList.length,
+        totalCaracteres: totalCharsGeneral,
+        citasList,
+        particiones: particiones.map(p => ({
+            hermano: p.hermano,
+            rango: p.rango,
+            totalCitas: p.totalCitas,
+            totalCaracteres: p.totalCaracteres,
+            porcentaje: p.porcentaje
+        }))
+    });
+
+    const dbTextosJSON = JSON.stringify(textosRequeridos);
+
+    let html = TEMPLATE_FICHA_BASE
+        .replace(/__PALABRA_MAYUS__/g, palabraMayus)
+        .replace(/__NUM_PART__/g, String(numPart))
+        .replace(/__CRITERIO_TXT__/g, criterioTxt)
+        .replace(/__CITAS_COUNT__/g, String(citasList.length))
+        .replace(/__TOTAL_CHARS__/g, totalCharsGeneral.toLocaleString())
+        .replace('__ARTICULO_HTML__', articuloHtmlAnotado)
+        .replace('__PAYLOAD_JSON__', payloadJSON)
+        .replace('__DB_TEXTOS_JSON__', dbTextosJSON);
+
+    return html;
+}
+
 
 // Eventos de la Calculadora
 btnIncPart.onclick = () => {
@@ -1503,6 +2207,10 @@ if (calcSelectCriterio) calcSelectCriterio.onchange = renderizarCalculadora;
 btnCerrarCalcModal.onclick = cerrarCalculadora;
 btnCerrarCalcModalBottom.onclick = cerrarCalculadora;
 btnCopiarRepartoCompleto.onclick = copiarRepartoCompleto;
+if (btnExportarFichaHTML) btnExportarFichaHTML.onclick = exportarFichaPreparacionHTML;
+
+if (calcTabBtnCards) calcTabBtnCards.onclick = () => setCalcViewTab("cards");
+if (calcTabBtnArticulo) calcTabBtnArticulo.onclick = () => setCalcViewTab("articulo");
 
 // ==========================================================================
 // MODAL DE ARTÍCULO TEOLÓGICO DE XAVIER LÉON-DUFOUR
@@ -1550,10 +2258,30 @@ function cerrarModalArticulo() {
 }
 
 function formatearArticuloHTML(rawHtml, relacionados) {
-    // 1. Transformar <cite>...</cite> en botones interactivos con clase cite-pill
+    let lastBookInfo = null;
+
+    // 1. Transformar <cite>...</cite> en botones interactivos con clase cite-pill manteniendo contexto activo de libro
     let html = rawHtml.replace(/<cite[^>]*>([\s\S]*?)<\/cite>/gi, (match, citeText) => {
         const cleanText = citeText.replace(/<[^>]*>/g, '').trim();
-        return `<cite class="cite-pill" data-cite="${cleanText}" title="Toca para leer el texto bíblico completo de: ${cleanText}">${cleanText}</cite>`;
+        if (!cleanText) return match;
+
+        const parsed = parseSmartQuoteClient(cleanText, lastBookInfo);
+        if (parsed) {
+            lastBookInfo = { key: parsed.key, lastCap: parsed.capitulo };
+            const fullCite = parsed.citaOriginal;
+            const fullName = parsed.citaCompleta;
+            const bookCode = parsed.libro;
+            const bookName = parsed.libroNombre;
+            const cap = parsed.capitulo;
+            const vIni = (parsed.versiculoInicio !== null && parsed.versiculoInicio !== undefined) ? parsed.versiculoInicio : '';
+            const vFin = (parsed.versiculoFin !== null && parsed.versiculoFin !== undefined) ? parsed.versiculoFin : '';
+            const cont = parsed.continuidad || '';
+            const textRef = parsed.textoRef;
+
+            return `<cite class="cite-pill" data-cite="${fullCite}" data-full-name="${fullName}" data-book="${bookCode}" data-book-name="${bookName}" data-cap="${cap}" data-vini="${vIni}" data-vfin="${vFin}" data-cont="${cont}" data-ref="${textRef}" data-raw="${cleanText}" title="📖 ${fullName} — Toca para leer el texto bíblico completo">${cleanText}</cite>`;
+        }
+
+        return `<cite class="cite-pill" data-cite="${cleanText}" data-raw="${cleanText}" title="Toca para leer el texto bíblico de: ${cleanText}">${cleanText}</cite>`;
     });
 
     // 2. Transformar enlaces cruzados de Léon-Dufour
@@ -1593,45 +2321,21 @@ function resolverCitaDesdeTexto(citeText, item) {
         for (const cat of Object.keys(item.lecturas)) {
             const arr = item.lecturas[cat];
             if (arr) {
-                const found = arr.find(c => c.citaOriginal.toLowerCase() === clean.toLowerCase());
+                const found = arr.find(c => 
+                    c.citaOriginal.toLowerCase() === clean.toLowerCase() || 
+                    (c.citaCompleta && c.citaCompleta.toLowerCase() === clean.toLowerCase())
+                );
                 if (found) return found;
             }
         }
     }
 
-    // 2. Parseo inteligente de libro y capítulo
-    const m = clean.match(/^([0-9]?[a-záéíóúñA-ZÁÉÍÓÚÑ]+)\s*([0-9]+)(?:[,:]([0-9]+)(?:-([0-9]+))?)?/i);
-    if (m) {
-        const rawBook = normalizar(m[1]);
-        const cap = parseInt(m[2], 10);
-        const vIni = m[3] ? parseInt(m[3], 10) : null;
-        const vFin = m[4] ? parseInt(m[4], 10) : null;
-
-        let bookCode = null;
-        for (const [code, name] of Object.entries(NOMBRES_LIBROS)) {
-            const nameNorm = normalizar(name);
-            const codeNorm = normalizar(code);
-            if (codeNorm === rawBook || nameNorm.startsWith(rawBook) || rawBook.startsWith(codeNorm) || rawBook.startsWith(nameNorm.slice(0, 3))) {
-                bookCode = code;
-                break;
-            }
-        }
-
-        if (bookCode) {
-            const ref = `${bookCode}-${cap}`;
-            if (dbTextos[ref]) {
-                return {
-                    citaOriginal: clean,
-                    libro: bookCode,
-                    libroNombre: NOMBRES_LIBROS[bookCode] || bookCode,
-                    capitulo: cap,
-                    versiculoInicio: vIni,
-                    versiculoFin: vFin,
-                    textoRef: ref
-                };
-            }
-        }
+    // 2. Parseo inteligente con el motor universal BOOK_MAP
+    const parsed = parseSmartQuoteClient(clean, null);
+    if (parsed && dbTextos[parsed.textoRef]) {
+        return parsed;
     }
+
     return null;
 }
 
@@ -1640,7 +2344,24 @@ function activarInteractividadArticulo(item) {
     articuloModalCuerpo.querySelectorAll(".cite-pill").forEach(pill => {
         pill.onclick = (e) => {
             e.stopPropagation();
-            const citeText = pill.dataset.cite;
+            const textRef = pill.dataset.ref;
+            if (textRef && dbTextos[textRef]) {
+                const citaObj = {
+                    citaOriginal: pill.dataset.cite || pill.dataset.raw,
+                    citaCompleta: pill.dataset.fullName || pill.dataset.cite || pill.dataset.raw,
+                    libro: pill.dataset.book,
+                    libroNombre: pill.dataset.bookName || NOMBRES_LIBROS[pill.dataset.book] || pill.dataset.book,
+                    capitulo: parseInt(pill.dataset.cap, 10),
+                    versiculoInicio: pill.dataset.vini ? parseInt(pill.dataset.vini, 10) : null,
+                    versiculoFin: pill.dataset.vfin ? parseInt(pill.dataset.vfin, 10) : null,
+                    continuidad: pill.dataset.cont || null,
+                    textoRef: textRef
+                };
+                abrirModalLectura(citaObj);
+                return;
+            }
+
+            const citeText = pill.dataset.cite || pill.dataset.raw;
             const citaObj = resolverCitaDesdeTexto(citeText, item);
             if (citaObj) {
                 abrirModalLectura(citaObj);

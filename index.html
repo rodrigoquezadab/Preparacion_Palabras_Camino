@@ -1601,7 +1601,219 @@
        MODAL CALCULADORA DE PARTICIPANTES (DISTRIBUCIÓN LINEAL BÍBLICA)
        ========================================================================== */
     .modal-calc-card {
-      max-width: 780px;
+      max-width: 980px;
+      width: 95vw;
+      max-height: 92vh;
+    }
+
+    .calc-tabs-bar {
+      display: flex;
+      gap: 6px;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .calc-tab-btn {
+      padding: 7px 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid transparent;
+      background: var(--bg-app);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .calc-tab-btn:hover {
+      color: var(--text-main);
+      background: var(--bg-card);
+      border-color: var(--border-color);
+    }
+
+    .calc-tab-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    [data-theme="light"] .calc-tab-btn {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    [data-theme="light"] .calc-tab-btn:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    [data-theme="light"] .calc-tab-btn.active {
+      background: #1e3a8a;
+      color: #ffffff;
+      border-color: #1e3a8a;
+    }
+
+    .calc-views-wrapper.view-cards #calcViewCards { display: block; }
+    .calc-views-wrapper.view-cards #calcViewArticulo { display: none; }
+
+    .calc-views-wrapper.view-articulo #calcViewCards { display: none; }
+    .calc-views-wrapper.view-articulo #calcViewArticulo { display: block; }
+
+
+    .calc-articulo-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--bg-app);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+    }
+
+    .calc-legend-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .calc-legend-chip {
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border: 1px solid transparent;
+    }
+
+    .calc-body-articulo {
+      border: 1px solid var(--border-color);
+      border-top: none;
+      border-radius: 0 0 var(--radius-md) var(--radius-md);
+      max-height: 480px;
+    }
+
+    /* Citation pill with Brother badge in Annotated Text */
+    .cite-pill.cite-assigned {
+      position: relative;
+      padding: 2px 4px 2px 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 700;
+      font-size: 0.84rem;
+      line-height: 1.2;
+      border-radius: var(--radius-sm);
+      transition: all 0.15s ease;
+      margin: 2px 2px;
+    }
+
+    .cite-h-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 4px;
+      letter-spacing: 0.2px;
+      text-transform: uppercase;
+      display: inline-block;
+      line-height: 1.1;
+    }
+
+    .cite-seq-badge {
+      font-size: 0.65rem;
+      font-weight: 800;
+      opacity: 0.8;
+      margin-right: 1px;
+    }
+
+    /* Pastillas para citas que forman parte de una perícopa ya asignada */
+    .cite-pill.cite-pericopa-merged {
+      position: relative;
+      padding: 2px 4px 2px 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 700;
+      font-size: 0.84rem;
+      line-height: 1.2;
+      border-radius: var(--radius-sm);
+      border-style: dashed !important;
+      opacity: 0.85;
+      cursor: help;
+      margin: 2px 2px;
+      transition: all 0.15s ease;
+    }
+    .cite-pill.cite-pericopa-merged:hover {
+      opacity: 1;
+      filter: brightness(1.15);
+      transform: translateY(-1px);
+    }
+    .cite-pericopa-tag {
+      font-size: 0.65rem;
+      font-weight: 800;
+      opacity: 0.9;
+      margin-left: 1px;
+      margin-right: 1px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+    [data-theme="light"] .cite-pericopa-tag {
+      background: rgba(0, 0, 0, 0.08);
+    }
+
+    /* Specific badge backgrounds */
+    .h-badge-1 { background: #2563eb; color: #ffffff; }
+    .h-badge-2 { background: #059669; color: #ffffff; }
+    .h-badge-3 { background: #7c3aed; color: #ffffff; }
+    .h-badge-4 { background: #d97706; color: #ffffff; }
+    .h-badge-5 { background: #e11d48; color: #ffffff; }
+    .h-badge-6 { background: #0891b2; color: #ffffff; }
+    .h-badge-7 { background: #4338ca; color: #ffffff; }
+    .h-badge-8 { background: #65a30d; color: #ffffff; }
+    .h-badge-9 { background: #c026d3; color: #ffffff; }
+    .h-badge-10 { background: #475569; color: #ffffff; }
+    .h-badge-11 { background: #b45309; color: #ffffff; }
+    .h-badge-12 { background: #312e81; color: #ffffff; }
+
+    /* Pill border and background tints */
+    .cite-assigned.assigned-h1 { border-color: #3b82f6; background: rgba(59, 130, 246, 0.18); color: #93c5fd; }
+    .cite-assigned.assigned-h2 { border-color: #10b981; background: rgba(16, 185, 129, 0.18); color: #6ee7b7; }
+    .cite-assigned.assigned-h3 { border-color: #8b5cf6; background: rgba(139, 92, 246, 0.18); color: #c4b5fd; }
+    .cite-assigned.assigned-h4 { border-color: #f59e0b; background: rgba(245, 158, 11, 0.18); color: #fde68a; }
+    .cite-assigned.assigned-h5 { border-color: #f43f5e; background: rgba(244, 63, 94, 0.18); color: #fda4af; }
+    .cite-assigned.assigned-h6 { border-color: #06b6d4; background: rgba(6, 182, 212, 0.18); color: #67e8f9; }
+    .cite-assigned.assigned-h7 { border-color: #6366f1; background: rgba(99, 102, 241, 0.18); color: #a5b4fc; }
+    .cite-assigned.assigned-h8 { border-color: #84cc16; background: rgba(132, 204, 22, 0.18); color: #bef264; }
+    .cite-assigned.assigned-h9 { border-color: #d946ef; background: rgba(217, 70, 239, 0.18); color: #f0abfc; }
+    .cite-assigned.assigned-h10 { border-color: #64748b; background: rgba(100, 116, 139, 0.18); color: #cbd5e1; }
+
+    [data-theme="light"] .cite-assigned.assigned-h1 { border-color: #93c5fd; background: #eff6ff; color: #1e40af; }
+    [data-theme="light"] .cite-assigned.assigned-h2 { border-color: #a7f3d0; background: #ecfdf5; color: #065f46; }
+    [data-theme="light"] .cite-assigned.assigned-h3 { border-color: #ddd6fe; background: #f5f3ff; color: #5b21b6; }
+    [data-theme="light"] .cite-assigned.assigned-h4 { border-color: #fde68a; background: #fffbeb; color: #92400e; }
+    [data-theme="light"] .cite-assigned.assigned-h5 { border-color: #fecdd3; background: #fff1f2; color: #9f1239; }
+    [data-theme="light"] .cite-assigned.assigned-h6 { border-color: #a5f3fc; background: #ecfeff; color: #155e75; }
+    [data-theme="light"] .cite-assigned.assigned-h7 { border-color: #c7d2fe; background: #eef2ff; color: #3730a3; }
+    [data-theme="light"] .cite-assigned.assigned-h8 { border-color: #d9f99d; background: #f7fee7; color: #3f6212; }
+    [data-theme="light"] .cite-assigned.assigned-h9 { border-color: #f5d0fe; background: #fdf4ff; color: #86198f; }
+    [data-theme="light"] .cite-assigned.assigned-h10 { border-color: #cbd5e1; background: #f8fafc; color: #1e293b; }
+
+    .cite-pill.cite-unassigned {
+      opacity: 0.55;
+      background: transparent;
+      border: 1px dashed var(--border-color);
+      color: var(--text-muted);
     }
 
     .calc-controls-box {
@@ -2982,13 +3194,13 @@
     </div>
   </div>
 
-  <!-- MODAL CALCULADORA DE PARTICIPANTES (DISTRIBUCIÓN LINEAL) -->
+  <!-- MODAL CALCULADORA DE PARTICIPANTES (REPARTO DE LECTURAS) -->
   <div id="modalCalculadora" class="modal-backdrop" role="dialog" aria-modal="true">
     <div class="modal-card modal-calc-card">
       <div class="modal-header">
         <div class="modal-header-titles">
           <h2 id="calcModalTitulo" class="modal-title">👥 Calculadora de Preparación</h2>
-          <span id="calcModalSubtitulo" class="modal-subtitle">Distribución lineal optimizada en orden bíblico</span>
+          <span id="calcModalSubtitulo" class="modal-subtitle">Reparto de lecturas y texto teológico anotado</span>
         </div>
         <button id="btnCerrarCalcModal" class="btn-close-modal" aria-label="Cerrar modal"
           title="Cerrar calculadora">&times;</button>
@@ -3018,13 +3230,14 @@
 
               <div style="display:flex; flex-direction:column; gap:4px;">
                 <label for="calcSelectCriterio" style="font-size:0.76rem; font-weight:700; color:var(--text-muted);">
-                  Criterio de Reparto Equitativo:
+                  Criterio de Reparto:
                 </label>
                 <select id="calcSelectCriterio" class="calc-select-criterio"
-                  title="Algoritmo de Programación Dinámica Global: Selecciona cómo equilibrar el reparto">
-                  <option value="caracteres" selected>⚖️ Por Tiempo de Lectura (Caracteres Reales - DP Óptimo)</option>
-                  <option value="hibrido">📖 Híbrido (Texto + Esfuerzo de Búsqueda)</option>
-                  <option value="citas">🔢 Por Cantidad de Citas (Cargas Iguales de Citas)</option>
+                  title="Selecciona el criterio de distribución de lecturas entre los participantes">
+                  <option value="rotativo" selected>🔄 Alternado / Rotativo (1ª al 1º, 2ª al 2º... por turno)</option>
+                  <option value="caracteres">⚖️ Por Tiempo de Lectura (Bloques Continuos - DP Óptimo)</option>
+                  <option value="hibrido">📖 Híbrido (Texto + Búsqueda en Bloques)</option>
+                  <option value="citas">🔢 Por Cantidad de Citas (Bloques Continuos)</option>
                 </select>
               </div>
             </div>
@@ -3051,25 +3264,59 @@
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; width:100%;">
               <div style="display:flex; align-items:center; gap:6px; flex:1; min-width:240px;">
                 <span>✨</span>
-                <span id="calcSummaryText">Búsqueda lineal óptima garantizada por Programación Dinámica.</span>
+                <span id="calcSummaryText">Reparto alternado rotativo en orden bíblico.</span>
               </div>
-              <span id="calcBalanceIndicator" class="calc-balance-badge" title="Medida matemática de equidad entre participantes">
-                ⚖️ Balance Óptimo (±0.0%)
+              <span id="calcBalanceIndicator" class="calc-balance-badge" title="Modo de balance de lecturas">
+                🔄 Turno Alternado (Rotativo)
               </span>
             </div>
           </div>
         </div>
 
-        <!-- Lista de Reparto por Hermano -->
-        <div id="contenedorHermanos" class="hermanos-grid"></div>
+        <!-- Barra de Pestañas de Vista -->
+        <div class="calc-tabs-bar">
+          <button id="calcTabBtnArticulo" class="calc-tab-btn active" data-tab="articulo" title="Ver el texto íntegro de Léon-Dufour con cada cita identificada por hermano en su orden de lectura y proclamación">
+            📚 1. Lectura de Léon-Dufour Asignada
+          </button>
+          <button id="calcTabBtnCards" class="calc-tab-btn" data-tab="cards" title="Ver las tarjetas individuales de cada participante con su lista de lecturas">
+            👥 2. Tarjetas por Participante
+          </button>
+        </div>
+
+        <!-- Contenedor Principal de Vistas -->
+        <div id="calcViewsWrapper" class="calc-views-wrapper view-articulo">
+          <!-- Vista 1: Texto de Léon-Dufour Anotado -->
+          <div id="calcViewArticulo" class="calc-subview">
+            <div class="calc-articulo-header-bar">
+              <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                <span class="badge-autor-dufour">Xavier Léon-Dufour</span>
+                <span style="font-weight:700; font-size:0.88rem; color:var(--text-main);">Lectura Guiada del Artículo Teológico (Orden de Proclamación)</span>
+              </div>
+              <div id="calcArticuloLegend" class="calc-legend-chips"></div>
+            </div>
+            <div id="calcArticuloCuerpo" class="modal-body-articulo calc-body-articulo"></div>
+          </div>
+
+          <!-- Vista 2: Tarjetas por Hermano -->
+          <div id="calcViewCards" class="calc-subview">
+            <div id="contenedorHermanos" class="hermanos-grid"></div>
+          </div>
+        </div>
       </div>
 
-      <div class="modal-footer">
-        <button id="btnCopiarRepartoCompleto" class="btn-action btn-copiar"
-          style="background:#059669; color:#fff; border-color:#059669;"
-          title="Copia el reparto de todos los participantes listo para enviar al grupo de WhatsApp de la preparación">
-          📋 Copiar Reparto Completo
-        </button>
+      <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button id="btnCopiarRepartoCompleto" class="btn-action btn-copiar"
+            style="background:#059669; color:#fff; border-color:#059669;"
+            title="Copia el reparto completo de todos los participantes con rangos y caracteres listo para enviar al grupo de WhatsApp de la preparación">
+            📋 Copiar Reparto Completo
+          </button>
+          <button id="btnExportarFichaHTML" class="btn-action"
+            style="background:#4338ca; color:#fff; border-color:#4338ca; font-weight:700;"
+            title="Genera y descarga un archivo HTML interactivo autónomo con el texto completo de Léon-Dufour, asignaciones por hermano, lector de la Biblia de Jerusalén sin conexión, sistema de votación de 1 a N estrellas a viva voz y podio en vivo de las 4 lecturas litúrgicas ganadoras y empates">
+            📄 Compartir Ficha Interactiva (HTML con Votación)
+          </button>
+        </div>
         <button id="btnCerrarCalcModalBottom" class="btn-action" title="Cerrar la calculadora">Cerrar</button>
       </div>
     </div>

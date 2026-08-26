@@ -93,19 +93,36 @@ La aplicación integra este catálogo exacto y ofrece un **selector de modo dest
   * `🔄 Cargar Predeterminadas`: Restaura instantáneamente la lista de temas celebrados en la comunidad.
 - Persistencia en el navegador mediante `localStorage`.
 
-### E. Calculadora de Participantes y Reparto Lineal Continuo
+### E. Calculadora de Participantes y Reparto de Lecturas
 - Permite a los hermanos preparadores indicar el **número de participantes** (ej. 2, 3, 4, 5, 6 o más hermanos).
-- **Algoritmo de Programación Dinámica Global ($O(K \cdot N^2)$):** Resuelve el problema de partición lineal óptima minimizando la varianza cuadrática entre todos los hermanos simultáneamente, garantizando una división matemáticamente justa y eliminando los desbalances en los últimos participantes.
-- **Sin Saltos en la Biblia:** Cada hermano recibe un bloque contiguo de libros y capítulos ($Génesis \rightarrow Apocalipsis$), de modo que avanza siempre hacia adelante buscando sus citas sin retroceder ni dar saltos en su Biblia física.
-- **Selector de 3 Criterios de Reparto:**
-  1. ⚖️ **Tiempo de Lectura (Caracteres Reales - DP Óptimo):** Distribuye equitativamente el volumen real de texto bíblico en caracteres de la *Biblia de Jerusalén* (~25% cada hermano para 4 participantes).
-  2. 📖 **Híbrido (Texto + Esfuerzo de Búsqueda):** Pondera tanto los caracteres reales como el costo cognitivo de ubicar cada cita física en la Biblia (~200 car. por cita).
-  3. 🔢 **Cantidad de Citas:** Divide en partes exactamente iguales el número de perícopas ($N / K$).
-- **Badge de Equidad y Balance en Tiempo Real:** Muestra la precisión matemática del reparto (`⚖️ Balance Óptimo (±0.8%)`).
+- **Modo Rotativo / Alternado (Por Defecto):**
+  * Asigna estrictamente por orden de lectura secuencial del texto de Léon-Dufour: la 1ª cita que aparece en el texto va al Hermano 1 (`#1`), la 2ª al Hermano 2 (`#2`), la 3ª al Hermano 3 (`#3`), la 4ª al Hermano 4 (`#4`), la 5ª de vuelta al Hermano 1 (`#5`), etc.
+  * Independientemente de que una cita consecutiva omita el libro o haga referencia a la cita anterior (ej. `Gen 14,13` -> `21,22ss` -> `26,28` -> `31,43ss`), cada cita individual constituye un turno propio asignado al siguiente hermano en rotación, a menos que el usuario active la opción de *«Unir perícopas contiguas»*.
+  * **Tratamiento Inteligente de Perícopas Unidas en la Lectura del Texto:** Cuando se activa la fusión de perícopas contiguas, la primera aparición de la perícopa en el artículo recibe el turno interactivo proclamable (`#1 [Gen 12,1-9 H1]`). Cualquier cita o fragmento posterior que pertenezca a esa misma perícopa ya asignada se muestra con borde punteado y distintivo especial `[12,5-9 🔗 Perícopa H1]`, bloqueando la apertura duplicada e indicando claramente mediante un toast explicativo a qué hermano y perícopa pertenece.
+  * Garantiza una **alternancia perfecta** (nunca dos citas consecutivas al mismo hermano) y total sincronía entre el texto de Léon-Dufour, las tarjetas de participantes y el archivo compartido.
+- **Criterios Alternativos por Bloques Continuos (Programación Dinámica Global $O(K \cdot N^2)$):**
+  * Para comunidades que prefieran repartir la Biblia en tramos contiguos sin saltos ($Génesis \rightarrow Apocalipsis$).
+  * 1. ⚖️ **Tiempo de Lectura (Caracteres Reales - DP Óptimo):** Distribuye equitativamente el volumen real de texto bíblico en caracteres (~25% cada hermano para 4 participantes).
+  * 2. 📖 **Híbrido (Texto + Esfuerzo de Búsqueda):** Pondera tanto los caracteres reales como el costo de ubicar cada cita física en la Biblia.
+  * 3. 🔢 **Cantidad de Citas:** Divide en bloques continuos de igual número de perícopas ($N / K$).
+- **Texto Íntegro de Léon-Dufour con Asignaciones en Tiempo Real:**
+  * En la propia ventana de reparto, los preparadores pueden alternar entre la pestaña **`📚 1. Lectura de Léon-Dufour Asignada`** y **`👥 2. Tarjetas por Participante`**.
+  * Cada cita bíblica del artículo aparece con una pastilla interactiva coloreada con el distintivo del participante asignado (`[Gen 14,13 H1]`, `[21,22ss H2]`, `[26,28 H3]`, etc.).
+  * Si se modifica el número de participantes (2 a 6+), el criterio o los filtros litúrgicos, todas las pastillas del artículo actualizan de inmediato el participante asignado.
+  * Tocar cualquier pastilla abre directamente el texto íntegro en la *Biblia de Jerusalén*.
+- **Badge de Equidad e Indicador de Turno:** Muestra en tiempo real el modo activo (`🔄 Turno Alternado (Rotativo)` o `⚖️ Balance Óptimo (±0.8%)`).
 - **Badges de Caracteres y Porcentaje:** Cada tarjeta de participante muestra el número de lecturas, el total de caracteres (`🔤 ~8.180 car.`) y el porcentaje del texto total (`25%`).
-- **Botones de Copia para WhatsApp:**
+- **Botones de Copia y Exportación para la Preparación:**
   * *Copia individual:* Genera el mensaje formateado con las citas asignadas a un hermano específico incluyendo conteo de caracteres por cita.
-  * *Copia grupal:* Genera el reparto completo de toda la preparación con el desglose de caracteres y el criterio aplicado para enviarlo directamente al grupo de la comunidad.
+  * *Copia grupal (`📋 Copiar Reparto Completo`):* Genera el reparto completo de toda la preparación con el desglose de todos los participantes (H1, H2, H3, H4...), rangos y caracteres para enviarlo directamente al grupo de WhatsApp.
+  * *Ficha Interactiva Autónoma (`📄 Compartir Ficha Interactiva (HTML con Votación)`):*
+    - Genera y descarga un archivo `.html` 100% autónomo con fecha y hora en el nombre (ej. `preparacion_alianza_2026-08-26_00-09-58.html`) que puede ser enviado por WhatsApp y abierto en cualquier móvil o PC sin necesidad de internet ni servidores.
+    - **Consistencia Total de Paleta de Colores ($H1 \dots H12$):** Cada participante posee su color predeterminado idéntico tanto en la aplicación principal como en el archivo HTML compartido (H1 Azul, H2 Verde, H3 Violeta, H4 Ámbar, H5 Rosa, H6 Cian, etc.).
+    - **Selector de Identidad («Mi Rol en la Preparación»):** Permite a cada hermano seleccionar su rol (`👤 Soy Hermano 1`, `Hermano 2`...), resaltando con un halo dorado activo (`is-my-turn`) todas las lecturas bíblicas que le corresponden proclamar a él durante el artículo.
+    - **Flujo Directo y Simple de Scroll Orgánico (Página Única Continua):**
+      * **1. Lectura de Léon-Dufour (Superior):** Texto teológico íntegro con citas numeradas secuencialmente (`#1`, `#2`... `#N`) y badges de proclamador para que toda la comunidad lea al unísono. Al tocar cualquier cita se abre el lector bíblico con **versículos resaltados en amarillo cálido y auto-scroll** para emitir el **Voto Personal Privado** ($1 \dots 5$ estrellas).
+      * **2. Escrutinio Colectivo con Filtros por Categoría (Directamente Debajo):** Sin necesidad de pestañas ni cambios de vista, haciendo scroll hacia abajo aparecen todas las lecturas organizadas con filtros rápidos de las 4 partes litúrgicas (*Todas*, *Históricos*, *Proféticos*, *Cartas/NT*, *Evangelio*, *Salmos*). Cada tarjeta muestra en paralelo la **referencia a tu voto personal** y los controles para registrar la **puntuación colectiva a viva voz** ($0 \dots N$ votos).
+      * **3. Cuadro de Candidatas y Podio Litúrgico (Final de la Página):** Muestra en tiempo real las perícopas ganadoras (`🥇`) y empates (`⚡ Candidata en Empate`) de cada parte litúrgica, con botón directo `📋 Copiar Liturgia Ganadora` para WhatsApp.
 
 ### F. Área de Guía y Nomenclatura Bíblica
 - **Acceso Directo en Header (`📖 Guía`):** Despliega un centro de ayuda litúrgica y teológica interactivo organizado en 3 secciones:
