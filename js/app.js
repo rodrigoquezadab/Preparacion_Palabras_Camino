@@ -258,11 +258,19 @@ const EXCLUSIONES_PREDETERMINADAS = [
     "Puerta",         // #112
     "Alabanza",       // #5
     "Amigo",          // #7
-    "Esposo"          // #48
+    "Esposo",         // #48
+    "Confesión",      // #23
+    "Riquezas",       // #120
+    "Cruz",           // #29
+    "Reconciliación", // #113
+    "Reposo",         // #116
+    "Sangre",         // #126
+    "Pan",            // #98
+    "Hora"            // #66
 ];
 
 function obtenerExclusionesIniciales() {
-    const versionInit = localStorage.getItem('palabrasExcluidas_init_v3');
+    const versionInit = localStorage.getItem('palabrasExcluidas_init_v4');
     const guardadas = localStorage.getItem('palabrasExcluidas');
 
     if (versionInit && guardadas !== null) {
@@ -273,11 +281,17 @@ function obtenerExclusionesIniciales() {
         }
     }
 
-    // Carga inicial por defecto con la lista predeterminada
-    const listaInicial = EXCLUSIONES_PREDETERMINADAS.map(p => normalizar(p));
-    localStorage.setItem('palabrasExcluidas_init_v3', 'true');
-    localStorage.setItem('palabrasExcluidas', JSON.stringify(listaInicial));
-    return listaInicial;
+    // Si había una versión previa guardada, combinamos las exclusiones previas con las nuevas predeterminadas
+    let base = [];
+    if (guardadas !== null) {
+        try {
+            base = JSON.parse(guardadas);
+        } catch (e) {}
+    }
+    const combinadas = Array.from(new Set([...base, ...EXCLUSIONES_PREDETERMINADAS.map(p => normalizar(p))]));
+    localStorage.setItem('palabrasExcluidas_init_v4', 'true');
+    localStorage.setItem('palabrasExcluidas', JSON.stringify(combinadas));
+    return combinadas;
 }
 
 // --- VARIABLES GLOBALES DE ESTADO ---
@@ -2527,7 +2541,7 @@ function actualizarEstadoModoEdicion() {
 function renderizarTags() {
     contenedorTags.innerHTML = "";
     if (setExcluidos.size === 0) {
-        contenedorTags.innerHTML = `<span class="sin-exclusiones">Sin palabras excluidas. Toca "✏️ Editar Palabras" para cargar las 27 predeterminadas o añade palabras arriba.</span>`;
+        contenedorTags.innerHTML = `<span class="sin-exclusiones">Sin palabras excluidas. Toca "✏️ Editar Palabras" para cargar las 35 predeterminadas o añade palabras arriba.</span>`;
         if (countExcluidasHeader) countExcluidasHeader.textContent = "0";
         actualizarEstadoModoEdicion();
         return;
@@ -2687,7 +2701,7 @@ function borrarTodasExclusiones() {
 
 function restaurarExclusionesPredeterminadas() {
     if (setExcluidos.size > 0) {
-        if (!confirm("🔄 ¿Deseas recargar la lista de las 27 palabras excluidas predeterminadas?")) {
+        if (!confirm("🔄 ¿Deseas recargar la lista de las 35 palabras excluidas predeterminadas?")) {
             return;
         }
     }
@@ -2697,7 +2711,7 @@ function restaurarExclusionesPredeterminadas() {
     guardarLocalStorage();
     renderizarTags();
     actualizarVista();
-    mostrarToast("🔄 Lista predeterminada de 27 temas cargada");
+    mostrarToast("🔄 Lista predeterminada de 35 temas cargada");
 }
 
 btnAgregarExclusion.addEventListener("click", agregarExclusiones);
