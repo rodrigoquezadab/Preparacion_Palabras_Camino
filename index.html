@@ -1632,6 +1632,83 @@
       max-height: 92vh;
     }
 
+    /* Calculadora desplegada como acordeón al pie de la tarjeta de la palabra */
+    .card-calc-panel {
+      border-top: 1px dashed var(--border-dark);
+      scroll-margin-top: 120px;
+      animation: calcDesplegar 0.25s ease;
+    }
+
+    @keyframes calcDesplegar {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card-calc-panel .modal-calc-card {
+      width: 100%;
+      max-width: none;
+      max-height: none;
+      border-radius: 0;
+      box-shadow: none;
+      background: transparent;
+    }
+
+    .card-calc-panel .modal-header {
+      background: var(--primary-light);
+      padding: 10px 14px;
+      align-items: center;
+    }
+
+    .card-calc-panel .modal-title {
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    .card-calc-panel .modal-subtitle {
+      color: var(--text-muted);
+    }
+
+    .card-calc-panel .btn-close-modal {
+      background: var(--bg-app);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+
+    .card-calc-panel .modal-body {
+      overflow: visible;
+      padding: 12px 14px;
+    }
+
+    /* Evitar que el texto largo del selector de criterio desborde en pantallas estrechas */
+    .calc-row-flex div {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .calc-select-criterio {
+      max-width: 100%;
+      text-overflow: ellipsis;
+    }
+
+    .card-calc-panel .modal-footer {
+      border-radius: 0 0 var(--radius-md) var(--radius-md);
+    }
+
+    /* Botones "Repartir" en estado desplegado */
+    .word-card.calc-abierta .btn-quick-calc,
+    .word-card.calc-abierta .btn-calc {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
     .calc-tabs-bar {
       display: flex;
       gap: 6px;
@@ -3857,7 +3934,7 @@
 
   <!-- Scripts -->
   <script src="js/remisiones_data.js"></script>
-  <script src="js/app.js?v=3.5"></script>
+  <script src="js/app.js?v=3.6"></script>
 </body>
 
 </html>

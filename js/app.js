@@ -945,6 +945,8 @@ function actualizarVista() {
 }
 
 function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
+    // Rescatar la calculadora antes de vaciar la lista para no destruir su nodo
+    if (contenedorLista.contains(calcPanelCard)) modalCalculadora.appendChild(calcPanelCard);
     contenedorLista.innerHTML = "";
 
     if (lista.length === 0) {
@@ -1053,7 +1055,9 @@ function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
 
         const btnQuickCalc = document.createElement("button");
         btnQuickCalc.className = "btn-quick-calc";
-        btnQuickCalc.setAttribute("title", `Toca para abrir la calculadora y repartir las lecturas de "${item.palabra}" entre los participantes`);
+        btnQuickCalc.setAttribute("aria-expanded", "false");
+        btnQuickCalc.setAttribute("aria-controls", `calc-panel-${item.id}`);
+        btnQuickCalc.setAttribute("title", `Toca para desplegar u ocultar, al pie de la tarjeta, el reparto de las lecturas de "${item.palabra}" entre los participantes`);
         btnQuickCalc.innerHTML = `👥 Repartir`;
         btnQuickCalc.onclick = (e) => {
             e.stopPropagation();
@@ -1111,7 +1115,8 @@ function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
         // Botón Calculadora / Repartir entre Hermanos
         const btnCalc = document.createElement("button");
         btnCalc.className = "btn-action btn-calc";
-        btnCalc.setAttribute("title", "Abre la calculadora de preparación para distribuir todas las lecturas de forma equilibrada entre los participantes, en orden bíblico continuo y sin saltos.");
+        btnCalc.setAttribute("aria-expanded", "false");
+        btnCalc.setAttribute("title", "Despliega u oculta, al pie de la tarjeta, la calculadora para distribuir todas las lecturas de forma equilibrada entre los participantes, en orden bíblico continuo y sin saltos.");
         btnCalc.innerHTML = `👥 Repartir Lecturas`;
         btnCalc.onclick = (e) => {
             e.stopPropagation();
@@ -1256,6 +1261,9 @@ function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
         card.appendChild(body);
         contenedorLista.appendChild(card);
     });
+
+    // Volver a desplegar el reparto en su tarjeta si sigue visible tras redibujar
+    if (calcAbiertaId !== null) montarCalculadoraEnTarjeta(calcAbiertaId, false);
 }
 
 function crearBloqueCategoria(titulo, citas, claseTema, descripcion) {
@@ -1564,7 +1572,49 @@ function calcularDistribucionLineal(citas, k, criterio = "rotativo") {
     return partitions;
 }
 
+// La calculadora se despliega como acordeón al pie de la tarjeta: se reutiliza el mismo
+// nodo del modal (con todos sus IDs y eventos) moviéndolo dentro de la tarjeta activa.
+const calcPanelCard = modalCalculadora.querySelector(".modal-calc-card");
+let calcAbiertaId = null;
+
+function montarCalculadoraEnTarjeta(id, desplazar) {
+    const card = document.getElementById(`card-${id}`);
+    if (!card) {
+        calcAbiertaId = null;
+        return;
+    }
+    let panel = card.querySelector(".card-calc-panel");
+    if (!panel) {
+        panel = document.createElement("section");
+        panel.className = "card-calc-panel";
+        panel.id = `calc-panel-${id}`;
+        card.appendChild(panel);
+    }
+    panel.appendChild(calcPanelCard);
+    calcAbiertaId = id;
+    card.classList.add("calc-abierta");
+    card.querySelectorAll(".btn-quick-calc, .btn-calc").forEach(b => b.setAttribute("aria-expanded", "true"));
+    if (desplazar) panel.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function desmontarCalculadora() {
+    const card = calcPanelCard.closest(".word-card");
+    modalCalculadora.appendChild(calcPanelCard);
+    if (card) {
+        const panel = card.querySelector(".card-calc-panel");
+        if (panel) panel.remove();
+        card.classList.remove("calc-abierta");
+        card.querySelectorAll(".btn-quick-calc, .btn-calc").forEach(b => b.setAttribute("aria-expanded", "false"));
+    }
+}
+
 function abrirCalculadora(item) {
+    // Un segundo toque en "Repartir" de la misma palabra pliega el acordeón
+    if (calcAbiertaId === item.id) {
+        cerrarCalculadora();
+        return;
+    }
+    desmontarCalculadora();
     palabraCalculadoraActual = item;
     calcModalTitulo.textContent = `👥 Preparación: "${item.palabra.toUpperCase()}"`;
     if (calcCheckPentateuco && checkPentateuco) {
@@ -1578,14 +1628,16 @@ function abrirCalculadora(item) {
     }
     renderizarCalculadora();
     setCalcViewTab(calcActiveView || "articulo");
-    modalCalculadora.style.display = "flex";
-    document.body.classList.add("modal-open");
+    montarCalculadoraEnTarjeta(item.id, true);
 }
 
 function cerrarCalculadora() {
-    modalCalculadora.style.display = "none";
-    if (modalLectura.style.display !== "flex" && modalArticulo.style.display !== "flex" && modalGuia.style.display !== "flex") {
-        document.body.classList.remove("modal-open");
+    const card = calcPanelCard.closest(".word-card");
+    desmontarCalculadora();
+    calcAbiertaId = null;
+    // Al plegar, volver a la cabecera de la tarjeta si quedó fuera de la vista
+    if (card && card.getBoundingClientRect().top < 0) {
+        card.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 }
 
@@ -2814,8 +2866,8 @@ document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
     if (modalLectura.style.display === "flex") cerrarModal();
     else if (modalArticulo.style.display === "flex") cerrarModalArticulo();
-    else if (modalCalculadora.style.display === "flex") cerrarCalculadora();
     else if (modalGuia && modalGuia.style.display === "flex") cerrarGuia();
+    else if (calcAbiertaId !== null) cerrarCalculadora();
 });
 
 // --- GESTOR DE TEMA (MODO OSCURO POR DEFECTO / MODO CLARO) ---
