@@ -1527,12 +1527,28 @@ function extraerCitasEnOrdenDeTexto(rawContenido, item, usarUnidas, soloPentCalc
     });
 
     if (usarUnidas) {
+        // La unión devuelve las perícopas en orden bíblico; para el reparto rotativo se numeran
+        // según su primera aparición en el texto, así la 1ª cita que se lee es del hermano 1
         const mergedList = unirSegmentosContiguos(citasList);
-        mergedList.forEach((c, idx) => {
+        const tramos = new Map(mergedList.map(m => [m, segmentosDeCita(m)]));
+        const contiene = (peri, c) => peri === c || (peri.libro === c.libro && peri.capitulo === c.capitulo &&
+            segmentosDeCita(c).every(([a, b]) => tramos.get(peri).some(([pa, pb]) => a >= pa && b <= pb)));
+
+        // Si una cita cabe en varias perícopas, pertenece a la que ya se leyó antes
+        // (mismo criterio que usa el texto anotado al marcar cada cita)
+        const enOrdenDeTexto = [];
+        citasList.forEach(c => {
+            const candidatas = mergedList.filter(m => contiene(m, c));
+            if (!candidatas.length || candidatas.some(m => enOrdenDeTexto.includes(m))) return;
+            enOrdenDeTexto.push(candidatas[0]);
+        });
+        mergedList.forEach(m => { if (!enOrdenDeTexto.includes(m)) enOrdenDeTexto.push(m); });
+
+        enOrdenDeTexto.forEach((c, idx) => {
             c.seqId = idx + 1;
             c.id = idx + 1;
         });
-        return mergedList;
+        return enOrdenDeTexto;
     }
     return citasList;
 }
@@ -1795,6 +1811,7 @@ function formatearArticuloConAsignaciones(rawHtml, relacionados, particiones, it
     if (!rawHtml) return "";
     let lastBookInfo = null;
     let seqIndex = 0;
+    let ordenCitaTexto = 0;
     const numPart = particiones.length;
 
     // Construir lista plana de perícopas asignadas a cada hermano
@@ -1817,12 +1834,14 @@ function formatearArticuloConAsignaciones(rawHtml, relacionados, particiones, it
         });
     });
 
+    const pericopasEnOrden = [...pericopasList].sort((a, b) => (a.seqId || 0) - (b.seqId || 0));
+    const pericopasPorSeq = new Map(pericopasList.map(p => [p.seqId, p]));
     const buscarPericopaParaCita = (parsed) => {
         if (!parsed) return null;
         const tramosCita = segmentosDeCita(parsed);
 
-        // La cita pertenece a la perícopa asignada si todos sus tramos caen dentro de los de la perícopa
-        for (const peri of pericopasList) {
+        // La cita pertenece a la perícopa asignada (la de menor número de lectura) que contiene todos sus tramos
+        for (const peri of pericopasEnOrden) {
             if (peri.libro === parsed.libro && peri.capitulo === parsed.capitulo) {
                 const contenida = tramosCita.every(([a, b]) => peri.tramos.some(([pa, pb]) => a >= pa && b <= pb));
                 if (contenida) return peri;
@@ -1867,7 +1886,12 @@ function formatearArticuloConAsignaciones(rawHtml, relacionados, particiones, it
                 return `<cite class="cite-pill cite-unassigned" data-cite="${parsed.citaOriginal}" data-full-name="${parsed.citaCompleta}" data-book="${bookCode}" data-book-name="${bookName}" data-cap="${cap}" data-vini="${vIni}" data-vfin="${vFin}" data-cont="${cont}" data-ref="${textRef}" data-tramos="${JSON.stringify(segmentosDeCita(parsed))}" data-raw="${cleanText}"><span class="cite-pill-txt">${cleanText}</span></cite>`;
             }
 
-            const peri = buscarPericopaParaCita(parsed);
+            // Citas sueltas en orden rotativo: cada aparición en el texto es su propio turno
+            // (#1, #2...), aunque repita o quede dentro de una cita anterior
+            ordenCitaTexto++;
+            const peri = (!usarUnidas && criterio === "rotativo")
+                ? (pericopasPorSeq.get(ordenCitaTexto) || null)
+                : buscarPericopaParaCita(parsed);
 
             if (peri) {
                 peri.encounteredCount++;
