@@ -266,11 +266,16 @@ const EXCLUSIONES_PREDETERMINADAS = [
     "Reposo",         // #116
     "Sangre",         // #126
     "Pan",            // #98
-    "Hora"            // #66
+    "Hora",           // #66
+    "Confianza"       // #24
 ];
 
+// Predeterminadas añadidas después de la primera versión: a quien ya usaba la app se le
+// suman solo estas, sin volver a excluir las que hubiera quitado a mano
+const EXCLUSIONES_NUEVAS_V5 = ["Confianza"];
+
 function obtenerExclusionesIniciales() {
-    const versionInit = localStorage.getItem('palabrasExcluidas_init_v4');
+    const versionInit = localStorage.getItem('palabrasExcluidas_init_v5');
     const guardadas = localStorage.getItem('palabrasExcluidas');
 
     if (versionInit && guardadas !== null) {
@@ -278,6 +283,18 @@ function obtenerExclusionesIniciales() {
             return JSON.parse(guardadas);
         } catch (e) {
             console.error("Error parseando palabrasExcluidas:", e);
+        }
+    }
+
+    // Lista ya inicializada con la versión anterior: añadir solo las nuevas predeterminadas
+    if (localStorage.getItem('palabrasExcluidas_init_v4') && guardadas !== null) {
+        try {
+            const actualizadas = Array.from(new Set([...JSON.parse(guardadas), ...EXCLUSIONES_NUEVAS_V5.map(p => normalizar(p))]));
+            localStorage.setItem('palabrasExcluidas_init_v5', 'true');
+            localStorage.setItem('palabrasExcluidas', JSON.stringify(actualizadas));
+            return actualizadas;
+        } catch (e) {
+            console.error("Error migrando palabrasExcluidas:", e);
         }
     }
 
@@ -289,7 +306,7 @@ function obtenerExclusionesIniciales() {
         } catch (e) {}
     }
     const combinadas = Array.from(new Set([...base, ...EXCLUSIONES_PREDETERMINADAS.map(p => normalizar(p))]));
-    localStorage.setItem('palabrasExcluidas_init_v4', 'true');
+    localStorage.setItem('palabrasExcluidas_init_v5', 'true');
     localStorage.setItem('palabrasExcluidas', JSON.stringify(combinadas));
     return combinadas;
 }
@@ -828,7 +845,7 @@ fetch("palabras.json")
                 contenido: entry.contenido || "",
                 relacionados: entry.relacionados || [],
                 estaOrdenado: true,
-                estaUnido: false,
+                estaUnido: true, // Perícopas unidas por defecto
                 cumple4Partes: cumple4Partes,
                 total: totalBase,
                 totalConExtras: totalBase + sal.length + sap.length,
@@ -883,7 +900,7 @@ fetch("palabras.json")
                 contenido: p.contenido || "",
                 relacionados: p.relacionados || [],
                 estaOrdenado: true,
-                estaUnido: false,
+                estaUnido: true, // Perícopas unidas por defecto
                 cumple4Partes: cumple4Partes,
                 total: totalBase,
                 totalConExtras: totalBase + sal.length + sap.length,
@@ -2923,7 +2940,7 @@ function actualizarEstadoModoEdicion() {
 function renderizarTags() {
     contenedorTags.innerHTML = "";
     if (setExcluidos.size === 0) {
-        contenedorTags.innerHTML = `<span class="sin-exclusiones">Sin palabras excluidas. Toca "✏️ Editar Palabras" para cargar las 35 predeterminadas o añade palabras arriba.</span>`;
+        contenedorTags.innerHTML = `<span class="sin-exclusiones">Sin palabras excluidas. Toca "✏️ Editar Palabras" para cargar las ${EXCLUSIONES_PREDETERMINADAS.length} predeterminadas o añade palabras arriba.</span>`;
         if (countExcluidasHeader) countExcluidasHeader.textContent = "0";
         actualizarEstadoModoEdicion();
         return;
@@ -3083,7 +3100,7 @@ function borrarTodasExclusiones() {
 
 function restaurarExclusionesPredeterminadas() {
     if (setExcluidos.size > 0) {
-        if (!confirm("🔄 ¿Deseas recargar la lista de las 35 palabras excluidas predeterminadas?")) {
+        if (!confirm(`🔄 ¿Deseas recargar la lista de las ${EXCLUSIONES_PREDETERMINADAS.length} palabras excluidas predeterminadas?`)) {
             return;
         }
     }
@@ -3093,7 +3110,7 @@ function restaurarExclusionesPredeterminadas() {
     guardarLocalStorage();
     renderizarTags();
     actualizarVista();
-    mostrarToast("🔄 Lista predeterminada de 35 temas cargada");
+    mostrarToast(`🔄 Lista predeterminada de ${EXCLUSIONES_PREDETERMINADAS.length} temas cargada`);
 }
 
 btnAgregarExclusion.addEventListener("click", agregarExclusiones);
