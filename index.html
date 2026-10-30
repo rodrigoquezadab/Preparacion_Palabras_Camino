@@ -2137,7 +2137,11 @@
     }
 
     /* Pastillas para citas que forman parte de una perícopa ya asignada */
+    /* Cita ya incluida en una perícopa: marca neutra, sin color de hermano (no ocupa turno) */
     .cite-pill.cite-pericopa-merged {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px dashed var(--border-dark);
       position: relative;
       padding: 2px 4px 2px 6px;
       display: inline-flex;
@@ -4292,7 +4296,7 @@
 
   <!-- Scripts -->
   <script src="js/remisiones_data.js"></script>
-  <script src="js/app.js?v=3.18"></script>
+  <script src="js/app.js?v=3.19"></script>
 </body>
 
 </html>
