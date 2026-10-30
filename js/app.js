@@ -388,13 +388,30 @@ const btnCopiarArticulo = document.getElementById("btnCopiarArticulo");
 // Toast de notificación
 const toast = document.getElementById("toast");
 
+let toastTimer = null;
 function mostrarToast(mensaje, duracion = 2500) {
     if (!toast) return;
     toast.textContent = mensaje;
     toast.classList.add("show");
-    setTimeout(() => {
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
         toast.classList.remove("show");
     }, duracion);
+}
+
+function escaparAtributo(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").replace(/</g, "&lt;");
+}
+
+// Copia con la API moderna y recurre a execCommand cuando no está disponible (p. ej. http en red local)
+function copiarAlPortapapeles(texto, mensajeToast) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(texto)
+            .then(() => mostrarToast(mensajeToast))
+            .catch(() => copiarTextoFallback(texto, mensajeToast));
+    } else {
+        copiarTextoFallback(texto, mensajeToast);
+    }
 }
 
 // --- ORDENACIÓN CANÓNICA DE CITAS ---
@@ -914,9 +931,9 @@ function actualizarVista() {
         return 0;
     });
 
-    const badgePentInfo = soloPentateuco ? ` · <span style="color:#059669; font-weight:700;">📜 Solo Pentateuco</span>` : ``;
-    const badgePericopasInfo = unirPericopas ? ` · <span style="color:#2563eb; font-weight:700;">🔗 Perícopas Unidas</span>` : ``;
-    const badgeCompletasInfo = soloCompletas ? ` · <span style="color:#10b981; font-weight:700;">🌱 4 Criterios</span>` : ``;
+    const badgePentInfo = soloPentateuco ? ` · <span style="color:var(--color-hist); font-weight:700;">📜 Solo Pentateuco</span>` : ``;
+    const badgePericopasInfo = unirPericopas ? ` · <span style="color:var(--primary-hover); font-weight:700;">🔗 Perícopas Unidas</span>` : ``;
+    const badgeCompletasInfo = soloCompletas ? ` · <span style="color:var(--color-hist); font-weight:700;">✅ 4 Partes</span>` : ``;
 
     if (modoFiltro === "precat") {
         infoStats.innerHTML = `🌱 <strong>Precatecumenado:</strong> Viendo <strong>${lista.length}</strong> de 148 palabras oficiales del documento${badgePentInfo}${badgePericopasInfo}${badgeCompletasInfo}`;
@@ -982,16 +999,20 @@ function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
         const header = document.createElement("div");
         header.className = "word-card-header";
         header.setAttribute("title", "Toca para desplegar las citas bíblicas de esta palabra");
+        header.setAttribute("role", "button");
+        header.setAttribute("tabindex", "0");
+        header.setAttribute("aria-expanded", palabraAbiertaId === item.id ? "true" : "false");
+        header.setAttribute("aria-controls", `card-body-${item.id}`);
 
         // 1. Fila Superior: Número y Nombre de la Palabra (Izq.) + Total Citas (Der.)
         const titleRow = document.createElement("div");
         titleRow.className = "word-title-row";
         titleRow.innerHTML = `
             <div class="word-title-left">
-                <span class="word-number">#${item.numPrecat || item.id}</span>
+                ${item.numPrecat ? `<span class="word-number" title="Número en el documento oficial del Precatecumenado">#${item.numPrecat}</span>` : ''}
                 <h2 class="word-name">
                     ${item.palabra}
-                    ${item.subInfo ? `<span class="word-subname" title="Referencia en Léon-Dufour">(${item.subInfo})</span>` : ''}
+                    ${item.subInfo && !item.subInfo.startsWith("Precat.") ? `<span class="word-subname" title="Referencia en Léon-Dufour">(${item.subInfo})</span>` : ''}
                 </h2>
                 ${item.coincidenciaRemision ? `<div class="badge-remision-match" title="Esta palabra aparece por coincidencia en el índice de remisiones oficial de Xavier Léon-Dufour">💡 Remisión: "<strong>${item.coincidenciaRemision}</strong>" ➔ ${item.palabra}</div>` : ''}
             </div>
@@ -1008,14 +1029,14 @@ function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
         const badgeCriterio = document.createElement("div");
         if (cumple4PartesActual) {
             badgeCriterio.className = "badge-criterio badge-precat";
-            badgeCriterio.setAttribute("title", `Palabra de Precatecumenado: Apta para preparación litúrgica completa (posee citas en ${soloPentateuco ? 'Pentateuco (Torá)' : 'Históricos'}, Proféticos, Cartas/NT y Evangelios).`);
-            badgeCriterio.innerHTML = `🌱 Precatecumenado`;
+            badgeCriterio.setAttribute("title", `Apta para preparación litúrgica completa (posee citas en ${soloPentateuco ? 'Pentateuco (Torá)' : 'Históricos'}, Proféticos, Cartas/NT y Evangelios).`);
+            badgeCriterio.innerHTML = `✅ 4 Partes`;
         } else {
             const faltantes = [];
             if (lecturasActuales.Hist.length === 0) faltantes.push(soloPentateuco ? "Pentateuco" : "Hist");
-            if (item.prof === 0) faltantes.push("Prof");
-            if (item.nt === 0) faltantes.push("NT");
-            if (item.ev === 0) faltantes.push("Ev");
+            if (lecturasActuales.Prof.length === 0) faltantes.push("Prof");
+            if (lecturasActuales.NT.length === 0) faltantes.push("NT");
+            if (lecturasActuales.Ev.length === 0) faltantes.push("Ev");
             badgeCriterio.className = "badge-criterio badge-incompleta";
             badgeCriterio.setAttribute("title", `Incompleta para preparación litúrgica de 4 partes. Faltan: ${faltantes.join(", ")}`);
             badgeCriterio.innerHTML = `⚠️ Falta: ${faltantes.join(", ")}`;
@@ -1048,20 +1069,23 @@ function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
         const countsRow = document.createElement("div");
         countsRow.className = "word-counts-row";
         
+        // Todas las pastillas usan las lecturas procesadas (perícopas unidas o citas sueltas) para coincidir con el total
+        const unidad = item.estaUnido ? "perícopas" : "citas";
         const histLabel = soloPentateuco ? "Pent" : "Hist";
-        const histCount = lecturasActuales.Hist.length;
-        const histTitle = soloPentateuco 
-            ? `Pentateuco / Torá: ${histCount} citas (Históricos posteriores ocultos)` 
-            : `Históricos / Torá: ${item.hist} citas`;
+        const histTitle = soloPentateuco
+            ? `Pentateuco / Torá: ${lecturasActuales.Hist.length} ${unidad} (Históricos posteriores ocultos)`
+            : `Históricos / Torá: ${lecturasActuales.Hist.length} ${unidad}`;
+        const pastilla = (clase, n, etiqueta, titulo) =>
+            `<span class="count-pill ${clase} ${n === 0 ? 'zero' : ''}" title="${titulo}">${n} ${etiqueta}</span>`;
 
         countsRow.innerHTML = `
-            <span class="count-pill cat-hist ${histCount === 0 ? 'zero' : ''}" title="${histTitle}">${histCount} ${histLabel}</span>
-            <span class="count-pill cat-prof ${item.prof === 0 ? 'zero' : ''}" title="Proféticos: ${item.prof} citas">${item.prof} Prof</span>
-            <span class="count-pill cat-nt ${item.nt === 0 ? 'zero' : ''}" title="Cartas / Nuevo Testamento: ${item.nt} citas">${item.nt} NT</span>
-            <span class="count-pill cat-ev ${item.ev === 0 ? 'zero' : ''}" title="Evangelios: ${item.ev} citas">${item.ev} Ev</span>
-            ${mostrarExtras ? `<span class="count-pill cat-sal ${item.sal === 0 ? 'zero' : ''}" title="Salmos: ${item.sal} citas">${item.sal} Sal</span>` : ''}
-            ${mostrarExtras ? `<span class="count-pill cat-sap ${item.sap === 0 ? 'zero' : ''}" title="Sapienciales: ${item.sap} citas">${item.sap} Sap</span>` : ''}
-            <span class="chevron-icon" title="Desplegar citas">▼</span>
+            ${pastilla("cat-hist", lecturasActuales.Hist.length, histLabel, histTitle)}
+            ${pastilla("cat-prof", lecturasActuales.Prof.length, "Prof", `Proféticos: ${lecturasActuales.Prof.length} ${unidad}`)}
+            ${pastilla("cat-nt", lecturasActuales.NT.length, "NT", `Cartas / Nuevo Testamento: ${lecturasActuales.NT.length} ${unidad}`)}
+            ${pastilla("cat-ev", lecturasActuales.Ev.length, "Ev", `Evangelios: ${lecturasActuales.Ev.length} ${unidad}`)}
+            ${mostrarExtras ? pastilla("cat-sal", lecturasActuales.Sal.length, "Sal", `Salmos: ${lecturasActuales.Sal.length} ${unidad}`) : ''}
+            ${mostrarExtras ? pastilla("cat-sap", lecturasActuales.Sap.length, "Sap", `Sapienciales: ${lecturasActuales.Sap.length} ${unidad}`) : ''}
+            <span class="chevron-icon" aria-hidden="true">▼</span>
         `;
         header.appendChild(countsRow);
 
@@ -1167,7 +1191,7 @@ function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
                 htmlConexos += `
                     <div class="temas-conexos-title">🔄 También se prepara aquí (Remisiones / Sinónimos):</div>
                     <div class="temas-conexos-chips">
-                        ${item.aliasRemisiones.map(a => `<span class="chip-conexo" title="Toca para buscar '${a}'" onclick="event.stopPropagation(); buscarTermino('${a}');">🔍 ${a}</span>`).join('')}
+                        ${item.aliasRemisiones.map(a => `<button type="button" class="chip-conexo" data-termino="${escaparAtributo(a)}" title="Toca para buscar '${escaparAtributo(a)}'">🔍 ${a}</button>`).join('')}
                     </div>
                 `;
             }
@@ -1176,29 +1200,51 @@ function dibujarLista(lista, mostrarExtras, soloPentateuco = false) {
                 htmlConexos += `
                     <div class="temas-conexos-title" style="${tieneAlias ? 'margin-top: 4px;' : ''}">🔗 Temas conexos según Léon-Dufour:</div>
                     <div class="temas-conexos-chips">
-                        ${item.temasConexos.map(t => `<span class="chip-conexo" title="Toca para buscar '${t}'" onclick="event.stopPropagation(); buscarTermino('${t}');">📖 ${t}</span>`).join('')}
+                        ${item.temasConexos.map(t => `<button type="button" class="chip-conexo" data-termino="${escaparAtributo(t)}" title="Toca para buscar '${escaparAtributo(t)}'">📖 ${t}</button>`).join('')}
                     </div>
                 `;
             }
 
             conexosBox.innerHTML = htmlConexos;
+            conexosBox.querySelectorAll(".chip-conexo").forEach(chip => {
+                chip.onclick = (e) => {
+                    e.stopPropagation();
+                    buscarTermino(chip.dataset.termino);
+                };
+            });
             body.appendChild(conexosBox);
         }
 
         // Evento abrir/cerrar acordeón
+        body.id = `card-body-${item.id}`;
         header.onclick = () => {
             const estaAbierto = body.style.display === "block";
             if (estaAbierto) {
                 body.style.display = "none";
                 card.classList.remove("expanded");
+                header.setAttribute("aria-expanded", "false");
                 palabraAbiertaId = null;
             } else {
                 document.querySelectorAll(".word-card-body").forEach(b => b.style.display = "none");
                 document.querySelectorAll(".word-card").forEach(c => c.classList.remove("expanded"));
-                
+                document.querySelectorAll(".word-card-header").forEach(h => h.setAttribute("aria-expanded", "false"));
+
                 body.style.display = "block";
                 card.classList.add("expanded");
+                header.setAttribute("aria-expanded", "true");
                 palabraAbiertaId = item.id;
+
+                // Al cerrarse la tarjeta anterior el contenido se desplaza: mantener visible la tarjeta abierta
+                if (card.getBoundingClientRect().top < 0) {
+                    card.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            }
+        };
+        header.onkeydown = (e) => {
+            if (e.target !== header) return;
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                header.click();
             }
         };
 
@@ -1279,17 +1325,7 @@ function copiarEsquemaPalabra(item, lecturas, mostrarExtras, soloPentateuco = fa
     texto += `--------------------------------------------------\n`;
     texto += `Generado para la Liturgia de la Palabra`;
 
-    navigator.clipboard.writeText(texto).then(() => {
-        mostrarToast(`✅ Esquema de "${item.palabra}" copiado al portapapeles`);
-    }).catch(() => {
-        const ta = document.createElement("textarea");
-        ta.value = texto;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        document.body.removeChild(ta);
-        mostrarToast(`✅ Esquema de "${item.palabra}" copiado`);
-    });
+    copiarAlPortapapeles(texto, `✅ Esquema de "${item.palabra}" copiado al portapapeles`);
 }
 
 // ==========================================================================
@@ -1548,7 +1584,9 @@ function abrirCalculadora(item) {
 
 function cerrarCalculadora() {
     modalCalculadora.style.display = "none";
-    document.body.classList.remove("modal-open");
+    if (modalLectura.style.display !== "flex" && modalArticulo.style.display !== "flex" && modalGuia.style.display !== "flex") {
+        document.body.classList.remove("modal-open");
+    }
 }
 
 function setCalcViewTab(tabKey) {
@@ -1928,9 +1966,7 @@ function copiarAsignacionIndividual(palabra, p) {
         msg += `Búsqueda lineal en orden bíblico continuo.`;
     }
 
-    navigator.clipboard.writeText(msg).then(() => {
-        mostrarToast(`✅ Asignación de Hermano ${p.hermano} copiada al portapapeles`);
-    });
+    copiarAlPortapapeles(msg, `✅ Asignación de Hermano ${p.hermano} copiada al portapapeles`);
 }
 
 function copiarRepartoCompleto() {
@@ -2406,9 +2442,7 @@ if (btnCopiarArticulo) {
         const textoPlano = articuloModalCuerpo.innerText;
         const header = `📖 VOCABULARIO DE TEOLOGÍA BÍBLICA — XAVIER LÉON-DUFOUR\nTema: "${articuloActual.palabra.toUpperCase()}"\n==================================================\n\n`;
         const copia = header + textoPlano;
-        navigator.clipboard.writeText(copia).then(() => {
-            mostrarToast(`✅ Artículo íntegro de "${articuloActual.palabra}" copiado`);
-        });
+        copiarAlPortapapeles(copia, `✅ Artículo íntegro de "${articuloActual.palabra}" copiado`);
     };
 }
 
@@ -2492,9 +2526,7 @@ if (btnCopiarModal) {
         if (!citaModalActual) return;
         const textoPlano = modalTextoCuerpo.innerText;
         const copia = `${citaModalActual.citaOriginal}\n\n${textoPlano}`;
-        navigator.clipboard.writeText(copia).then(() => {
-            mostrarToast("✅ Lectura bíblica copiada al portapapeles");
-        });
+        copiarAlPortapapeles(copia, "✅ Lectura bíblica copiada al portapapeles");
     };
 }
 
@@ -2777,6 +2809,15 @@ window.addEventListener("click", (e) => {
     }
 });
 
+// Tecla Escape: cierra la ventana superior (lectura > artículo > calculadora > guía)
+document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    if (modalLectura.style.display === "flex") cerrarModal();
+    else if (modalArticulo.style.display === "flex") cerrarModalArticulo();
+    else if (modalCalculadora.style.display === "flex") cerrarCalculadora();
+    else if (modalGuia && modalGuia.style.display === "flex") cerrarGuia();
+});
+
 // --- GESTOR DE TEMA (MODO OSCURO POR DEFECTO / MODO CLARO) ---
 function aplicarTema(tema) {
     if (tema === "light") {
@@ -2858,23 +2899,29 @@ if (btnModoTodas) {
 inputBusqueda.addEventListener("input", actualizarVista);
 selectOrden.addEventListener("change", actualizarVista);
 checkExtras.addEventListener("change", actualizarVista);
-if (checkPentateuco) {
-    checkPentateuco.addEventListener("change", actualizarVista);
-    checkPentateuco.addEventListener("input", actualizarVista);
-}
-if (checkSoloCompletas) {
-    checkSoloCompletas.addEventListener("change", actualizarVista);
-    checkSoloCompletas.addEventListener("input", actualizarVista);
-}
+// En casillas, "input" y "change" se disparan juntos: escuchar solo "change" evita redibujar la lista dos veces
+if (checkPentateuco) checkPentateuco.addEventListener("change", actualizarVista);
+if (checkSoloCompletas) checkSoloCompletas.addEventListener("change", actualizarVista);
 if (checkPericopas) {
-    const handlePericopas = () => {
+    checkPericopas.addEventListener("change", () => {
         const val = checkPericopas.checked;
         listaPrecat.forEach(p => p.estaUnido = val);
         listaTodas.forEach(p => p.estaUnido = val);
         actualizarVista();
-    };
-    checkPericopas.addEventListener("change", handlePericopas);
-    checkPericopas.addEventListener("input", handlePericopas);
+    });
+}
+
+// Buscador compacto al desplazarse: deja solo el campo de búsqueda fijo y libera pantalla para las tarjetas
+if (seccionBusqueda) {
+    let compacto = false;
+    window.addEventListener("scroll", () => {
+        const y = window.scrollY;
+        // Histéresis para evitar parpadeo al cambiar la altura de la sección
+        if (!compacto && y > 220) compacto = true;
+        else if (compacto && y < 40) compacto = false;
+        else return;
+        seccionBusqueda.classList.toggle("is-compact", compacto);
+    }, { passive: true });
 }
 
 // --- ÍNDICE COMPLETO DE ARTÍCULOS Y REMISIONES EN LA GUÍA (760 ENTRADAS) ---

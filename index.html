@@ -317,6 +317,31 @@
       overflow: hidden !important;
     }
 
+    /* Modo compacto al desplazarse: solo queda fijo el campo de búsqueda */
+    .search-section.is-compact .filter-mode-pills,
+    .search-section.is-compact .quick-toggles-row {
+      display: none;
+    }
+
+    .search-section.is-compact {
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+
+    /* Foco visible por teclado en todos los controles interactivos */
+    button:focus-visible,
+    select:focus-visible,
+    a:focus-visible,
+    .word-card-header:focus-visible,
+    .toggle-label:focus-within {
+      outline: 2px solid var(--primary-hover);
+      outline-offset: 2px;
+    }
+
+    .title-short {
+      display: none;
+    }
+
     .search-container {
       max-width: 1100px;
       margin: 0 auto;
@@ -873,6 +898,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       color: var(--text-main);
+      font-family: inherit;
       cursor: pointer;
       transition: all 0.15s ease;
       display: inline-flex;
@@ -3006,6 +3032,35 @@
       }
     }
 
+    @media (max-width: 480px) {
+      .title-full {
+        display: none;
+      }
+
+      .title-short {
+        display: inline;
+      }
+
+      /* Las acciones rápidas de la tarjeta ocupan una sola fila sin cortes */
+      .word-meta-actions-row {
+        justify-content: flex-start;
+      }
+
+      .word-meta-actions-row .badge-criterio {
+        margin-right: auto;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
     @media (max-width: 400px) {
       .header-title {
         font-size: 0.84rem;
@@ -3030,7 +3085,7 @@
     <div class="header-content">
       <a href="./" class="header-title-link" title="Toca para recargar / refrescar la aplicación">
         <div class="header-title-box">
-          <h1 class="header-title">📖 Preparación de la Palabra</h1>
+          <h1 class="header-title" aria-label="Preparación de la Palabra">📖 <span class="title-full">Preparación de la Palabra</span><span class="title-short">Preparación</span></h1>
           <span class="header-subtitle">Vocabulario de Teología Bíblica — Xavier Léon-Dufour</span>
         </div>
       </a>
@@ -3071,11 +3126,11 @@
       <div class="filter-mode-pills">
         <button id="btnModoPrecat" class="btn-mode-pill active"
           title="Filtro Precatecumenado (Activado por defecto): Muestra las 148 palabras oficiales del documento de preparación del Precatecumenado con su orden y numeración original">
-          <span>🌱 Precatecumenado (148 Palabras)</span>
+          <span>🌱 Precatecumenado (148)</span>
         </button>
         <button id="btnModoTodas" class="btn-mode-pill"
           title="Vocabulario Completo: Muestra todas las 289 palabras del Vocabulario de Teología Bíblica de Xavier Léon-Dufour">
-          <span>📚 Todas las Palabras (289)</span>
+          <span>📚 Todas (289)</span>
         </button>
       </div>
 
@@ -3089,7 +3144,7 @@
           <label class="toggle-label"
             title="Oculta las palabras con citas faltantes y muestra exclusivamente aquellas que cumplen los 4 criterios litúrgicos (Históricos/Pentateuco, Proféticos, Cartas/NT y Evangelios)">
             <input type="checkbox" id="checkSoloCompletas" checked>
-            <span>🌱 Solo 4 Criterios</span>
+            <span>✅ Solo 4 Partes</span>
           </label>
           <label class="toggle-label"
             title="Incluye en las tarjetas las citas complementarias de Salmos y Libros Sapienciales (ideales para cantos y salmo responsorial)">
@@ -3802,7 +3857,7 @@
 
   <!-- Scripts -->
   <script src="js/remisiones_data.js"></script>
-  <script src="js/app.js?v=3.4"></script>
+  <script src="js/app.js?v=3.5"></script>
 </body>
 
 </html>
