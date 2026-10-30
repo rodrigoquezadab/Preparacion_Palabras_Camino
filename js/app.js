@@ -3197,6 +3197,91 @@ if (btnToggleTema) {
     };
 }
 
+// --- AJUSTES DE LECTURA (TAMAÑO DE TEXTO Y COLOR DE RESALTADO) ---
+// Pensado para quienes leen con dificultad o distinguen mal el contraste; se guarda en el dispositivo.
+const CLAVE_LECTURA = "preferenciasLectura_v1";
+const ESCALAS_TEXTO = [0.9, 1, 1.15, 1.3, 1.5, 1.75];
+const COLORES_RESALTADO = ["dorado", "amarillo", "verde", "celeste", "rosa", "subrayado"];
+let prefsLectura = { escala: 1, resaltado: "dorado" };
+try {
+    prefsLectura = Object.assign(prefsLectura, JSON.parse(localStorage.getItem(CLAVE_LECTURA)) || {});
+} catch (e) { /* sin almacenamiento: se usan los valores normales */ }
+
+const panelLectura = document.getElementById("panelLectura");
+const btnAjustesLectura = document.getElementById("btnAjustesLectura");
+const valorTamanoTexto = document.getElementById("valorTamanoTexto");
+
+function aplicarPreferenciasLectura() {
+    if (!ESCALAS_TEXTO.includes(prefsLectura.escala)) prefsLectura.escala = 1;
+    if (!COLORES_RESALTADO.includes(prefsLectura.resaltado)) prefsLectura.resaltado = "dorado";
+
+    // Se fija directamente el font-size raíz: algunos navegadores no recalculan una variable CSS en el elemento raíz
+    document.documentElement.style.fontSize = `${prefsLectura.escala * 100}%`;
+    if (prefsLectura.resaltado === "dorado") document.documentElement.removeAttribute("data-resaltado");
+    else document.documentElement.setAttribute("data-resaltado", prefsLectura.resaltado);
+
+    const pct = `${Math.round(prefsLectura.escala * 100)}%`;
+    if (valorTamanoTexto) valorTamanoTexto.textContent = pct;
+    const i = ESCALAS_TEXTO.indexOf(prefsLectura.escala);
+    document.querySelectorAll('#btnTextoMenos, [data-tamano="-1"]').forEach(b => b.disabled = i === 0);
+    document.querySelectorAll('#btnTextoMas, [data-tamano="1"]').forEach(b => b.disabled = i === ESCALAS_TEXTO.length - 1);
+    document.querySelectorAll(".opcion-resaltado").forEach(b => {
+        b.setAttribute("aria-checked", b.dataset.valor === prefsLectura.resaltado ? "true" : "false");
+    });
+
+    try {
+        localStorage.setItem(CLAVE_LECTURA, JSON.stringify(prefsLectura));
+    } catch (e) { /* modo privado */ }
+}
+
+function cambiarTamanoTexto(paso) {
+    const i = ESCALAS_TEXTO.indexOf(prefsLectura.escala);
+    const nuevo = ESCALAS_TEXTO[Math.min(ESCALAS_TEXTO.length - 1, Math.max(0, (i === -1 ? 1 : i) + paso))];
+    if (nuevo === prefsLectura.escala) return;
+    prefsLectura.escala = nuevo;
+    aplicarPreferenciasLectura();
+    mostrarToast(`🔠 Tamaño del texto: ${Math.round(nuevo * 100)}%`, 1200);
+}
+
+aplicarPreferenciasLectura();
+
+document.getElementById("btnTextoMenos").onclick = () => cambiarTamanoTexto(-1);
+document.getElementById("btnTextoMas").onclick = () => cambiarTamanoTexto(1);
+document.getElementById("btnTextoRestablecer").onclick = () => {
+    prefsLectura.escala = 1;
+    aplicarPreferenciasLectura();
+    mostrarToast("🔠 Tamaño del texto normal (100%)", 1200);
+};
+document.querySelectorAll("[data-tamano]").forEach(b => {
+    b.onclick = (e) => {
+        e.stopPropagation();
+        cambiarTamanoTexto(Number(b.dataset.tamano));
+    };
+});
+document.querySelectorAll(".opcion-resaltado").forEach(b => {
+    b.onclick = () => {
+        prefsLectura.resaltado = b.dataset.valor;
+        aplicarPreferenciasLectura();
+    };
+});
+
+if (btnAjustesLectura && panelLectura) {
+    btnAjustesLectura.onclick = () => {
+        panelLectura.classList.toggle("collapsed");
+        const abierto = !panelLectura.classList.contains("collapsed");
+        btnAjustesLectura.classList.toggle("active", abierto);
+        btnAjustesLectura.setAttribute("aria-expanded", abierto ? "true" : "false");
+    };
+}
+
+// El buscador fijo se coloca justo bajo la cabecera, cuya altura cambia con el tamaño del texto
+const cabecera = document.querySelector(".header-bar");
+if (cabecera && "ResizeObserver" in window) {
+    new ResizeObserver(() => {
+        document.documentElement.style.setProperty("--alto-cabecera", `${cabecera.offsetHeight}px`);
+    }).observe(cabecera);
+}
+
 // --- TOGGLE SECCIÓN DE BÚSQUEDA Y FILTROS RÁPIDOS ---
 if (btnToggleSearch && seccionBusqueda) {
     btnToggleSearch.onclick = () => {

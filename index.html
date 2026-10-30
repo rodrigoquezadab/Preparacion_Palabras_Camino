@@ -159,6 +159,44 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    /* Color de resaltado de versículos (predeterminado: dorado del tema) */
+    :root {
+      --resaltado-fondo: var(--gold-light);
+      --resaltado-texto: var(--gold-accent);
+      --resaltado-borde: var(--gold-accent);
+    }
+
+    html[data-resaltado="amarillo"] {
+      --resaltado-fondo: #fde047;
+      --resaltado-texto: #1c1917;
+      --resaltado-borde: #a16207;
+    }
+
+    html[data-resaltado="verde"] {
+      --resaltado-fondo: #86efac;
+      --resaltado-texto: #052e16;
+      --resaltado-borde: #15803d;
+    }
+
+    html[data-resaltado="celeste"] {
+      --resaltado-fondo: #7dd3fc;
+      --resaltado-texto: #082f49;
+      --resaltado-borde: #0369a1;
+    }
+
+    html[data-resaltado="rosa"] {
+      --resaltado-fondo: #f9a8d4;
+      --resaltado-texto: #500724;
+      --resaltado-borde: #be185d;
+    }
+
+    /* Sin color: solo negrita y subrayado grueso (útil con daltonismo o bajo contraste) */
+    html[data-resaltado="subrayado"] {
+      --resaltado-fondo: transparent;
+      --resaltado-texto: var(--text-main);
+      --resaltado-borde: var(--text-main);
+    }
+
     html,
     body {
       font-family: var(--font-sans);
@@ -295,7 +333,7 @@
       border-bottom: 1px solid var(--border-color);
       padding: 10px 16px;
       position: sticky;
-      top: 50px;
+      top: var(--alto-cabecera, 50px);
       z-index: 90;
       box-shadow: var(--shadow-sm);
       max-height: 800px;
@@ -504,6 +542,9 @@
       background-color: var(--bg-card);
       color: var(--text-main);
       cursor: pointer;
+      min-width: 0;
+      max-width: 100%;
+      text-overflow: ellipsis;
     }
 
     .select-custom:focus {
@@ -1595,15 +1636,22 @@
     }
 
     .highlighted-verse {
-      background: var(--gold-light);
-      color: var(--gold-accent);
+      background: var(--resaltado-fondo);
+      color: var(--resaltado-texto);
       padding: 3px 6px;
       border-radius: 4px;
       font-weight: 600;
-      border-left: 3px solid var(--gold-accent);
+      border-left: 3px solid var(--resaltado-borde);
       scroll-margin-top: 50px;
       scroll-margin-bottom: 50px;
       display: inline;
+    }
+
+    html[data-resaltado="subrayado"] .highlighted-verse {
+      font-weight: 800;
+      text-decoration: underline 3px;
+      text-underline-offset: 4px;
+      padding-left: 4px;
     }
 
     #cita-start-target {
@@ -1611,16 +1659,101 @@
       animation: highlightPulse 1.5s ease-out;
     }
 
+    /* Pulso al llegar a la cita: solo un halo del color elegido, sin cambiar el fondo */
     @keyframes highlightPulse {
       0% {
-        background: #fde047;
-        box-shadow: 0 0 0 6px rgba(234, 179, 8, 0.45);
+        box-shadow: 0 0 0 6px var(--resaltado-borde);
       }
 
       100% {
-        background: #fef08a;
-        box-shadow: 0 0 0 0 rgba(234, 179, 8, 0);
+        box-shadow: 0 0 0 0 transparent;
       }
+    }
+
+    /* ==========================================================================
+       PANEL DE AJUSTES DE LECTURA (TAMAÑO DE TEXTO Y COLOR DE RESALTADO)
+       ========================================================================== */
+    .ajuste-tamano {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .ajuste-tamano .btn-counter {
+      width: auto;
+      min-width: 44px;
+      height: 40px;
+      padding: 0 10px;
+      font-size: 1rem;
+    }
+
+    .ajuste-tamano .num-participants-display {
+      min-width: 56px;
+    }
+
+    .opciones-resaltado {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .opcion-resaltado {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--border-color);
+      background: var(--bg-app);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .opcion-resaltado[aria-checked="true"] {
+      border-color: var(--primary-hover);
+      box-shadow: 0 0 0 2px var(--primary-light);
+    }
+
+    .opcion-resaltado .muestra {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 22px;
+      border-radius: 4px;
+      font-weight: 800;
+      border-left: 3px solid;
+    }
+
+    .opcion-resaltado[data-valor="dorado"] .muestra { background: var(--gold-light); color: var(--gold-accent); border-color: var(--gold-accent); }
+    .opcion-resaltado[data-valor="amarillo"] .muestra { background: #fde047; color: #1c1917; border-color: #a16207; }
+    .opcion-resaltado[data-valor="verde"] .muestra { background: #86efac; color: #052e16; border-color: #15803d; }
+    .opcion-resaltado[data-valor="celeste"] .muestra { background: #7dd3fc; color: #082f49; border-color: #0369a1; }
+    .opcion-resaltado[data-valor="rosa"] .muestra { background: #f9a8d4; color: #500724; border-color: #be185d; }
+    .opcion-resaltado[data-valor="subrayado"] .muestra { background: transparent; color: var(--text-main); border-color: var(--text-main); text-decoration: underline 2px; }
+
+    .muestra-resaltado {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      background: var(--bg-modal);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .lectura-tamano-rapido {
+      display: inline-flex;
+      gap: 4px;
+    }
+
+    .lectura-tamano-rapido .btn-action {
+      min-width: 40px;
+      justify-content: center;
     }
 
     /* ==========================================================================
@@ -3238,7 +3371,7 @@
 
       .search-section {
         padding: 8px 10px;
-        top: 45px;
+        top: var(--alto-cabecera, 45px);
       }
 
       .filter-mode-pills {
@@ -3334,6 +3467,10 @@
         <button id="btnToggleTema" class="btn-toggle-filters"
           title="Cambiar entre modo oscuro y modo claro">
           <span id="themeIcon">☀️</span><span class="btn-text-full" id="themeText"> Claro</span>
+        </button>
+        <button id="btnAjustesLectura" class="btn-toggle-filters" aria-expanded="false" aria-controls="panelLectura"
+          title="Ajustes de lectura: tamaño del texto y color del resaltado de versículos">
+          <span aria-hidden="true">Aa</span><span class="btn-text-full"> Lectura</span>
         </button>
         <button id="btnToggleSearch" class="btn-toggle-filters active"
           title="Toca para ocultar o mostrar el buscador y los filtros rápidos">
@@ -3462,6 +3599,38 @@
     </div>
   </section>
 
+  <!-- PANEL DESPLEGABLE DE AJUSTES DE LECTURA (ACCESIBILIDAD) -->
+  <section id="panelLectura" class="advanced-panel collapsed" aria-label="Ajustes de lectura">
+    <div class="advanced-content">
+      <div>
+        <h3 class="panel-section-title">Tamaño del texto</h3>
+        <div class="ajuste-tamano">
+          <button id="btnTextoMenos" class="btn-counter" title="Reducir el tamaño del texto" aria-label="Reducir el tamaño del texto">A−</button>
+          <span id="valorTamanoTexto" class="num-participants-display" aria-live="polite">100%</span>
+          <button id="btnTextoMas" class="btn-counter" title="Aumentar el tamaño del texto" aria-label="Aumentar el tamaño del texto">A+</button>
+          <button id="btnTextoRestablecer" class="btn-exclusion-action" title="Volver al tamaño normal (100%)">Restablecer</button>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="panel-section-title">Color del resaltado de versículos</h3>
+        <div id="opcionesResaltado" class="opciones-resaltado" role="radiogroup" aria-label="Color del resaltado">
+          <button class="opcion-resaltado" role="radio" data-valor="dorado"><span class="muestra">Aa</span>Dorado</button>
+          <button class="opcion-resaltado" role="radio" data-valor="amarillo"><span class="muestra">Aa</span>Amarillo</button>
+          <button class="opcion-resaltado" role="radio" data-valor="verde"><span class="muestra">Aa</span>Verde</button>
+          <button class="opcion-resaltado" role="radio" data-valor="celeste"><span class="muestra">Aa</span>Celeste</button>
+          <button class="opcion-resaltado" role="radio" data-valor="rosa"><span class="muestra">Aa</span>Rosa</button>
+          <button class="opcion-resaltado" role="radio" data-valor="subrayado"><span class="muestra">Aa</span>Sin color (subrayado)</button>
+        </div>
+        <p class="muestra-resaltado">
+          <strong>15</strong> Así habló el Señor a su pueblo.
+          <mark class="highlighted-verse"><strong>16</strong> Así se verá un versículo resaltado en la lectura.</mark>
+          <strong>17</strong> Y el pueblo escuchó su voz.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <!-- 4. CONTADOR / BARRA DE ESTADO -->
   <div class="status-bar">
     <div id="infoStats">Cargando vocabulario bíblico...</div>
@@ -3488,7 +3657,10 @@
         <div id="modalPuntuacionEstrellas"></div>
       </div>
       <div class="modal-footer">
-        <span style="font-size:0.75rem; color:var(--text-muted);">Texto Bíblico (Capítulo completo)</span>
+        <div class="lectura-tamano-rapido" role="group" aria-label="Tamaño del texto">
+          <button type="button" class="btn-action" data-tamano="-1" title="Reducir el tamaño del texto" aria-label="Reducir el tamaño del texto">A−</button>
+          <button type="button" class="btn-action" data-tamano="1" title="Aumentar el tamaño del texto" aria-label="Aumentar el tamaño del texto">A+</button>
+        </div>
         <button id="btnCopiarModal" class="btn-action"
           title="Copia el texto bíblico al portapapeles para notas o WhatsApp">📋 Copiar Lectura</button>
       </div>
@@ -3641,6 +3813,10 @@
       <div class="modal-body modal-body-articulo" id="articuloModalCuerpo"></div>
 
       <div class="modal-footer">
+        <div class="lectura-tamano-rapido" role="group" aria-label="Tamaño del texto">
+          <button type="button" class="btn-action" data-tamano="-1" title="Reducir el tamaño del texto" aria-label="Reducir el tamaño del texto">A−</button>
+          <button type="button" class="btn-action" data-tamano="1" title="Aumentar el tamaño del texto" aria-label="Aumentar el tamaño del texto">A+</button>
+        </div>
         <button id="btnCopiarArticulo" class="btn-action btn-copiar"
           title="Copiar texto íntegro del artículo para apuntes o estudio">
           📋 Copiar Artículo
@@ -4133,7 +4309,7 @@
 
   <!-- Scripts -->
   <script src="js/remisiones_data.js"></script>
-  <script src="js/app.js?v=3.10"></script>
+  <script src="js/app.js?v=3.12"></script>
 </body>
 
 </html>
