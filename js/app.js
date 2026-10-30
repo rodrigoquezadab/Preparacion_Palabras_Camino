@@ -906,6 +906,7 @@ fetch("palabras.json")
         guardarLocalStorage();
         renderizarTags();
         actualizarVista();
+        restaurarRepartoAbierto();
     })
     .catch(err => {
         console.error(err);
@@ -1685,15 +1686,78 @@ function abrirCalculadora(item) {
     if (calcCheckUnido) {
         calcCheckUnido.checked = (typeof item.estaUnido === 'boolean') ? item.estaUnido : (checkPericopas ? checkPericopas.checked : false);
     }
+    // Si esta palabra ya tenía un reparto, recuperar su configuración para que las citas
+    // (y sus puntajes) coincidan exactamente con la sesión anterior
+    const recuperado = aplicarConfigReparto(item.palabra);
     renderizarCalculadora();
     setCalcViewTab(calcActiveView || "articulo");
     montarCalculadoraEnTarjeta(item.id, true);
+    guardarConfigReparto();
+    if (recuperado) {
+        const n = Object.keys(puntajesCitas[item.palabra] || {}).length;
+        mostrarToast(n ? `↩️ Reparto recuperado con ${n} cita${n > 1 ? "s" : ""} puntuada${n > 1 ? "s" : ""}` : "↩️ Reparto recuperado", 3000);
+    }
+}
+
+// --- PERSISTENCIA DEL REPARTO (configuración por palabra y reparto abierto) ---
+// Permite retomar la preparación tal como estaba si la aplicación se cierra por error.
+const CLAVE_REPARTO = "repartoConfig_v1";
+let repartoGuardado = { porPalabra: {}, abierta: null };
+try {
+    repartoGuardado = Object.assign(repartoGuardado, JSON.parse(localStorage.getItem(CLAVE_REPARTO)) || {});
+} catch (e) { /* almacenamiento no disponible: se trabaja sin recuperar */ }
+
+function persistirReparto() {
+    try {
+        localStorage.setItem(CLAVE_REPARTO, JSON.stringify(repartoGuardado));
+    } catch (e) { /* sin espacio o en modo privado */ }
+}
+
+function guardarConfigReparto() {
+    if (!palabraCalculadoraActual) return;
+    repartoGuardado.porPalabra[palabraCalculadoraActual.palabra] = {
+        participantes: numParticipantesActual,
+        criterio: calcSelectCriterio ? calcSelectCriterio.value : "rotativo",
+        unidas: calcCheckUnido.checked,
+        pentateuco: calcCheckPentateuco ? calcCheckPentateuco.checked : false,
+        extras: calcCheckExtras.checked,
+        vista: calcActiveView
+    };
+    repartoGuardado.abierta = calcAbiertaId !== null ? palabraCalculadoraActual.palabra : repartoGuardado.abierta;
+    persistirReparto();
+}
+
+function aplicarConfigReparto(palabra) {
+    const cfg = repartoGuardado.porPalabra[palabra];
+    if (!cfg) return false;
+    numParticipantesActual = cfg.participantes || numParticipantesActual;
+    if (calcSelectCriterio && cfg.criterio) calcSelectCriterio.value = cfg.criterio;
+    calcCheckUnido.checked = !!cfg.unidas;
+    if (calcCheckPentateuco) calcCheckPentateuco.checked = !!cfg.pentateuco;
+    calcCheckExtras.checked = !!cfg.extras;
+    if (cfg.vista) calcActiveView = cfg.vista;
+    return true;
+}
+
+// Al cargar la app: reabrir el reparto que estaba abierto cuando se cerró
+function restaurarRepartoAbierto() {
+    const palabra = repartoGuardado.abierta;
+    if (!palabra) return;
+    const item = (modoFiltro === "precat" ? listaPrecat : listaTodas).find(i => i.palabra === palabra);
+    const card = item && document.getElementById(`card-${item.id}`);
+    if (card) {
+        abrirCalculadora(item);
+    } else {
+        mostrarToast(`💾 Tu reparto de "${palabra}" está guardado: búscala y pulsa Repartir para continuar`, 4500);
+    }
 }
 
 function cerrarCalculadora() {
     const card = calcPanelCard.closest(".word-card");
     desmontarCalculadora();
     calcAbiertaId = null;
+    repartoGuardado.abierta = null;
+    persistirReparto();
     // Al plegar, volver a la cabecera de la tarjeta si quedó fuera de la vista
     if (card && card.getBoundingClientRect().top < 0) {
         card.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1707,6 +1771,7 @@ function setCalcViewTab(tabKey) {
     }
     if (calcTabBtnCards) calcTabBtnCards.classList.toggle("active", tabKey === "cards");
     if (calcTabBtnArticulo) calcTabBtnArticulo.classList.toggle("active", tabKey === "articulo");
+    if (calcAbiertaId !== null) guardarConfigReparto();
 }
 
 function formatearArticuloConAsignaciones(rawHtml, relacionados, particiones, item, criterio = "rotativo", soloPentCalc = false, incluirExtras = false, usarUnidas = false) {
@@ -2052,6 +2117,9 @@ function renderizarCalculadora() {
             calcArticuloLegend.appendChild(chipLeg);
         });
     }
+
+    // Cada cambio de participantes, criterio o casillas queda guardado para poder retomarlo
+    if (calcAbiertaId !== null) guardarConfigReparto();
 }
 
 function copiarAsignacionIndividual(palabra, p) {
@@ -2579,7 +2647,13 @@ function guardarPuntaje(palabra, cita, valor) {
     persistirPuntajes();
 }
 
+let almacenamientoPersistenteSolicitado = false;
 function persistirPuntajes() {
+    // Pedir al navegador que no borre estos datos al liberar espacio (sobre todo en móviles)
+    if (!almacenamientoPersistenteSolicitado && navigator.storage && navigator.storage.persist) {
+        almacenamientoPersistenteSolicitado = true;
+        navigator.storage.persist().catch(() => {});
+    }
     try {
         localStorage.setItem(CLAVE_PUNTAJES, JSON.stringify(puntajesCitas));
     } catch (e) {
