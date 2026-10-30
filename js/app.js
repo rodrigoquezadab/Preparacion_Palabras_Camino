@@ -1888,11 +1888,10 @@ function formatearArticuloConAsignaciones(rawHtml, relacionados, particiones, it
         return `<cite class="cite-pill" data-cite="${cleanText}" data-raw="${cleanText}">${cleanText}</cite>`;
     });
 
-    // 2. Transformar enlaces cruzados de Léon-Dufour
-    html = html.replace(/<a class="otro" href="([^"]*)"[^>]*>([sS]*?)<\/a>/gi, (match, href, linkText) => {
-        const cleanWord = linkText.replace(/<[^>]*>/g, '').trim();
-        return `<a class="otro" data-palabra="${cleanWord}" title="Explorar tema: ${cleanWord}">${linkText}</a>`;
-    });
+    // 2. En la lectura del reparto el texto se lee de corrido: las remisiones de Léon-Dufour
+    //    (*palabra) y las anclas de sección del original se muestran como texto, sin enlace
+    html = html.replace(/<a class="otro"[^>]*>([\s\S]*?)<\/a>/gi, "$1");
+    html = html.replace(/<a (class="fid2?")[^>]*>([\s\S]*?)<\/a>/gi, "<span $1>$2</span>");
 
     // 3. Agregar caja de temas y vocablos relacionados al final
     if (relacionados && relacionados.length > 0) {
@@ -2105,7 +2104,7 @@ function renderizarCalculadora() {
             renderizarResumenPuntajes();
 
             // Activar clics en temas relacionados
-            calcArticuloCuerpo.querySelectorAll(".otro, .chip-relacionado").forEach(btn => {
+            calcArticuloCuerpo.querySelectorAll(".chip-relacionado").forEach(btn => {
                 btn.onclick = (e) => {
                     e.stopPropagation();
                     const termino = btn.dataset.palabra;
@@ -2525,11 +2524,10 @@ function formatearArticuloHTML(rawHtml, relacionados) {
         return `<cite class="cite-pill" data-cite="${cleanText}" data-raw="${cleanText}" title="Toca para leer el texto bíblico de: ${cleanText}">${cleanText}</cite>`;
     });
 
-    // 2. Transformar enlaces cruzados de Léon-Dufour
-    html = html.replace(/<a class="otro" href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/gi, (match, href, linkText) => {
-        const cleanWord = linkText.replace(/<[^>]*>/g, '').trim();
-        return `<a class="otro" data-palabra="${cleanWord}" title="Explorar tema: ${cleanWord}">${linkText}</a>`;
-    });
+    // 2. Las remisiones de Léon-Dufour (*palabra) y las anclas de sección del original
+    //    se muestran como texto, sin enlace
+    html = html.replace(/<a class="otro"[^>]*>([\s\S]*?)<\/a>/gi, "$1");
+    html = html.replace(/<a (class="fid2?")[^>]*>([\s\S]*?)<\/a>/gi, "<span $1>$2</span>");
 
     // 3. Agregar caja de temas y vocablos relacionados al final
     if (relacionados && relacionados.length > 0) {
@@ -2613,7 +2611,7 @@ function activarInteractividadArticulo(item) {
     });
 
     // Clic en términos relacionados o enlaces internos
-    articuloModalCuerpo.querySelectorAll(".otro, .chip-relacionado").forEach(btn => {
+    articuloModalCuerpo.querySelectorAll(".chip-relacionado").forEach(btn => {
         btn.onclick = (e) => {
             e.stopPropagation();
             const termino = btn.dataset.palabra;
