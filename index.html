@@ -1806,6 +1806,170 @@
       max-height: 480px;
     }
 
+    /* ==========================================================================
+       PUNTUACIÓN DE CITAS (0 A 5 ESTRELLAS)
+       ========================================================================== */
+    .selector-estrellas {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .selector-estrellas button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      line-height: 1;
+      min-width: 30px;
+      min-height: 32px;
+      padding: 2px;
+      transition: transform 0.1s ease, color 0.15s ease;
+    }
+
+    .selector-estrellas .estrella {
+      font-size: 1.35rem;
+      color: var(--border-dark);
+    }
+
+    .selector-estrellas .estrella.activa {
+      color: var(--gold-accent);
+    }
+
+    .selector-estrellas .estrella:hover {
+      transform: scale(1.15);
+    }
+
+    .selector-estrellas .estrella-cero {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      min-width: 26px;
+      min-height: 26px;
+      margin-right: 4px;
+    }
+
+    .selector-estrellas .estrella-cero.activa {
+      background: var(--gold-light);
+      color: var(--gold-accent);
+      border-color: var(--gold-accent);
+    }
+
+    .modal-puntuacion {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px 10px;
+      padding: 8px 18px;
+      border-top: 1px solid var(--border-color);
+      background: var(--bg-card);
+    }
+
+    .modal-puntuacion[hidden] {
+      display: none;
+    }
+
+    .modal-puntuacion-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .resumen-puntajes {
+      margin-top: 18px;
+      padding: 14px;
+      border: 1px solid var(--border-ev);
+      border-radius: var(--radius-md);
+      background: var(--bg-ev-light);
+      font-family: var(--font-sans);
+    }
+
+    .resumen-puntajes-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .resumen-puntajes-header h4 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .resumen-puntajes-progreso {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--color-ev);
+    }
+
+    .resumen-puntajes-ayuda {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin: 4px 0 10px;
+      line-height: 1.4;
+    }
+
+    .resumen-puntajes-lista {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 0;
+      margin: 0;
+    }
+
+    .resumen-puntaje-fila {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 4px 8px;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+    }
+
+    .resumen-puntaje-cita {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text-main);
+      padding: 4px 0;
+      text-align: left;
+    }
+
+    .resumen-puntaje-cita:hover .resumen-puntaje-ref {
+      text-decoration: underline;
+    }
+
+    .resumen-puntajes-acciones {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .cite-score-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--gold-accent);
+      margin-left: 2px;
+      white-space: nowrap;
+    }
+
     /* Citation pill with Brother badge in Annotated Text */
     .cite-pill.cite-assigned {
       position: relative;
@@ -3318,6 +3482,11 @@
           title="Cerrar ventana de lectura">&times;</button>
       </div>
       <div id="modalTextoCuerpo" class="modal-body"></div>
+      <!-- Puntuación de la cita (solo al leerla desde el reparto) -->
+      <div id="modalPuntuacion" class="modal-puntuacion" hidden>
+        <span class="modal-puntuacion-label">Tu puntaje para esta cita:</span>
+        <div id="modalPuntuacionEstrellas"></div>
+      </div>
       <div class="modal-footer">
         <span style="font-size:0.75rem; color:var(--text-muted);">Texto Bíblico (Capítulo completo)</span>
         <button id="btnCopiarModal" class="btn-action"
@@ -3964,7 +4133,7 @@
 
   <!-- Scripts -->
   <script src="js/remisiones_data.js"></script>
-  <script src="js/app.js?v=3.8"></script>
+  <script src="js/app.js?v=3.9"></script>
 </body>
 
 </html>

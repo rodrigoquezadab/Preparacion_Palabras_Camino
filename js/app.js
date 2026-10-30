@@ -1969,7 +1969,7 @@ function renderizarCalculadora() {
             btnCita.innerHTML = `<span class="cita-txt">${c.citaOriginal}</span> <span class="read-icon" title="Extensión estimada: ~${chars.toLocaleString()} caracteres">📖</span>`;
             btnCita.onclick = (e) => {
                 e.stopPropagation();
-                abrirModalLectura(c);
+                abrirModalLectura(c, { puntuar: true });
             };
             hBody.appendChild(btnCita);
         });
@@ -2006,7 +2006,8 @@ function renderizarCalculadora() {
                             continuidad: pill.dataset.cont || null,
                             textoRef: textRef
                         };
-                        abrirModalLectura(citaObj);
+                        // Solo las citas asignadas a un hermano entran en la puntuación
+                        abrirModalLectura(citaObj, { puntuar: pill.classList.contains("cite-assigned") });
                         return;
                     }
                     const citeText = pill.dataset.cite || pill.dataset.raw;
@@ -2018,6 +2019,8 @@ function renderizarCalculadora() {
                     }
                 };
             });
+
+            renderizarResumenPuntajes();
 
             // Activar clics en temas relacionados
             calcArticuloCuerpo.querySelectorAll(".otro, .chip-relacionado").forEach(btn => {
@@ -2550,9 +2553,186 @@ if (btnCopiarArticulo) {
     };
 }
 
+// --- PUNTUACIÓN DE CITAS (0 A 5 ESTRELLAS, GUARDADA EN EL DISPOSITIVO) ---
+// Cada hermano puntúa las citas al leerlas en el reparto; al final se cuentan los puntajes
+// para elegir una lectura por categoría. Estructura: { palabra: { citaOriginal: 0..5 } }
+const CLAVE_PUNTAJES = "puntajesCitas_v1";
+let puntajesCitas = {};
+try {
+    puntajesCitas = JSON.parse(localStorage.getItem(CLAVE_PUNTAJES)) || {};
+} catch (e) {
+    puntajesCitas = {};
+}
+
+const modalPuntuacion = document.getElementById("modalPuntuacion");
+const modalPuntuacionEstrellas = document.getElementById("modalPuntuacionEstrellas");
+
+function obtenerPuntaje(palabra, cita) {
+    const p = puntajesCitas[palabra];
+    return (p && typeof p[cita] === "number") ? p[cita] : null;
+}
+
+function guardarPuntaje(palabra, cita, valor) {
+    if (!puntajesCitas[palabra]) puntajesCitas[palabra] = {};
+    if (valor === null) delete puntajesCitas[palabra][cita];
+    else puntajesCitas[palabra][cita] = valor;
+    persistirPuntajes();
+}
+
+function persistirPuntajes() {
+    try {
+        localStorage.setItem(CLAVE_PUNTAJES, JSON.stringify(puntajesCitas));
+    } catch (e) {
+        mostrarToast("⚠️ No se pudo guardar el puntaje en este dispositivo");
+    }
+    refrescarPuntajes();
+}
+
+const textoEstrellas = (v) => v === null ? "sin puntuar" : `${"★".repeat(v)}${"☆".repeat(5 - v)} (${v})`;
+
+// Selector 0-5: tocar de nuevo el valor marcado lo deja "sin puntuar"
+function crearSelectorEstrellas(palabra, cita) {
+    const cont = document.createElement("div");
+    cont.className = "selector-estrellas";
+    cont.setAttribute("role", "radiogroup");
+    cont.setAttribute("aria-label", `Puntaje de ${cita}`);
+    cont.dataset.palabra = palabra;
+    cont.dataset.cita = cita;
+
+    for (let n = 0; n <= 5; n++) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.dataset.valor = n;
+        b.setAttribute("role", "radio");
+        b.className = n === 0 ? "estrella-cero" : "estrella";
+        b.textContent = n === 0 ? "0" : "★";
+        b.title = n === 0 ? "0 estrellas" : `${n} estrella${n > 1 ? "s" : ""}`;
+        b.onclick = (e) => {
+            e.stopPropagation();
+            guardarPuntaje(palabra, cita, obtenerPuntaje(palabra, cita) === n ? null : n);
+        };
+        cont.appendChild(b);
+    }
+    pintarSelectorEstrellas(cont);
+    return cont;
+}
+
+function pintarSelectorEstrellas(cont) {
+    const v = obtenerPuntaje(cont.dataset.palabra, cont.dataset.cita);
+    cont.querySelectorAll("button").forEach(b => {
+        const n = Number(b.dataset.valor);
+        b.classList.toggle("activa", v !== null && (n === 0 ? v === 0 : n <= v));
+        b.setAttribute("aria-checked", v === n ? "true" : "false");
+    });
+}
+
+// Repinta selectores, progreso del resumen y la marca ★ de las píldoras del texto
+function refrescarPuntajes() {
+    document.querySelectorAll(".selector-estrellas").forEach(pintarSelectorEstrellas);
+    if (!calcArticuloCuerpo || !palabraCalculadoraActual) return;
+    const palabra = palabraCalculadoraActual.palabra;
+
+    calcArticuloCuerpo.querySelectorAll("cite.cite-assigned").forEach(pill => {
+        const v = obtenerPuntaje(palabra, pill.dataset.cite);
+        let badge = pill.querySelector(".cite-score-badge");
+        if (v === null) {
+            if (badge) badge.remove();
+            return;
+        }
+        if (!badge) {
+            badge = document.createElement("span");
+            badge.className = "cite-score-badge";
+            pill.appendChild(badge);
+        }
+        badge.textContent = `★${v}`;
+    });
+
+    const progreso = calcArticuloCuerpo.querySelector(".resumen-puntajes-progreso");
+    if (progreso) {
+        const filas = calcArticuloCuerpo.querySelectorAll(".resumen-puntaje-fila .selector-estrellas");
+        const puntuadas = [...filas].filter(s => obtenerPuntaje(palabra, s.dataset.cita) !== null).length;
+        progreso.textContent = `${puntuadas} de ${filas.length} puntuadas`;
+    }
+}
+
+// Citas asignadas del texto, sin repetir, en su orden de aparición (#1, #2...)
+function citasNumeradasDelTexto() {
+    const vistas = new Set();
+    return [...calcArticuloCuerpo.querySelectorAll("cite.cite-assigned")]
+        .map(p => ({ seq: parseInt(p.dataset.seq, 10), cita: p.dataset.cite, hermano: p.dataset.hermano, pill: p }))
+        .filter(f => f.cita && !vistas.has(f.cita) && vistas.add(f.cita))
+        .sort((a, b) => a.seq - b.seq);
+}
+
+// Lista al final del texto de Léon-Dufour con cada cita y su puntaje
+function renderizarResumenPuntajes() {
+    if (!calcArticuloCuerpo || !palabraCalculadoraActual) return;
+    const palabra = palabraCalculadoraActual.palabra;
+    const filas = citasNumeradasDelTexto();
+    if (!filas.length) return;
+
+    const caja = document.createElement("section");
+    caja.className = "resumen-puntajes";
+    caja.innerHTML = `
+        <div class="resumen-puntajes-header">
+            <h4>⭐ Puntaje de las citas</h4>
+            <span class="resumen-puntajes-progreso"></span>
+        </div>
+        <p class="resumen-puntajes-ayuda">Toca una cita para leerla y dale de 0 a 5 estrellas. Los puntajes se guardan en este dispositivo.</p>
+        <ol class="resumen-puntajes-lista"></ol>
+        <div class="resumen-puntajes-acciones">
+            <button type="button" class="btn-action btn-copiar" data-accion="copiar" title="Copia la lista de citas con tus puntajes para compartirla en el recuento">📋 Copiar puntajes</button>
+            <button type="button" class="btn-action btn-excluir" data-accion="borrar" title="Borra todos los puntajes de esta palabra en este dispositivo">🗑️ Borrar puntajes</button>
+        </div>
+    `;
+
+    const lista = caja.querySelector("ol");
+    filas.forEach(f => {
+        const li = document.createElement("li");
+        li.className = "resumen-puntaje-fila";
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "resumen-puntaje-cita";
+        btn.title = `Leer ${f.cita}`;
+        btn.innerHTML = `<span class="cite-seq-badge">#${f.seq}</span><span class="resumen-puntaje-ref">${f.cita}</span><span class="cite-h-badge h-badge-${f.hermano}">H${f.hermano}</span>`;
+        btn.onclick = (e) => {
+            e.stopPropagation();
+            f.pill.click();
+        };
+        li.append(btn, crearSelectorEstrellas(palabra, f.cita));
+        lista.appendChild(li);
+    });
+
+    caja.querySelector('[data-accion="copiar"]').onclick = (e) => {
+        e.stopPropagation();
+        let texto = `⭐ *PUNTAJES — "${palabra.toUpperCase()}"*\n\n`;
+        texto += filas.map(f => `#${f.seq} ${f.cita} (H${f.hermano}) — ${textoEstrellas(obtenerPuntaje(palabra, f.cita))}`).join("\n");
+        copiarAlPortapapeles(texto, "✅ Puntajes copiados al portapapeles");
+    };
+    caja.querySelector('[data-accion="borrar"]').onclick = (e) => {
+        e.stopPropagation();
+        if (!confirm(`¿Borrar todos los puntajes de "${palabra}" en este dispositivo?`)) return;
+        delete puntajesCitas[palabra];
+        persistirPuntajes();
+        mostrarToast("🗑️ Puntajes borrados");
+    };
+
+    calcArticuloCuerpo.appendChild(caja);
+    refrescarPuntajes();
+}
+
 // --- MODAL DE LECTURA BÍBLICA ---
-function abrirModalLectura(cita) {
+// opciones.puntuar: muestra el selector de estrellas (lecturas abiertas desde el reparto)
+function abrirModalLectura(cita, opciones = {}) {
     citaModalActual = cita;
+    if (modalPuntuacion) {
+        const puntuar = opciones.puntuar && palabraCalculadoraActual;
+        modalPuntuacion.hidden = !puntuar;
+        modalPuntuacionEstrellas.innerHTML = "";
+        if (puntuar) {
+            modalPuntuacionEstrellas.appendChild(crearSelectorEstrellas(palabraCalculadoraActual.palabra, cita.citaOriginal));
+        }
+    }
     const ref = cita.textoRef;
     const nombreLibro = cita.libroNombre || NOMBRES_LIBROS[cita.libro] || cita.libro;
     
